@@ -1,0 +1,25 @@
+{
+  "name": "spike-03-auth",
+  "private": true,
+  "description": "THROWAWAY spike (P02-09 / SPIKE-03): Better Auth + Drizzle + libSQL in Next.js. Delete at G5.",
+  "scripts": {
+    "dev": "next dev -p 3103",
+    "build": "next build",
+    "start": "next start -p 3103"
+  },
+  "dependencies": {
+    "@libsql/client": "0.18.0",
+    "better-auth": "1.7.14",
+    "drizzle-orm": "0.45.4",
+    "next": "16.4.3",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "server-only": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.18.0",
+    "@types/react": "19.2.2",
+    "drizzle-kit": "0.31.11",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "fts5_virtual_table_created": true,
+  "seed_10k_with_triggers_ms": 3981,
+  "fts_rows": 10000,
+  "queries_run": 200,
+  "latency_ms": {
+    "p50": 11.99,
+    "p95": 31.2,
+    "max": 46.39
+  },
+  "samples": {
+    "dashboard": {
+      "hits_first_page": 24,
+      "top": "Chat dashboard dashboard"
+    },
+    "mobile banking": {
+      "hits_first_page": 24,
+      "top": "Gradient mobile banking"
+    },
+    "fin*": {
+      "hits_first_page": 24,
+      "top": "Fintech fintech weather"
+    },
+    "logo branding": {
+      "hits_first_page": 24,
+      "top": "Education branding logo"
+    },
+    "\"real estate\"": {
+      "hits_first_page": 24,
+      "top": "Real estate ui"
+    },
+    "typo*": {
+      "hits_first_page": 24,
+      "top": "Typography typography crypto"
+    },
+    "glass OR neumorphic": {
+      "hits_first_page": 24,
+      "top": "Glass neumorphic illustration"
+    },
+    "ai assistant chat": {
+      "hits_first_page": 24,
+      "top": "Ui ai chat"
+    }
+  },
+  "snippet": "chat weather booking branding crypto app mobile health…",
+  "update_synced": true,
+  "delete_synced": true,
+  "malformed_query": "throws: SQLITE_ERROR: unterminated string",
+  "shadow_tables": [
+    "shots_fts",
+    "shots_fts_config",
+    "shots_fts_data",
+    "shots_fts_docsize",
+    "shots_fts_idx"
+  ],
+  "sqlite_version": "3.45.1"
+}

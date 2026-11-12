@@ -1,0 +1,160 @@
+/* =============================================================================
+   Foundational controls (neumorphic, 40%)
+   C40 Button · C41 IconButton · C20 LikeButton · C42 FAB · C09 SearchBar
+   C30 TextField · C31 OTP · C10 Pills · C15 TagChip · C44 SegmentedControl
+   C43 Toggle
+   Contract: ≥ 44 px targets (40 px "sm" desktop sizes extend their hit area),
+   label/icon in text-primary (≥ 3:1 cue), visible focus ring from base.css.
+   ========================================================================== */
+
+/* ---- C40 Button ------------------------------------------------------------- */
+.ui-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--control-h-md); padding-inline: var(--space-5);
+  border: 0; border-radius: var(--radius-pill);
+  font-size: var(--text-label); line-height: var(--text-label--line-height);
+  letter-spacing: var(--text-label--letter-spacing); font-weight: var(--font-weight-semibold);
+  text-decoration: none; white-space: nowrap; color: var(--color-text-primary);
+  -webkit-user-select: none; user-select: none;
+}
+.ui-btn svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); }
+.ui-btn--lg { min-height: var(--control-h-lg); padding-inline: var(--space-6); }
+.ui-btn--block { display: flex; width: 100%; }
+
+/* Primary (minimal, solid accent): white label 5.62:1 → hover 7.27 → pressed 9.43 */
+.ui-btn--primary {
+  background: var(--color-accent-strong); color: var(--color-text-on-accent);
+  transition: background-color var(--duration-fast) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
+}
+@media (hover: hover) { .ui-btn--primary:hover:not(:disabled) { background: var(--color-accent-strong-hover); } }
+.ui-btn--primary:active:not(:disabled) { background: var(--color-accent-strong-pressed); transform: translateY(1px); }
+.ui-btn--primary:disabled { background: var(--color-skeleton); color: var(--color-text-disabled); cursor: not-allowed; }
+
+/* Secondary = neumorphic (compose with .neu-control) */
+.ui-btn--secondary { /* uses .neu-control for depth; label stays text-primary */ }
+
+/* Secondary-on-glass (minimal): inside modals/toasts/menus, never raised neumorphism on glass */
+.ui-btn--on-glass {
+  background: var(--color-surface-card); box-shadow: var(--glass-hairline); color: var(--color-text-primary);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+@media (hover: hover) { .ui-btn--on-glass:hover:not(:disabled) { background: var(--color-accent-subtle-hover); } }
+.ui-btn--on-glass:active:not(:disabled) { background: var(--color-bg-2); }
+.ui-btn--on-glass:disabled { color: var(--color-text-disabled); cursor: not-allowed; }
+
+/* Ghost (minimal): text button for low-emphasis actions */
+.ui-btn--ghost { background: transparent; color: var(--color-text-primary); transition: background-color var(--duration-fast) var(--ease-standard); }
+@media (hover: hover) { .ui-btn--ghost:hover:not(:disabled) { background: var(--color-accent-subtle-hover); } }
+.ui-btn--ghost:disabled { color: var(--color-text-disabled); cursor: not-allowed; }
+
+/* Loading state: keeps width, hides label, shows C37 spinner */
+.ui-btn[aria-busy="true"] { position: relative; color: transparent !important; pointer-events: none; }
+.ui-btn[aria-busy="true"]::before {
+  content: ""; position: absolute; width: var(--icon-md); height: var(--icon-md);
+  border-radius: 50%; border: 2px solid currentColor; border-color: var(--color-accent) transparent var(--color-accent) transparent;
+  animation: ui-spin 0.9s linear infinite;
+}
+.ui-btn--primary[aria-busy="true"]::before { border-color: var(--color-text-on-accent) transparent var(--color-text-on-accent) transparent; }
+
+/* ---- C37 Spinner ---------------------------------------------------------------- */
+.ui-spinner { width: var(--icon-lg); height: var(--icon-lg); border-radius: 50%; border: 2.5px solid var(--color-accent); border-right-color: transparent; animation: ui-spin 0.9s linear infinite; }
+@keyframes ui-spin { to { transform: rotate(360deg); } }
+
+/* ---- C41 IconButton · C20 LikeButton · C42 FAB ------------------------------- */
+.ui-icon-btn {
+  position: relative; display: inline-grid; place-items: center; flex: none;
+  width: var(--icon-btn); height: var(--icon-btn);
+  border: 0; border-radius: var(--radius-pill); color: var(--color-text-primary);
+}
+.ui-icon-btn svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); }
+.ui-icon-btn--lg { width: var(--icon-btn-lg); height: var(--icon-btn-lg); }
+.ui-icon-btn--sm { width: var(--icon-btn-sm); height: var(--icon-btn-sm); }
+.ui-icon-btn--sm::before { content: ""; position: absolute; inset: -2px; } /* 44 px hit area */
+
+/* LikeButton: pink is reserved for likes. Liked = inset well + filled pink-strong heart. */
+.ui-like[aria-pressed="true"] { color: var(--color-highlight-strong); }
+.ui-like[aria-pressed="true"] svg { fill: var(--color-highlight); stroke: var(--color-highlight-strong); }
+.ui-like .ui-like__count { font-size: var(--text-metadata); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
+
+.ui-fab {
+  position: fixed; right: var(--gutter); bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px)); z-index: var(--z-sticky);
+  width: var(--fab); height: var(--fab); border-radius: var(--radius-pill);
+  box-shadow: var(--neu-hover-lg) !important; /* the only raised-lg in the system */
+}
+
+/* ---- C09 SearchBar · C30 TextField ------------------------------------------- */
+.ui-field { display: grid; gap: var(--space-2); }
+.ui-field__label { font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
+.ui-field__hint { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-text-secondary); }
+.ui-field__error { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-danger); display: flex; gap: var(--space-1); align-items: flex-start; }
+.ui-input {
+  width: 100%; min-height: var(--input-h); padding-inline: var(--space-4);
+  border: 0; border-radius: var(--radius-control); color: var(--color-text-primary);
+  font-size: var(--text-body); /* ≥ 16 px: no iOS zoom */
+}
+.ui-input--lg { border-radius: var(--radius-control-lg); min-height: var(--control-h-lg); }
+.ui-input::placeholder { color: var(--color-text-secondary); opacity: 1; }
+.ui-input:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.ui-input:disabled { color: var(--color-text-disabled); cursor: not-allowed; }
+
+.ui-search { position: relative; display: flex; align-items: center; }
+.ui-search__icon { position: absolute; left: var(--space-4); width: var(--icon-md); height: var(--icon-md); color: var(--color-text-secondary); pointer-events: none; }
+.ui-search .ui-input { border-radius: var(--radius-pill); padding-left: calc(var(--space-4) + var(--icon-md) + var(--space-3)); padding-right: var(--space-12); }
+.ui-search__submit { position: absolute; right: var(--space-1); }
+.ui-search--hero .ui-input { min-height: var(--control-h-lg); font-size: var(--text-body-lg); }
+
+/* ---- C31 OTPCodeInput (one input drawn as 6 cells, D-24f) ----------------------- */
+.ui-otp { position: relative; display: inline-flex; gap: var(--space-2); }
+.ui-otp__cell { width: var(--otp-cell-w); height: var(--otp-cell-h); border-radius: var(--radius-control); display: grid; place-items: center; font-size: var(--text-h4); font-weight: var(--font-weight-semibold); font-variant-numeric: tabular-nums; }
+.ui-otp__cell.is-active { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+@media (max-width: 24.374rem) { .ui-otp__cell { width: var(--otp-cell-w-sm); height: var(--otp-cell-h-sm); } }
+.ui-otp__input { position: absolute; inset: 0; opacity: 0; width: 100%; font-size: var(--text-body); letter-spacing: 3em; }
+
+/* ---- C10 CategoryPills · C15 TagChip ------------------------------------------- */
+.ui-pill-row { display: flex; gap: var(--space-2); overflow-x: auto; padding-block: var(--space-2); padding-inline: var(--space-1); scrollbar-width: none; scroll-snap-type: x proximity; }
+.ui-pill-row::-webkit-scrollbar { display: none; }
+.ui-pill {
+  display: inline-flex; align-items: center; flex: none; scroll-snap-align: start;
+  min-height: var(--control-h-md); padding-inline: var(--space-4);
+  border: 0; border-radius: var(--radius-pill);
+  font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary); text-decoration: none; white-space: nowrap;
+}
+.ui-pill--sm { min-height: var(--control-h-sm); }
+.ui-chip { /* TagChip: minimal outline-free chip on card surfaces */
+  display: inline-flex; align-items: center; min-height: var(--control-h-sm); padding-inline: var(--space-3);
+  border-radius: var(--radius-pill); background: var(--color-bg-2);
+  font-size: var(--text-caption); color: var(--color-text-primary); text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+@media (hover: hover) { .ui-chip:hover { background: var(--color-accent-subtle-hover); } }
+
+/* ---- C44 SegmentedControl (neumorphic well with raised thumb) ----------------- */
+.ui-segmented { display: inline-flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; gap: var(--space-1); padding: var(--space-1); border-radius: var(--radius-pill); box-shadow: var(--neu-well); background: var(--neu-parent); }
+.ui-segmented__item {
+  flex: none; white-space: nowrap;
+  min-height: var(--control-h-md); padding-inline: var(--space-4); border: 0; border-radius: var(--radius-pill);
+  background: transparent; font-size: var(--text-label); font-weight: var(--font-weight-medium); color: var(--color-text-primary);
+}
+.ui-segmented::-webkit-scrollbar { display: none; }
+.ui-segmented__item[aria-checked="true"], .ui-segmented__item[aria-current]:not([aria-current="false"]) {
+  background: var(--neu-parent); box-shadow: var(--neu-rest-sm), inset 0 0 0 var(--selected-ring-width) var(--color-selected-ring);
+  color: var(--color-accent-strong); font-weight: var(--font-weight-semibold);
+}
+
+/* ---- C43 Toggle (switch) ----------------------------------------------------------- */
+.ui-switch { display: inline-flex; align-items: center; gap: var(--space-3); min-height: var(--touch-min); padding: 0; border: 0; background: transparent; cursor: pointer; font-size: var(--text-label); color: var(--color-text-primary); text-align: left; }
+.ui-switch__track {
+  position: relative; flex: none; width: var(--switch-w); height: var(--switch-h); border-radius: var(--radius-pill);
+  background: var(--neu-parent); box-shadow: var(--neu-well-sm), inset 0 0 0 1px var(--color-control-boundary); /* ≥ 3:1 off boundary */
+  transition: background-color var(--duration-base) var(--ease-standard);
+}
+.ui-switch__thumb {
+  position: absolute; top: 3px; left: 3px; width: calc(var(--switch-h) - 6px); height: calc(var(--switch-h) - 6px);
+  border-radius: 50%; background: var(--color-surface-elevated); box-shadow: var(--neu-rest-sm);
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+.ui-switch[aria-checked="true"] .ui-switch__track { background: var(--color-accent-strong); box-shadow: none; }
+.ui-switch[aria-checked="true"] .ui-switch__thumb { transform: translateX(calc(var(--switch-w) - var(--switch-h))); }
+.ui-switch[aria-disabled="true"] { cursor: not-allowed; color: var(--color-text-disabled); }
+.ui-switch[aria-disabled="true"] .ui-switch__track { box-shadow: var(--neu-well-sm), inset 0 0 0 1px var(--color-text-disabled); }

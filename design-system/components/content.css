@@ -1,0 +1,77 @@
+/* =============================================================================
+   Content and structure (minimalism, 30%)
+   C16 ShotCard · C45 Avatar · C46 Badge · C26 ProfileHeader (minimal profile)
+   C34 EmptyState · C35 ErrorState · C36 Skeleton · C39 InlineAlert · C51 Divider
+   Showcase priority: thumbnails carry NO shadow, glass, tint or frame.
+   ========================================================================== */
+
+/* ---- C16 ShotCard ------------------------------------------------------------------ */
+.ui-shot-card { position: relative; display: grid; gap: var(--space-3); }
+.ui-shot-card__media {
+  position: relative; display: block; overflow: hidden;
+  aspect-ratio: 4 / 3; border-radius: var(--radius-card);
+  background: var(--shot-placeholder, var(--color-skeleton)); /* data-driven dominant colour: the only inline style allowed */
+  box-shadow: var(--shadow-elevation-0);
+}
+.ui-shot-card__media img, .ui-shot-card__media video { width: 100%; height: 100%; object-fit: cover; }
+.ui-shot-card__link::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: var(--radius-card); } /* whole media is the link */
+.ui-shot-card__link:focus-visible { outline: none; }
+.ui-shot-card__link:focus-visible::after { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.ui-shot-card__meta { display: flex; align-items: center; gap: var(--space-2); min-height: var(--avatar-sm); }
+.ui-shot-card__author { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; font-size: var(--text-label); font-weight: var(--font-weight-medium); color: var(--color-text-primary); text-decoration: none; }
+.ui-shot-card__author span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ui-shot-card__stats { margin-left: auto; display: inline-flex; gap: var(--space-3); font-size: var(--text-metadata); font-weight: var(--font-weight-medium); color: var(--color-text-secondary); }
+.ui-shot-card__stats span { display: inline-flex; align-items: center; gap: var(--space-1); }
+.ui-shot-card__stats svg { width: var(--icon-sm); height: var(--icon-sm); }
+
+/* ---- C45 Avatar ------------------------------------------------------------------------ */
+.ui-avatar { flex: none; display: inline-grid; place-items: center; overflow: hidden; border-radius: var(--radius-pill); width: var(--avatar-sm); height: var(--avatar-sm); background: var(--color-accent-subtle); color: var(--color-accent-strong); font-size: var(--text-metadata); font-weight: var(--font-weight-semibold); }
+.ui-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.ui-avatar--xs { width: var(--avatar-xs); height: var(--avatar-xs); }
+.ui-avatar--md { width: var(--avatar-md); height: var(--avatar-md); }
+.ui-avatar--lg { width: var(--avatar-lg); height: var(--avatar-lg); font-size: var(--text-h4); box-shadow: var(--neu-rest-sm); border: 3px solid var(--neu-parent); } /* neumorphic ring at lg/xl only */
+.ui-avatar--xl { width: var(--avatar-lg); height: var(--avatar-lg); } /* 64 px below md (C26) */
+@media (min-width: 48rem) { .ui-avatar--xl { width: var(--avatar-xl); height: var(--avatar-xl); } }
+.ui-avatar--xl { font-size: var(--text-h3); box-shadow: var(--neu-rest-sm); border: 4px solid var(--neu-parent); }
+
+/* ---- C46 Badge ----------------------------------------------------------------------------- */
+.ui-badge { display: inline-flex; align-items: center; height: 20px; padding-inline: var(--space-2); border-radius: var(--radius-pill); font-size: var(--text-metadata); line-height: 1; font-weight: var(--font-weight-semibold); letter-spacing: var(--text-metadata--letter-spacing); }
+.ui-badge--accent { background: var(--color-accent-subtle); color: var(--color-accent-strong); }
+.ui-badge--highlight { background: var(--color-highlight-subtle); color: var(--color-text-primary); }
+.ui-badge--neutral { background: var(--color-bg-2); color: var(--color-text-primary); }
+
+/* ---- C26 ProfileHeader (minimal profile component) ------------------------------------ */
+.ui-profile { display: grid; gap: var(--space-4); justify-items: center; text-align: center; padding-block: var(--space-10) var(--space-8); }
+@media (min-width: 48rem) { .ui-profile { grid-template-columns: auto 1fr auto; justify-items: start; text-align: left; align-items: center; gap: var(--space-6); } }
+.ui-profile__name { font-size: var(--text-h2); line-height: var(--text-h2--line-height); letter-spacing: var(--text-h2--letter-spacing); font-weight: var(--font-weight-semibold); }
+.ui-profile__headline { color: var(--color-text-secondary); font-size: var(--text-body-lg); max-width: var(--measure-reading); }
+.ui-profile__stats { display: flex; gap: var(--space-6); font-size: var(--text-body-sm); color: var(--color-text-secondary); }
+.ui-profile__stats strong { color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
+
+/* ---- C34 EmptyState · C35 ErrorState ------------------------------------------------- */
+.ui-state { display: grid; justify-items: center; gap: var(--space-3); padding: var(--space-16) var(--space-4); text-align: center; }
+.ui-state__icon { width: 48px; height: 48px; color: var(--color-accent); }
+.ui-state__title { font-size: var(--text-h4); font-weight: var(--font-weight-semibold); }
+.ui-state__body { max-width: 44ch; color: var(--color-text-secondary); }
+.ui-state--error .ui-state__icon { color: var(--color-danger); }
+
+/* ---- C36 Skeleton ------------------------------------------------------------------------ */
+.ui-skeleton {
+  border-radius: var(--radius-card);
+  background: linear-gradient(90deg, var(--color-skeleton) 25%, var(--color-skeleton-shine) 50%, var(--color-skeleton) 75%);
+  background-size: 200% 100%;
+  animation: ui-shimmer var(--duration-shimmer) linear infinite;
+}
+.ui-skeleton--media { aspect-ratio: 4 / 3; }
+.ui-skeleton--line { height: 12px; border-radius: var(--radius-pill); }
+@keyframes ui-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* ---- C39 InlineAlert ------------------------------------------------------------------- */
+.ui-alert { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3) var(--space-4); border-radius: var(--radius-control); font-size: var(--text-body-sm); box-shadow: var(--shadow-elevation-1); }
+.ui-alert svg { flex: none; width: var(--icon-md); height: var(--icon-md); margin-top: 2px; }
+.ui-alert--error { background: var(--color-danger-subtle); color: var(--color-danger); }
+.ui-alert--success { background: var(--color-success-subtle); color: var(--color-success); }
+
+/* ---- C51 Divider ------------------------------------------------------------------------ */
+.ui-divider { display: flex; align-items: center; gap: var(--space-3); color: var(--color-text-secondary); font-size: var(--text-caption); }
+.ui-divider::before, .ui-divider::after { content: ""; flex: 1; height: 1px; background: var(--color-border-subtle); }

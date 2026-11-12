@@ -1,0 +1,43 @@
+{
+  "anon_session": "null",
+  "send_otp_status": 200,
+  "otp_length": 6,
+  "otp_type": "sign-in",
+  "verification_identifier": "sign-in-otp-spike.user@example.test",
+  "otp_stored_hashed": true,
+  "wrong_code_attempts": [
+    "400:INVALID_OTP",
+    "400:INVALID_OTP",
+    "400:INVALID_OTP",
+    "429:",
+    "429:",
+    "429:"
+  ],
+  "correct_code_after_lockout": "429:ok",
+  "sign_in_status": 429,
+  "session_cookie_attrs": [],
+  "rsc_session_after_sign_in": "null",
+  "user_rows": {
+    "n": 0,
+    "v": null
+  },
+  "reuse_consumed_otp": 429,
+  "foreign_origin_post": 403,
+  "sign_out_status": 200,
+  "rsc_session_after_sign_out_old_cookie": "null",
+  "otp_send_burst_statuses": [
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429,
+    429
+  ],
+  "rate_limit_rows": [
+    "0000:0000:0000:0000:0000:0000:0000:0000|/email-otp/send-verification-otp=3",
+    "0000:0000:0000:0000:0000:0000:0000:0000|/sign-in/email-otp=3",
+    "0000:0000:0000:0000:0000:0000:0000:0000|/sign-out=1"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "mode": "local-file",
+  "fk_default": 1,
+  "orphan_insert_without_pragma": {
+    "error": "SQLITE_CONSTRAINT SQLITE_CONSTRAINT: FOREIGN KEY constraint failed"
+  },
+  "pragma_inside_batch": {
+    "error": "SQLITE_CONSTRAINT SQLITE_CONSTRAINT: SQLITE_CONSTRAINT: FOREIGN KEY constraint failed"
+  },
+  "fk_after_pragma": 1,
+  "orphan_insert_after_pragma": {
+    "error": "SQLITE_CONSTRAINT SQLITE_CONSTRAINT: FOREIGN KEY constraint failed"
+  },
+  "orphan_in_batch_after_pragma": {
+    "error": "SQLITE_CONSTRAINT SQLITE_CONSTRAINT: SQLITE_CONSTRAINT: FOREIGN KEY constraint failed"
+  },
+  "fk_after_reconnect": 1,
+  "cascade_delete_likes_remaining": 0,
+  "after_first_like": 1,
+  "duplicate_like": {
+    "error": "SQLITE_CONSTRAINT SQLITE_CONSTRAINT: SQLITE_CONSTRAINT: UNIQUE constraint failed: likes.user_id, likes.shot_id"
+  },
+  "after_duplicate_like_count": 1,
+  "counter_then_fail": {
+    "error": "SQLITE_CONSTRAINT SQLITE_CONSTRAINT: SQLITE_CONSTRAINT: UNIQUE constraint failed: likes.user_id, likes.shot_id"
+  },
+  "after_counter_then_fail": 1,
+  "drizzle_tx": {
+    "error": " boom"
+  },
+  "title_after_tx_rollback": "Hello",
+  "fk_inside_drizzle_tx": {
+    "foreign_keys": 1
+  },
+  "negative_counter": {
+    "error": "SQLITE_CONSTRAINT SQLITE_CONSTRAINT: CHECK constraint failed: likes_count >= 0"
+  },
+  "factory_note": "createClient() then await execute(\"PRAGMA foreign_keys = ON\") before first use; never inside batch()"
+}

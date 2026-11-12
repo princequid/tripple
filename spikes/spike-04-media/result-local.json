@@ -1,0 +1,41 @@
+{
+  "source_bytes": 55147448,
+  "meta": {
+    "width": 4800,
+    "height": 3600,
+    "format": "png"
+  },
+  "derivatives": [
+    {
+      "name": "feed-400.webp",
+      "bytes": 5972
+    },
+    {
+      "name": "feed-800.webp",
+      "bytes": 40720
+    },
+    {
+      "name": "feed-1200.webp",
+      "bytes": 136774
+    },
+    {
+      "name": "detail-1600.webp",
+      "bytes": 375642
+    }
+  ],
+  "dominant": "#080888",
+  "palette": [
+    "#4936bf",
+    "#4468bf",
+    "#8754bf",
+    "#4d9bbf",
+    "#5dc8bf",
+    "#b2b0bf",
+    "#bf51bf"
+  ],
+  "total_ms": 1994,
+  "rss_start_mb": 156,
+  "rss_peak_mb": 316,
+  "non_image": "rejected: Input buffer contains unsupported image format",
+  "pixel_limit": "enforced: Input image exceeds pixel limit"
+}

@@ -1,0 +1,113 @@
+/* =============================================================================
+   Neumorphism (40%): primary language for CONTROLS only
+   Search fields, inputs, filters, pills, toggles, segmented/selection controls,
+   FAB, secondary buttons, selected/active states, small widgets.
+   NEVER on design thumbnails or shot media (constitution §7).
+   Rules: parent-matched background · token shadows only · no shadow tweens
+   (hover depth = opacity crossfade of a pseudo-element) · every control keeps a
+   >= 3:1 identifying cue (label/icon in text colour, or selected ring) because
+   the shadows themselves are only ~1.3:1 (DECISION_LOG F-10).
+   ========================================================================== */
+
+/* Parent context: neumorphic controls take their parent's colour. Default = bg.
+   Put .neu-context-bg2 on a bg-2 container (filter panel, footer) to switch sets. */
+:root, .neu-context-bg {
+  --neu-parent: var(--color-bg);
+  --neu-rest-sm: var(--neu-raised-sm);
+  --neu-rest: var(--neu-raised);
+  --neu-hover: var(--neu-raised);
+  --neu-hover-lg: var(--neu-raised-lg);
+  --neu-well-sm: var(--neu-inset-sm);
+  --neu-well: var(--neu-inset);
+  --neu-press: var(--neu-pressed);
+}
+.neu-context-bg2 {
+  --neu-parent: var(--color-bg-2);
+  --neu-rest-sm: var(--neu-raised-sm-bg2);
+  --neu-rest: var(--neu-raised-bg2);
+  --neu-hover: var(--neu-raised-bg2);
+  --neu-hover-lg: var(--neu-raised-bg2);
+  --neu-well-sm: var(--neu-inset-sm-bg2);
+  --neu-well: var(--neu-inset-bg2);
+  --neu-press: var(--neu-pressed-bg2);
+}
+
+/* ---- Static surfaces ------------------------------------------------------- */
+.neu-raised-sm { background: var(--neu-parent); box-shadow: var(--neu-rest-sm); }
+.neu-raised    { background: var(--neu-parent); box-shadow: var(--neu-rest); }
+.neu-raised-lg { background: var(--neu-parent); box-shadow: var(--neu-hover-lg); }
+.neu-inset-sm  { background: var(--neu-parent); box-shadow: var(--neu-well-sm); } /* inputs, tracks */
+.neu-inset     { background: var(--neu-parent); box-shadow: var(--neu-well); }    /* selected wells */
+.neu-pressed   { background: var(--neu-parent); box-shadow: var(--neu-press); }
+
+/* ---- Interactive control behaviour ----------------------------------------- */
+/* Rest: raised-sm. Hover: deeper shadow crossfaded via ::after + 1px lift.
+   Active: pressed (inset). Selected ([aria-pressed=true], [aria-checked=true],
+   [aria-current], [aria-selected=true], .is-selected): inset well + accent label + ring. */
+.neu-control {
+  position: relative;
+  isolation: isolate;
+  background: var(--neu-parent);
+  box-shadow: var(--neu-rest-sm);
+  transition: transform var(--duration-base) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard);
+}
+.neu-control::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--neu-hover);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+@media (hover: hover) {
+  .neu-control:hover:not(:disabled):not([aria-disabled="true"]) { transform: translateY(var(--motion-lift)); }
+  .neu-control:hover:not(:disabled):not([aria-disabled="true"])::after { opacity: 1; }
+}
+.neu-control:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: none;
+  box-shadow: var(--neu-press);
+}
+.neu-control:active::after { opacity: 0; }
+
+.neu-control[aria-pressed="true"],
+.neu-control[aria-checked="true"],
+.neu-control[aria-selected="true"],
+.neu-control[aria-current]:not([aria-current="false"]),
+.neu-control.is-selected {
+  box-shadow: var(--neu-well), inset 0 0 0 var(--selected-ring-width) var(--color-selected-ring);
+  color: var(--color-accent-strong);
+  font-weight: var(--font-weight-semibold);
+  transform: none;
+}
+.neu-control[aria-pressed="true"]::after,
+.neu-control[aria-checked="true"]::after,
+.neu-control[aria-selected="true"]::after,
+.neu-control[aria-current]:not([aria-current="false"])::after,
+.neu-control.is-selected::after { opacity: 0; }
+
+.neu-control:disabled,
+.neu-control[aria-disabled="true"] {
+  box-shadow: none;
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Recessed field (inputs, search, OTP cells): inset well; focus adds the ring. */
+.neu-field {
+  background: var(--neu-parent);
+  box-shadow: var(--neu-well-sm);
+}
+.neu-field[aria-invalid="true"] {
+  box-shadow: var(--neu-well-sm), inset 0 0 0 var(--selected-ring-width) var(--color-danger);
+}
+
+/* Forced colours: shadows vanish, so give every control a real border. */
+@media (forced-colors: active) {
+  .neu-control, .neu-field, .neu-raised-sm, .neu-raised, .neu-raised-lg, .neu-inset-sm, .neu-inset {
+    border: 1px solid ButtonText;
+  }
+}

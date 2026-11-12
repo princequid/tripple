@@ -1,0 +1,96 @@
+/* =============================================================================
+   Glassmorphism (30%): FLOATING LAYERS only
+   Floating nav/header, dropdowns, menus, popovers, modals, featured overlays,
+   notifications/toasts, profile overlays, contextual toolbars, promo sections.
+   Rules: one glass layer at a time (no glass on glass) · the scrim is never
+   blurred · content allowed per level (T-15 worst case over white/black media):
+     subtle (α .80)  → primary text and icons only
+     panel  (α .88)  → + secondary text and status icons
+     modal  (α .94)  → + links and error text
+   Opaque fallback for reduced transparency and for no backdrop-filter support.
+   ========================================================================== */
+
+.glass-subtle,
+.glass-panel,
+.glass-modal {
+  border: var(--glass-border);
+  color: var(--color-text-primary);
+}
+.glass-subtle {
+  background: var(--glass-subtle-bg);
+  -webkit-backdrop-filter: blur(var(--blur-glass-sm)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--blur-glass-sm)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-highlight), var(--glass-hairline), var(--shadow-glass-sm);
+}
+.glass-subtle--md { /* header uses the subtle tint with medium blur */
+  -webkit-backdrop-filter: blur(var(--blur-glass-md)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--blur-glass-md)) saturate(var(--glass-saturate));
+}
+.glass-panel {
+  background: var(--glass-panel-bg);
+  -webkit-backdrop-filter: blur(var(--blur-glass-md)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--blur-glass-md)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-highlight), var(--glass-hairline), var(--shadow-glass-md);
+}
+.glass-modal {
+  background: var(--glass-modal-bg);
+  -webkit-backdrop-filter: blur(var(--blur-glass-lg)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--blur-glass-lg)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-highlight), var(--glass-hairline), var(--shadow-glass-lg);
+}
+
+/* Scrim: flat tint, NEVER blurred (prevents stacked glass). */
+.glass-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scrim);
+  background: var(--color-scrim);
+}
+
+/* Controls inside glass: inset fields use the bg-2 fill (allowed); raised neumorphism is
+   FORBIDDEN on glass (constitution §3.2), so any .neu-control placed in a glass layer
+   is flattened automatically: transparent, accent-subtle-hover on hover, bg-2 when pressed. */
+.glass-subtle, .glass-panel, .glass-modal {
+  --neu-parent: var(--color-bg-2);
+  --neu-well-sm: var(--neu-inset-sm-bg2);
+  --neu-well: var(--neu-inset-bg2);
+}
+:is(.glass-subtle, .glass-panel, .glass-modal) .neu-control { background: transparent; box-shadow: none; }
+:is(.glass-subtle, .glass-panel, .glass-modal) .neu-control::after { display: none; }
+@media (hover: hover) { :is(.glass-subtle, .glass-panel, .glass-modal) .neu-control:hover:not(:disabled) { background: var(--color-accent-subtle-hover); transform: none; } }
+:is(.glass-subtle, .glass-panel, .glass-modal) .neu-control:active:not(:disabled) { background: var(--color-bg-2); box-shadow: none; }
+:is(.glass-subtle, .glass-panel, .glass-modal) .neu-control:is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), .is-selected) {
+  background: var(--color-accent-subtle);
+  box-shadow: inset 0 0 0 var(--selected-ring-width) var(--color-selected-ring);
+}
+
+/* Glass never holds secondary text at the subtle level (contrast at worst case). */
+.glass-subtle .text-secondary { color: var(--color-text-primary); }
+
+/* Enter / exit motion for floating layers (opacity + transform only). */
+.glass-enter { animation: glass-in var(--duration-moderate) var(--ease-enter) both; }
+.glass-enter-modal { animation: glass-modal-in var(--duration-slow) var(--ease-enter) both; }
+@keyframes glass-in {
+  from { opacity: 0; transform: translateY(calc(var(--motion-offset-sm) * -1)); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes glass-modal-in {
+  from { opacity: 0; transform: translateY(var(--motion-offset-md)) scale(var(--motion-scale-enter)); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- Fallbacks --------------------------------------------------------------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-subtle, .glass-panel, .glass-modal { background: var(--glass-fallback-bg); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-subtle, .glass-panel, .glass-modal {
+    background: var(--glass-fallback-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border: 1px solid var(--color-border-subtle);
+  }
+}
+@media (forced-colors: active) {
+  .glass-subtle, .glass-panel, .glass-modal { border: 1px solid CanvasText; }
+}

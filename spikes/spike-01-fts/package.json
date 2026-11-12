@@ -1,0 +1,14 @@
+{
+  "name": "spike-01-fts",
+  "private": true,
+  "type": "module",
+  "description": "THROWAWAY spike (P02-07 / SPIKE-01). Never imported by the app. Delete at G5.",
+  "dependencies": {
+    "@libsql/client": "0.18.0",
+    "@tursodatabase/database": "0.8.3",
+    "drizzle-orm": "0.45.4"
+  },
+  "devDependencies": {
+    "drizzle-kit": "0.31.11"
+  }
+}

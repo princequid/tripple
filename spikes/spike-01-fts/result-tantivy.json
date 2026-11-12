@@ -1,0 +1,8 @@
+{
+  "index_errors": [
+    "CREATE INDEX shots_fts ON shots USING fts (title, description, tags) -> failed to consume stmt: Parse error: index method is an experimental feature. Enable with --experimental-index-method flag",
+    "CREATE INDEX shots_fts ON shots USING fts (title) -> failed to consume stmt: Parse error: index method is an experimental feature. Enable with --experimental-index-method flag"
+  ],
+  "seed_10k_ms": 308,
+  "fts5_in_new_engine": "error: failed to consume stmt: Parse error: no such module: fts5"
+}

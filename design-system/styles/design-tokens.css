@@ -1,0 +1,229 @@
+/* =============================================================================
+   Design tokens: Hybrid Soft UI (40% neumorphism · 30% glass · 30% minimalism)
+   Single source of every colour, type, spacing, radius, shadow, blur, motion,
+   layout, z-index and control-size value. Spec: docs/05-design-system/DESIGN_TOKENS.md
+   Raw hex / px shadow values may appear ONLY in this file.
+   Values marked [D-23] are derived tints pending user approval (DECISION_LOG D-23).
+   ========================================================================== */
+
+:root {
+  /* ---- 2.1 Raw palette (components never use these directly) ------------ */
+  --palette-neutral-0: #FFFFFF;    /* official: elevated surface, neu highlight */
+  --palette-neutral-25: #F8FAFC;   /* official: card surface */
+  --palette-neutral-50: #F1F3F7;   /* official: secondary background */
+  --palette-neutral-100: #E9EDF3;  /* official: main background */
+  --palette-neutral-150: #DDE1E9;  /* official: border */
+  --palette-neutral-200: #C5CFDC;  /* official: neu dark shadow */
+  --palette-neutral-250: #B5C2D1;  /* official: neu deeper shadow */
+  --palette-neutral-400: #929BA9;  /* official: muted (disabled only) */
+  --palette-neutral-500: #647184;  /* official: secondary text (card/elevated only) */
+  --palette-neutral-600: #5E6A7C;  /* D-05: secondary text on bg/bg2 */
+  --palette-neutral-900: #252B36;  /* official: primary text */
+  --palette-blue-300: #A5B5CA;     /* official: muted blue (decorative only) */
+  --palette-lavender-50: #F6F4FB;  /* [D-23] */
+  --palette-lavender-100: #EEE9F6; /* [D-23] */
+  --palette-lavender-500: #9273C7; /* official: primary accent */
+  --palette-lavender-600: #7556B3; /* D-05: accent-strong */
+  --palette-lavender-700: #624896; /* [D-23] */
+  --palette-lavender-800: #503A7A; /* [D-23] */
+  --palette-pink-50: #FDF4F8;      /* [D-23] */
+  --palette-pink-500: #EA78A5;     /* official: secondary accent */
+  --palette-pink-600: #C2507F;     /* D-05: pink-strong (icons) */
+  --palette-red-50: #F9EFF1;       /* [D-23] */
+  --palette-red-600: #B3364F;      /* D-05: danger */
+  --palette-green-50: #EEF4F1;     /* [D-23] */
+  --palette-green-600: #2B7355;    /* D-05: success */
+
+  /* ---- 2.2 Semantic colour ---------------------------------------------- */
+  --color-bg: var(--palette-neutral-100);
+  --color-bg-2: var(--palette-neutral-50);
+  --color-surface-card: var(--palette-neutral-25);
+  --color-surface-elevated: var(--palette-neutral-0);
+  --color-border-subtle: var(--palette-neutral-150);
+  --color-text-primary: var(--palette-neutral-900);
+  --color-text-secondary: var(--palette-neutral-600);
+  --color-text-secondary-on-card: var(--palette-neutral-500);
+  --color-text-disabled: var(--palette-neutral-400);
+  --color-text-link: var(--palette-lavender-600);
+  --color-text-on-accent: var(--palette-neutral-0);
+  --color-text-on-highlight: var(--palette-neutral-900);
+  --color-accent: var(--palette-lavender-500);
+  --color-accent-strong: var(--palette-lavender-600);
+  --color-accent-strong-hover: var(--palette-lavender-700);
+  --color-accent-strong-pressed: var(--palette-lavender-800);
+  --color-accent-subtle: var(--palette-lavender-50);
+  --color-accent-subtle-hover: var(--palette-lavender-100);
+  --color-highlight: var(--palette-pink-500);
+  --color-highlight-strong: var(--palette-pink-600);
+  --color-highlight-subtle: var(--palette-pink-50);
+  --color-support: var(--palette-blue-300);
+  --color-danger: var(--palette-red-600);
+  --color-danger-subtle: var(--palette-red-50);
+  --color-success: var(--palette-green-600);
+  --color-success-subtle: var(--palette-green-50);
+  --color-control-boundary: var(--palette-neutral-600);
+  --color-focus-ring: var(--palette-lavender-600);
+  --color-selected-ring: var(--palette-lavender-600);
+  --color-neu-light: var(--palette-neutral-0);
+  --color-neu-dark: var(--palette-neutral-200);
+  --color-neu-deep: var(--palette-neutral-250);
+  --color-skeleton: var(--palette-neutral-150);
+  --color-skeleton-shine: var(--palette-neutral-50);
+  --scrim: rgb(37 43 54 / 0.48);
+  --color-scrim: var(--scrim);
+
+  /* ---- 3. Typography ------------------------------------------------------ */
+  --font-inter: "Inter";
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  --text-display: clamp(2.5rem, 2rem + 2.2222vw, 4rem);
+  --text-display--line-height: 1.1;  --text-display--letter-spacing: -0.025em;
+  --text-h1: clamp(2rem, 1.6667rem + 1.4815vw, 3rem);
+  --text-h1--line-height: 1.15;      --text-h1--letter-spacing: -0.02em;
+  --text-h2: clamp(1.625rem, 1.4167rem + 0.9259vw, 2.25rem);
+  --text-h2--line-height: 1.2;       --text-h2--letter-spacing: -0.015em;
+  --text-h3: clamp(1.3125rem, 1.2083rem + 0.4630vw, 1.625rem);
+  --text-h3--line-height: 1.3;       --text-h3--letter-spacing: -0.01em;
+  --text-h4: clamp(1.125rem, 1.0833rem + 0.1852vw, 1.25rem);
+  --text-h4--line-height: 1.35;      --text-h4--letter-spacing: -0.005em;
+  --text-body-lg: clamp(1.0625rem, 1.0417rem + 0.0926vw, 1.125rem);
+  --text-body-lg--line-height: 1.6;
+  --text-body: 1rem;                 --text-body--line-height: 1.6;
+  --text-body-sm: 0.875rem;          --text-body-sm--line-height: 1.55;
+  --text-label: 0.875rem;            --text-label--line-height: 1.25;  --text-label--letter-spacing: 0.005em;
+  --text-caption: 0.8125rem;         --text-caption--line-height: 1.45; --text-caption--letter-spacing: 0.005em;
+  --text-metadata: 0.75rem;          --text-metadata--line-height: 1.4; --text-metadata--letter-spacing: 0.02em;
+  --measure-reading: 68ch;
+
+  /* ---- 4. Spacing (4 px base) -------------------------------------------- */
+  --spacing: 0.25rem;
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px; --space-5: 20px;
+  --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px; --space-16: 64px;
+  --space-20: 80px; --space-24: 96px;
+
+  /* ---- 5. Radii ----------------------------------------------------------- */
+  --radius-control-sm: 10px;
+  --radius-control: 12px;
+  --radius-control-lg: 14px;
+  --radius-card: 16px;
+  --radius-card-lg: 20px;
+  --radius-panel: 24px;
+  --radius-panel-lg: 28px;
+  --radius-pill: 9999px;
+  --radius-checkbox: 6px;
+
+  /* ---- 6. Neumorphic shadows (light source top-left) ---------------------- */
+  --neu-raised-sm: -3px -3px 6px var(--color-neu-light), 3px 3px 6px var(--color-neu-dark);
+  --neu-raised: -5px -5px 12px var(--color-neu-light), 5px 5px 12px var(--color-neu-dark);
+  --neu-raised-lg: -8px -8px 18px var(--color-neu-light), 8px 8px 18px var(--color-neu-dark);
+  --neu-inset-sm: inset 2px 2px 4px var(--color-neu-dark), inset -2px -2px 4px var(--color-neu-light);
+  --neu-inset: inset 4px 4px 8px var(--color-neu-dark), inset -4px -4px 8px var(--color-neu-light);
+  --neu-pressed: inset 3px 3px 6px var(--color-neu-deep), inset -3px -3px 6px var(--color-neu-light);
+  /* on bg-2 (lighter parent): dark shadow at 80% */
+  --neu-raised-sm-bg2: -3px -3px 6px var(--color-neu-light), 3px 3px 6px rgb(197 207 220 / 0.8);
+  --neu-raised-bg2: -5px -5px 12px var(--color-neu-light), 5px 5px 12px rgb(197 207 220 / 0.8);
+  --neu-inset-sm-bg2: inset 2px 2px 4px rgb(197 207 220 / 0.8), inset -2px -2px 4px var(--color-neu-light);
+  --neu-inset-bg2: inset 4px 4px 8px rgb(197 207 220 / 0.8), inset -4px -4px 8px var(--color-neu-light);
+  --neu-pressed-bg2: inset 3px 3px 6px rgb(181 194 209 / 0.8), inset -3px -3px 6px var(--color-neu-light);
+  /* semantic aliases (Tailwind --shadow-* namespace in P10-01) */
+  --shadow-neu-raised-sm: var(--neu-raised-sm);
+  --shadow-neu-raised: var(--neu-raised);
+  --shadow-neu-raised-lg: var(--neu-raised-lg);
+  --shadow-neu-inset-sm: var(--neu-inset-sm);
+  --shadow-neu-inset: var(--neu-inset);
+  --shadow-neu-pressed: var(--neu-pressed);
+
+  /* ---- 7. Glass ------------------------------------------------------------ */
+  --glass-subtle-bg: rgb(255 255 255 / 0.80); /* text-primary only */
+  --glass-panel-bg: rgb(255 255 255 / 0.88);
+  --glass-modal-bg: rgb(255 255 255 / 0.94);
+  --glass-fallback-bg: var(--color-surface-elevated);
+  --blur-glass-sm: 8px;
+  --blur-glass-md: 16px;
+  --blur-glass-lg: 24px;
+  --glass-saturate: 140%;
+  --glass-border: 1px solid rgb(255 255 255 / 0.70);
+  --glass-hairline: 0 0 0 1px rgb(37 43 54 / 0.08);
+  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.90);
+  --shadow-glass-sm: 0 4px 16px rgb(37 43 54 / 0.08);
+  --shadow-glass-md: 0 12px 32px rgb(37 43 54 / 0.12);
+  --shadow-glass-lg: 0 24px 56px rgb(37 43 54 / 0.18);
+
+  /* ---- 8. Elevation (minimal cards) --------------------------------------- */
+  --shadow-elevation-0: none;
+  --shadow-elevation-1: 0 1px 2px rgb(37 43 54 / 0.05), 0 2px 8px rgb(37 43 54 / 0.04);
+  --shadow-elevation-2: 0 2px 4px rgb(37 43 54 / 0.06), 0 8px 24px rgb(37 43 54 / 0.08);
+
+  /* ---- 9. Motion ----------------------------------------------------------- */
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-moderate: 220ms;
+  --duration-slow: 280ms;
+  --duration-exit-moderate: 160ms;
+  --duration-exit-slow: 200ms;
+  --duration-shimmer: 1600ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --motion-lift: -1px;
+  --motion-offset-sm: 4px;
+  --motion-offset-md: 8px;
+  --motion-scale-enter: 0.98;
+
+  /* ---- 10. Layout ---------------------------------------------------------- */
+  --gutter: 16px;
+  --gallery-gap: 16px;
+  --gallery-min-col: 264px;
+  --container-max: 1680px;
+  --container-detail: 1024px;
+  --container-reading: 720px;
+  --container-auth: 400px;
+  --container-modal-sm: 420px;
+  --container-modal-md: 560px;
+  --container-modal-lg: 720px;
+  --header-h: 56px;
+
+  /* ---- 11. Z-index ----------------------------------------------------------- */
+  --z-base: 0; --z-raised: 10; --z-sticky: 100; --z-header: 200; --z-dropdown: 300;
+  --z-drawer: 400; --z-scrim: 500; --z-modal: 510; --z-popover: 600; --z-toast: 700;
+  --z-tooltip: 800; --z-skip-link: 900;
+
+  /* ---- 12. Focus ring -------------------------------------------------------- */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-focus-ring);
+  --selected-ring-width: 1.5px;
+
+  /* ---- 13. Control sizes ----------------------------------------------------- */
+  --touch-min: 44px;
+  --touch-gap: 8px;
+  --control-h-sm: 40px;
+  --control-h-md: 44px;
+  --control-h-lg: 52px;
+  --input-h: 48px;
+  --otp-cell-w: 48px;
+  --otp-cell-h: 56px;
+  --otp-cell-w-sm: 44px; /* < 390 px: 6 × 44 + 5 × 8 = 304 px fits the 312 px bottom sheet at 360 */
+  --otp-cell-h-sm: 52px;
+  --icon-btn-sm: 40px;
+  --icon-btn: 44px;
+  --icon-btn-lg: 48px;
+  --fab: 56px;
+  --switch-w: 44px;
+  --switch-h: 26px;
+  --icon-sm: 16px; --icon-md: 20px; --icon-lg: 24px;
+  --icon-stroke: 1.75px;
+  --avatar-xs: 24px; --avatar-sm: 32px; --avatar-md: 40px; --avatar-lg: 64px; --avatar-xl: 96px;
+}
+
+/* Breakpoints (mobile first): sm 390 · md 768 · lg 1024 · xl 1280 · 2xl 1440.
+   CSS custom properties cannot be used inside @media queries, so the values are literal here. */
+@media (min-width: 48rem)  { :root { --gutter: 24px; --gallery-gap: 24px; } }
+@media (min-width: 64rem)  { :root { --gutter: 32px; --header-h: 64px; } }
+@media (min-width: 80rem)  { :root { --gutter: 48px; --gallery-gap: 32px; } }
+@media (min-width: 90rem)  { :root { --gutter: 64px; } }
+@media (pointer: coarse)   { :root { --control-h-sm: var(--control-h-md); --icon-btn-sm: var(--icon-btn); } }

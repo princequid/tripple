@@ -1,0 +1,352 @@
+{
+ "360": {
+  "overflow": 0,
+  "small_targets": [],
+  "console_errors": [],
+  "axe": null,
+  "checks": {
+   "body": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "0px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "pillSelected": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(117, 86, 179)",
+    "shadow": "rgb(197, 207, 220) 4px 4px 8px 0px inset, rgb(255, 255, 255) -4px -4px 8px 0px i",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "primary": {
+    "bg": "rgb(117, 86, 179)",
+    "color": "rgb(255, 255, 255)",
+    "shadow": "none",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "header": {
+    "bg": "rgba(255, 255, 255, 0.8)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "0px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "menu": {
+    "bg": "rgba(255, 255, 255, 0.88)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "20px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "modal": {
+    "bg": "rgba(255, 255, 255, 0.94)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "28px 28px 0px 0px",
+    "bf": "blur(24px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "media": {
+    "bg": "rgb(123, 111, 214)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "16px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   }
+  }
+ },
+ "390": {
+  "overflow": 0,
+  "small_targets": [],
+  "console_errors": [
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "axe": {
+   "violations": [],
+   "passes": 33,
+   "incomplete": [
+    "color-contrast"
+   ]
+  },
+  "checks": {
+   "body": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "0px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "pillSelected": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(117, 86, 179)",
+    "shadow": "rgb(197, 207, 220) 4px 4px 8px 0px inset, rgb(255, 255, 255) -4px -4px 8px 0px i",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "primary": {
+    "bg": "rgb(117, 86, 179)",
+    "color": "rgb(255, 255, 255)",
+    "shadow": "none",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "header": {
+    "bg": "rgba(255, 255, 255, 0.8)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "0px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "menu": {
+    "bg": "rgba(255, 255, 255, 0.88)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "20px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "modal": {
+    "bg": "rgba(255, 255, 255, 0.94)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "28px 28px 0px 0px",
+    "bf": "blur(24px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "media": {
+    "bg": "rgb(123, 111, 214)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "16px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   }
+  }
+ },
+ "768": {
+  "overflow": 0,
+  "small_targets": [],
+  "console_errors": [],
+  "axe": null,
+  "checks": {
+   "body": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "0px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "pillSelected": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(117, 86, 179)",
+    "shadow": "rgb(197, 207, 220) 4px 4px 8px 0px inset, rgb(255, 255, 255) -4px -4px 8px 0px i",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "primary": {
+    "bg": "rgb(117, 86, 179)",
+    "color": "rgb(255, 255, 255)",
+    "shadow": "none",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "header": {
+    "bg": "rgba(255, 255, 255, 0.8)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "0px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "menu": {
+    "bg": "rgba(255, 255, 255, 0.88)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "20px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "modal": {
+    "bg": "rgba(255, 255, 255, 0.94)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "24px",
+    "bf": "blur(24px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "media": {
+    "bg": "rgb(123, 111, 214)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "16px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   }
+  }
+ },
+ "1024": {
+  "overflow": 0,
+  "small_targets": [],
+  "console_errors": [],
+  "axe": null,
+  "checks": {
+   "body": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "0px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "pillSelected": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(117, 86, 179)",
+    "shadow": "rgb(197, 207, 220) 4px 4px 8px 0px inset, rgb(255, 255, 255) -4px -4px 8px 0px i",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "primary": {
+    "bg": "rgb(117, 86, 179)",
+    "color": "rgb(255, 255, 255)",
+    "shadow": "none",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "header": {
+    "bg": "rgba(255, 255, 255, 0.8)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "0px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "menu": {
+    "bg": "rgba(255, 255, 255, 0.88)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "20px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "modal": {
+    "bg": "rgba(255, 255, 255, 0.94)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "24px",
+    "bf": "blur(24px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "media": {
+    "bg": "rgb(123, 111, 214)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "16px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   }
+  }
+ },
+ "1440": {
+  "overflow": 0,
+  "small_targets": [],
+  "console_errors": [
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "axe": {
+   "violations": [],
+   "passes": 32,
+   "incomplete": [
+    "color-contrast"
+   ]
+  },
+  "checks": {
+   "body": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "0px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "pillSelected": {
+    "bg": "rgb(233, 237, 243)",
+    "color": "rgb(117, 86, 179)",
+    "shadow": "rgb(197, 207, 220) 4px 4px 8px 0px inset, rgb(255, 255, 255) -4px -4px 8px 0px i",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "primary": {
+    "bg": "rgb(117, 86, 179)",
+    "color": "rgb(255, 255, 255)",
+    "shadow": "none",
+    "radius": "9999px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   },
+   "header": {
+    "bg": "rgba(255, 255, 255, 0.8)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "0px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "menu": {
+    "bg": "rgba(255, 255, 255, 0.88)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "20px",
+    "bf": "blur(16px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "modal": {
+    "bg": "rgba(255, 255, 255, 0.94)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "rgba(255, 255, 255, 0.9) 0px 1px 0px 0px inset, rgba(37, 43, 54, 0.08) 0px 0px 0",
+    "radius": "24px",
+    "bf": "blur(24px) saturate(1.4)",
+    "font": "Inter, ui-sans-serif"
+   },
+   "media": {
+    "bg": "rgb(123, 111, 214)",
+    "color": "rgb(37, 43, 54)",
+    "shadow": "none",
+    "radius": "16px",
+    "bf": "none",
+    "font": "Inter, ui-sans-serif"
+   }
+  }
+ },
+ "reducedMotion": "1e-05s"
+}
