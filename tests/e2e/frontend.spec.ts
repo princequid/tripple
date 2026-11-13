@@ -5,21 +5,22 @@ import { latestCode } from './helpers';
 
 /**
  * P10 frontend journeys (R1 gaps + R2/R3 screens). Runs on the production build with a fresh seeded DB
- * (playwright.config.ts). Features without a backend yet run on the mock service layer (src/services/config.ts),
- * so these tests check UI behaviour and state handling, not persistence on the server.
+ * (playwright.config.ts). R1/R2 features run on the live API; R3 features (notifications, messages, hire, services,
+ * blocks) still run on the mock service layer (src/services/config.ts), so for those the tests check UI behaviour only.
  */
 
-const STATE = path.join(process.cwd(), 'test-results', 'demo-storage.json');
+const BASE = process.env.E2E_BASE ?? 'http://localhost:3100';
+const STATE = path.join(process.cwd(), '.data', 'pw-demo-storage.json');
 
 /** Signs in once (BR-05 allows one code per email per 60 s) and stores the session cookie for all member tests. */
 async function ensureDemoState(page: Page) {
   if (fs.existsSync(STATE) && Date.now() - fs.statSync(STATE).mtimeMs < 10 * 60_000) return;
   const email = 'demo@seed.trippple.test';
   const t0 = Date.now();
-  const send = await page.request.post('/api/auth/email-otp/send-verification-otp', { data: { email, type: 'sign-in' }, headers: { Origin: 'http://localhost:3100' } });
+  const send = await page.request.post('/api/auth/email-otp/send-verification-otp', { data: { email, type: 'sign-in' }, headers: { Origin: BASE } });
   expect(send.ok(), await send.text()).toBeTruthy();
   const code = await latestCode(email, t0);
-  const r = await page.request.post('/api/auth/sign-in/email-otp', { data: { email, otp: code }, headers: { Origin: 'http://localhost:3100' } });
+  const r = await page.request.post('/api/auth/sign-in/email-otp', { data: { email, otp: code }, headers: { Origin: BASE } });
   expect(r.ok()).toBeTruthy();
   fs.mkdirSync(path.dirname(STATE), { recursive: true });
   await page.context().storageState({ path: STATE });
@@ -68,17 +69,17 @@ test.describe('visitor', () => {
     await expect(panel.getByRole('button', { name: 'Sign in to comment' })).toBeVisible();
   });
 
-  test('FE-04 job board filters update the URL and results; job detail has Apply', async ({ page }) => {
+  test('FE-04 job board filters live in the URL; list or empty state renders', async ({ page }) => {
     await page.goto('/jobs');
-    await expect(page.locator('.job-row').first()).toBeVisible();
+    await expect(page.locator('.job-row').first().or(page.getByTestId('empty-state'))).toBeVisible();
     await page.getByLabel('Search jobs').fill('design');
     await page.getByRole('button', { name: 'Search', exact: true }).click();
     await expect(page).toHaveURL(/q=design/);
     await page.getByText('Leadership', { exact: true }).click();
     await expect(page).toHaveURL(/specialty=leadership/);
-    await expect(page.locator('.job-row')).toHaveCount(1);
-    await page.locator('.job-row__title').first().click();
-    await expect(page.getByRole('link', { name: /Apply for this position/ })).toHaveAttribute('target', '_blank');
+    await page.getByText('Open to remote', { exact: true }).click();
+    await expect(page).toHaveURL(/remote=1/);
+    await expect(page.locator('.job-row').first().or(page.getByTestId('empty-state'))).toBeVisible();
   });
 
   test('FE-05 job wizard validates step 1 and gates Continue for visitors', async ({ page }) => {
@@ -116,10 +117,10 @@ test.describe('visitor', () => {
   });
 
   test('FE-08 forced error and empty states render with retry', async ({ page }) => {
-    await page.goto('/jobs?__state=error');
+    await page.goto('/services?__state=error');
     await expect(page.getByTestId('error-state')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Try again' })).toBeVisible();
-    await page.goto('/services?__state=empty');
+    await page.goto('/hire?__state=empty');
     await expect(page.getByTestId('empty-state')).toBeVisible();
   });
 
@@ -155,7 +156,7 @@ test.describe('visitor', () => {
 
 test.describe('member (demo seed account)', () => {
   test.beforeAll(async ({ browser }) => {
-    const ctx = await browser.newContext({ baseURL: 'http://localhost:3100', storageState: { cookies: [], origins: [] } });
+    const ctx = await browser.newContext({ baseURL: BASE, storageState: { cookies: [], origins: [] } });
     await ensureDemoState(await ctx.newPage());
     await ctx.close();
   });
@@ -199,7 +200,7 @@ test.describe('member (demo seed account)', () => {
     await expect(page.locator('.collection-card', { hasText: name })).toBeVisible();
   });
 
-  test('FE-23 post a comment and reply (mock), edit window shows Edit', async ({ page }) => {
+  test('FE-23 post a comment (live API); the 15-minute edit window shows Edit', async ({ page }) => {
     await page.goto(await firstShotPath(page));
     await page.getByRole('button', { name: /^Comments/ }).click();
     const panel = page.getByRole('dialog', { name: /Comments/ });
@@ -212,7 +213,7 @@ test.describe('member (demo seed account)', () => {
     await expect(mine.getByRole('button', { name: 'Edit' })).toBeVisible();
   });
 
-  test('FE-24 job wizard publishes (mock) and the job appears in Settings → Jobs', async ({ page }) => {
+  test('FE-24 job wizard publishes (live API); owner sees Edit, a visitor sees Apply; listed in Settings → Jobs', async ({ page }) => {
     await page.goto('/jobs/new');
     await page.getByLabel('Job title').fill('E2E Visual Designer');
     await page.getByRole('textbox', { name: 'Description' }).fill('A short but complete description of a visual design role at a small, friendly studio in town.');
@@ -226,11 +227,19 @@ test.describe('member (demo seed account)', () => {
     await page.getByRole('button', { name: 'Publish job' }).click();
     await expect(page).toHaveURL(/\/jobs\/\d+-e2e-visual-designer$/);
     await expect(page.getByRole('link', { name: 'Edit job' })).toBeVisible();
+    const jobUrl = page.url();
+    const visitor = await page.context().browser()!.newContext({ baseURL: BASE });
+    const vp = await visitor.newPage();
+    await vp.goto(jobUrl);
+    await expect(vp.getByRole('link', { name: /Apply for this position/ })).toHaveAttribute('href', 'mailto:jobs@example.com');
+    await visitor.close();
+    await page.goto('/jobs?q=E2E+Visual');
+    await expect(page.locator('.job-row', { hasText: 'E2E Visual Designer' })).toBeVisible();
     await page.goto('/settings/jobs');
     await expect(page.locator('.job-row', { hasText: 'E2E Visual Designer' })).toBeVisible();
   });
 
-  test('FE-25 message a designer from a service, then reply in the thread (mock)', async ({ page }) => {
+  test('FE-25 message a designer from a service, then reply in the thread (R3 mock)', async ({ page }) => {
     await page.goto('/services');
     await page.locator('.service-card__title').first().click();
     await page.getByRole('button', { name: 'Request service' }).click();
@@ -272,7 +281,7 @@ test.describe('member (demo seed account)', () => {
     await expect(page.getByRole('heading', { name: 'Members (1)' })).toBeVisible();
   });
 
-  test('FE-28 composer: publish needs an image and a category', async ({ page }) => {
+  test('FE-28 composer: validation, then a text-only draft saves (live API)', async ({ page }) => {
     await page.goto('/uploads/new');
     await page.getByLabel('Title').fill('E2E shot');
     await page.getByRole('button', { name: 'Publish' }).click();
@@ -280,23 +289,29 @@ test.describe('member (demo seed account)', () => {
     await expect(page.getByText('Choose a category.')).toBeVisible();
     await page.getByRole('button', { name: 'Add text' }).click();
     await expect(page.locator('.composer-block')).toHaveCount(1);
+    await page.getByLabel('Text', { exact: true }).fill('Work in progress notes.');
+    await page.getByLabel('Category').selectOption('print');
     await page.getByRole('button', { name: 'Save as draft' }).click();
     await expect(page).toHaveURL(/\/shots\/\d+\/edit$/);
   });
 
-  test('FE-29 staff report queue: decide with a required reason (mock)', async ({ page }) => {
+  test('FE-29 staff report queue: report a shot, then decide with a required reason (live API)', async ({ page }) => {
+    const shots = (await (await page.request.get('/api/shots?sort=recent&limit=48')).json()) as { data: { id: number; author: { username: string } }[] };
+    const target = shots.data.find((x) => x.author.username !== 'demo')!;
+    const rep = await page.request.post('/api/reports', { data: { targetType: 'shot', targetId: target.id, reason: 'spam' }, headers: { Origin: BASE } });
+    expect(rep.status()).toBeLessThan(300);
     await page.goto('/admin/reports');
     const row = page.locator('.report-row').first();
     await row.getByRole('button', { name: 'Dismiss' }).click();
     const dlg = page.getByRole('dialog');
     await dlg.getByRole('button', { name: 'Confirm' }).click();
-    await expect(dlg.getByText(/Give a short reason/)).toBeVisible();
+    await expect(dlg.getByText(/Give a reason of at least 10 characters/)).toBeVisible();
     await dlg.getByLabel('Reason').fill('Not a violation.');
     await dlg.getByRole('button', { name: 'Confirm' }).click();
     await expect(page.getByTestId('toast').filter({ hasText: 'Decision recorded.' })).toBeVisible();
   });
 
-  test('FE-30 designer search via header type switch', async ({ page }) => {
+  test('FE-30 designer search via header type switch (live API)', async ({ page }) => {
     await page.goto('/shots/popular');
     await page.getByLabel('Search type').selectOption('designers');
     const box = page.getByRole('combobox', { name: 'Search designers' });

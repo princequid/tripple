@@ -2,6 +2,38 @@
 
 Records important changes to the project: documentation, decisions, configuration and code. Newest first. Dates are absolute (YYYY-MM-DD).
 
+## 2026-11-13 — R2 backend implemented; foundation re-verified (backend session)
+
+### Context
+- User directive: complete the backend foundation and begin actual backend development; the frontend is built in a separate session (A-22). Reverse-engineering docs, requirements, business rules and the frontend's draft contracts (`src/services/contracts.ts`) were reviewed first.
+
+### Decisions
+- A-22 (user directive) session split and contract ownership; proposed A-23…A-30 (string media ids, onboarding intents — needs confirmation, upload limits by purpose, no "available for work", new dependencies, 403 for self-follow, ImageKit upload flow, R2 clone decisions).
+
+### Added
+- Migration `0002_r2_social_content` (add-only): follows, collections, collection_items, comments, comment_likes, team_invitations, username_holds, specialties, companies, jobs, reports, idempotency_keys; media/profile columns; Liked-tab index. Specialties reference data.
+- Modules: follows, collections, comments, teams, composer, jobs, account, media/uploads, moderation/reports; search designers + autocomplete; shot neighbours; R2 popularity formula; purge job.
+- Infrastructure: `server/idempotency`, `server/validation`, `server/storage` (local + ImageKit) and `storage/image`, `server/sanitize`, `server/db/eligibility`, R2 rate-limit classes and quotas.
+- 52 Route Handlers (71 total), documented in API_SPECIFICATION v2.0 §5 with the frontend alignment table §6.
+- Tests: 11 new Vitest files (follows, collections, comments, account, teams, uploads, composer, jobs, reports, search-r2, api-r2).
+- `npm run db:verify` script entry.
+
+### Changed
+- `ShotDetail` and `PublicProfile` gained R2 fields (additive). Cron `cleanup`/`reconcile` cover R2; new `purge` job.
+- `sharp` moved to dependencies; `sanitize-html` 2.18.1 added.
+- R1 e2e specs read `E2E_BASE` (default unchanged) so Playwright can run on another port.
+- Docs: API_SPECIFICATION v2.0, DATABASE_DESIGN v1.1, DATABASE_SCHEMA v1.1, REVERSE_ENGINEERING_TO_BACKEND_MAPPING v1.1, BACKEND_IMPLEMENTATION_PLAN v2.0, BACKEND_PROGRESS_REPORT, API_TESTING_PLAN §6.2, BACKEND_ARCHITECTURE §0b, DECISION_LOG, BLOCKERS_AND_RISKS (B-11/B-15 effectively resolved; R-25…R-27), TASK_TRACKER, MASTER_PROJECT_WORKFLOW.
+
+### Fixed
+- PATCH schemas no longer re-apply Zod defaults (would have wiped tags/blocks and made renamed collections public).
+- Popularity subquery column qualification; team `shots_count` on attribution removal; upload timeout timer leak.
+
+### Tests executed
+- `tsc --noEmit` pass · `vitest run` **185/185** (20 files) · `db:verify` 8/8 · `next build` pass · Playwright R1 API + journeys **25/25** (isolated on :3200).
+
+### Not done
+- Live ImageKit upload and remote Turso migration (await user approval); ESLint layering rules, CI, nonce CSP; R3 backend.
+
 ## 2026-11-13 — Backend phase: R1 full-stack slices, database and API documentation (lead)
 
 ### Context

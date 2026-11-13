@@ -26,7 +26,7 @@ export const FEATURES = [
 export type Feature = (typeof FEATURES)[number];
 
 /** Features whose Route Handlers exist in this repository (backend slices delivered 2026-11-13). */
-const DEFAULT_LIVE: Feature[] = ['follows', 'collections'];
+const DEFAULT_LIVE: Feature[] = ['follows', 'collections', 'comments', 'reports', 'composer', 'settings', 'teams', 'onboarding', 'jobs', 'search'];
 const env = process.env.NEXT_PUBLIC_API_LIVE;
 /** NEXT_PUBLIC_API_LIVE overrides the default list (`none` forces every feature to the mock). */
 const LIVE = new Set<string>(env === undefined ? DEFAULT_LIVE : env.split(',').map((s) => s.trim()).filter((s) => s && s !== 'none'));
