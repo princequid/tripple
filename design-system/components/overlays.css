@@ -14,6 +14,69 @@
 .ui-header__nav { display: none; gap: var(--space-1); }
 @media (min-width: 64rem) { .ui-header__nav { display: flex; } .ui-header__burger { display: none; } }
 .ui-header__spacer { flex: 1; min-width: 0; }
+/* Header search (≥ md; not on home, where the hero search is used). */
+.ui-header__search { display: none; flex: 1; min-width: 0; max-width: 480px; }
+@media (min-width: 48rem) { .ui-header__search { display: flex; } }
+.ui-header__search .ui-input { min-height: var(--control-h-md); }
+/* Nav link: current page = 600 text-primary label + 2 px accent-strong underline (crimson ≥ 4.01:1 on subtle glass, worst case). */
+.ui-nav-link { position: relative; }
+.ui-nav-link[aria-current]:not([aria-current="false"]) { font-weight: var(--font-weight-semibold); }
+.ui-nav-link[aria-current]:not([aria-current="false"])::after { content: ""; position: absolute; left: var(--space-4); right: var(--space-4); bottom: 6px; height: 2px; border-radius: var(--radius-pill); background: var(--color-accent-deep); }
+.ui-nav-link[aria-expanded="true"] { background: var(--color-accent-subtle); box-shadow: inset 0 0 0 var(--selected-ring-width) var(--color-selected-ring); }
+.ui-nav-link[aria-expanded="true"] .ui-chevron { transform: rotate(180deg); }
+.ui-chevron { width: var(--icon-sm) !important; height: var(--icon-sm) !important; transition: transform var(--duration-base) var(--ease-standard); }
+/* Account trigger: flat avatar, 44 px hit area. */
+.ui-account-trigger { flex: none; display: inline-grid; place-items: center; width: var(--touch-min); height: var(--touch-min); padding: 0; border: 0; border-radius: var(--radius-pill); background: transparent; }
+@media (hover: hover) { .ui-account-trigger:hover { background: var(--color-accent-subtle-hover); } }
+.ui-account-trigger:active { background: var(--color-bg-2); }
+.ui-account-trigger[aria-expanded="true"] .ui-avatar { box-shadow: 0 0 0 var(--selected-ring-width) var(--color-selected-ring); }
+
+/* ---- C06 MobileNavDrawer (panel glass over the scrim) ----------------------------- */
+.ui-drawer { position: fixed; inset: 0 0 0 auto; z-index: var(--z-drawer); width: min(100%, 360px); display: grid; align-content: start; gap: var(--space-4); padding: var(--space-4) var(--space-4) var(--space-6); overflow-y: auto; border-radius: var(--radius-panel) 0 0 var(--radius-panel); }
+.ui-drawer__head { display: flex; align-items: center; justify-content: space-between; }
+.ui-drawer__list { display: grid; list-style: none; margin: 0; padding: 0; }
+.ui-drawer__link { position: relative; display: flex; align-items: center; gap: var(--space-3); width: 100%; min-height: var(--touch-min); padding-inline: var(--space-4); border: 0; border-radius: var(--radius-control); background: transparent; font-size: var(--text-body); color: var(--color-text-primary); text-decoration: none; text-align: left; }
+@media (hover: hover) { .ui-drawer__link:hover { background: var(--color-accent-subtle-hover); } }
+.ui-drawer__link:active { background: var(--color-bg-2); }
+/* Current page: text-primary 600 + 3 px crimson leading bar (bar 4.98:1 worst case; same pattern as the header nav). */
+.ui-drawer__link[aria-current]:not([aria-current="false"]) { font-weight: var(--font-weight-semibold); }
+.ui-drawer__link[aria-current]:not([aria-current="false"])::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: var(--radius-pill); background: var(--color-accent-deep); }
+.ui-drawer__link .ui-chevron { margin-left: auto; }
+.ui-drawer__sub { display: grid; padding-left: var(--space-4); }
+.ui-drawer__actions { display: grid; gap: var(--space-3); padding-top: var(--space-2); border-top: 1px solid var(--color-border-subtle); }
+.glass-enter-drawer { animation: drawer-in var(--duration-slow) var(--ease-enter) both; }
+@keyframes drawer-in { from { opacity: 0; transform: translateX(var(--motion-offset-md)); } to { opacity: 1; transform: none; } }
+
+/* ---- C21 ShotActionRail: vertical glass rail ≥ xl, neumorphic row below ------------- */
+/* Below xl: a row of neumorphic IconButtons on bg (no glass). ≥ xl: the same element becomes a
+   subtle-glass rail and its controls are flattened, exactly as inside .glass-subtle. */
+.ui-action-rail { display: flex; gap: var(--space-3); }
+@media (min-width: 80rem) {
+  .ui-action-rail--floating {
+    flex-direction: column; gap: var(--space-1); padding: var(--space-2); border-radius: var(--radius-pill);
+    border: var(--glass-border); background: var(--glass-subtle-bg);
+    -webkit-backdrop-filter: blur(var(--blur-glass-sm)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--blur-glass-sm)) saturate(var(--glass-saturate));
+    box-shadow: var(--glass-highlight), var(--glass-hairline), var(--shadow-glass-sm);
+  }
+  .ui-action-rail--floating .neu-control { background: transparent; box-shadow: none; }
+  .ui-action-rail--floating .neu-control::after { display: none; }
+  .ui-action-rail--floating .neu-control:hover:not(:disabled) { background: var(--color-accent-subtle-hover); transform: none; }
+  .ui-action-rail--floating .neu-control:active:not(:disabled) { background: var(--color-bg-2); box-shadow: none; }
+  .ui-action-rail--floating .neu-control:is([aria-pressed="true"], [aria-expanded="true"], .is-selected) { background: var(--color-accent-subtle); box-shadow: inset 0 0 0 var(--selected-ring-width) var(--color-selected-ring); color: var(--color-text-primary); }
+}
+@media (min-width: 80rem) and (prefers-reduced-transparency: reduce) { .ui-action-rail--floating { background: var(--glass-fallback-bg); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+@media (min-width: 80rem) and (forced-colors: active) { .ui-action-rail--floating { border: 1px solid CanvasText; } }
+
+/* ---- C23 details stats ------------------------------------------------------------- */
+.ui-stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); margin: 0; }
+.ui-stat-grid div { display: grid; gap: var(--space-1); }
+.ui-stat-grid dt { order: 2; font-size: var(--text-caption); color: var(--color-text-secondary); }
+.ui-stat-grid dd { margin: 0; font-size: var(--text-h4); font-weight: var(--font-weight-semibold); font-variant-numeric: tabular-nums; }
+/* C22 share row: flat icon buttons on an opaque bg-2 strip; copy-link field row */
+.ui-share-row { display: flex; gap: var(--space-2); padding: var(--space-2); border-radius: var(--radius-pill); background: var(--color-bg-2); width: fit-content; }
+.ui-copy-row { display: flex; gap: var(--space-2); }
+.ui-copy-row .ui-input { flex: 1; min-width: 0; }
 /* Secondary header actions (e.g. "Sign in") move into the mobile drawer below md so 360 px never overflows. */
 .ui-header__secondary { display: none; }
 @media (min-width: 48rem) { .ui-header__secondary { display: inline-flex; } }
@@ -33,7 +96,17 @@
   font-size: var(--text-label); text-align: left; color: var(--color-text-primary); text-decoration: none;
 }
 .ui-menu__item:hover, .ui-menu__item[data-highlighted], .ui-menu__item:focus-visible { background: var(--color-accent-subtle-hover); }
-.ui-menu__item[aria-selected="true"], .ui-menu__item[aria-checked="true"] { color: var(--color-accent-strong); font-weight: var(--font-weight-semibold); }
+.ui-menu__item:active { background: var(--color-accent-subtle); }
+.ui-menu__item[aria-disabled="true"] { color: var(--color-text-disabled); pointer-events: none; }
+.ui-menu__item > svg { flex: none; width: var(--icon-md); height: var(--icon-md); color: var(--color-text-secondary); }
+/* Selected: 600 label in text-primary + crimson check (consistent selected language; crimson text would pass here, 4.87:1). */
+.ui-menu__item[aria-selected="true"], .ui-menu__item[aria-checked="true"] { color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
+.ui-menu__check { margin-left: auto; visibility: hidden; }
+.ui-menu__item > .ui-menu__check { color: var(--color-accent-deep); }
+.ui-menu__item:is([aria-selected="true"], [aria-checked="true"]) .ui-menu__check { visibility: visible; }
+.ui-menu__heading { padding: var(--space-2) var(--space-3) var(--space-1); font-size: var(--text-metadata); font-weight: var(--font-weight-semibold); letter-spacing: var(--text-metadata--letter-spacing); color: var(--color-text-primary); }
+.ui-menu__identity { display: grid; padding: var(--space-2) var(--space-3); }
+.ui-menu__identity small { font-size: var(--text-body-sm); }
 .ui-menu__sep { height: 1px; margin: var(--space-2) var(--space-1); background: var(--color-border-subtle); border: 0; }
 
 /* ---- C48 Modal (base for share, details, auth gate) ------------------------------ */
@@ -62,12 +135,14 @@
 
 /* ---- C47 Tooltip -------------------------------------------------------------------------- */
 .ui-tooltip { z-index: var(--z-tooltip); padding: var(--space-1) var(--space-2); border-radius: var(--radius-control-sm); font-size: var(--text-caption); max-width: 240px; }
+/* No stacked glass: menus and tooltips inside a modal are opaque elevated surfaces. */
+.glass-modal :is(.ui-tooltip, .ui-menu) { background: var(--color-surface-elevated); -webkit-backdrop-filter: none; backdrop-filter: none; }
 
 /* ---- C17 ShotCardActionBar (glass over media; appears on hover/focus-within) --------- */
 .ui-shot-card__bar {
   position: absolute; inset: auto var(--space-2) var(--space-2) var(--space-2); z-index: var(--z-raised);
   display: flex; align-items: center; gap: var(--space-2); min-height: 64px; padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
-  border-radius: var(--radius-control-lg);
+  border-radius: var(--radius-control-sm); /* nested in a 16 px thumbnail at 8 px inset (T16-24) */
   opacity: 0; transform: translateY(var(--motion-offset-sm));
   transition: opacity var(--duration-base) var(--ease-enter), transform var(--duration-base) var(--ease-enter);
 }

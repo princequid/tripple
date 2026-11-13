@@ -4,9 +4,10 @@
    notifications/toasts, profile overlays, contextual toolbars, promo sections.
    Rules: one glass layer at a time (no glass on glass) · the scrim is never
    blurred · content allowed per level (T-15 worst case over white/black media):
-     subtle (α .80)  → primary text and icons only
-     panel  (α .88)  → + secondary text and status icons
-     modal  (α .94)  → + links and error text
+     subtle (α .80)  → primary text and icons only; accent-strong as indicator/ring only
+     panel  (α .88)  → + icons in text-secondary / status colours; crimson text 4.87:1 (NOT secondary text, 3.99:1)
+     modal  (α .94)  → + secondary text, accent-strong links and danger error text
+   (COLOR_SYSTEM §7 is authoritative; X6.)
    Opaque fallback for reduced transparency and for no backdrop-filter support.
    ========================================================================== */
 
@@ -52,6 +53,7 @@
    is flattened automatically: transparent, accent-subtle-hover on hover, bg-2 when pressed. */
 .glass-subtle, .glass-panel, .glass-modal {
   --neu-parent: var(--color-bg-2);
+  --neu-fill: var(--color-bg-2);
   --neu-well-sm: var(--neu-inset-sm-bg2);
   --neu-well: var(--neu-inset-bg2);
 }
@@ -64,8 +66,11 @@
   box-shadow: inset 0 0 0 var(--selected-ring-width) var(--color-selected-ring);
 }
 
-/* Glass never holds secondary text at the subtle level (contrast at worst case). */
-.glass-subtle .text-secondary { color: var(--color-text-primary); }
+/* Subtle and panel glass never hold secondary text (3.99:1 worst case on panel). */
+:is(.glass-subtle, .glass-panel) .text-secondary { color: var(--color-text-primary); }
+
+/* Raised avatar rings are neumorphism, so they are flattened inside glass (C45, X9). */
+:is(.glass-subtle, .glass-panel, .glass-modal) :is(.ui-avatar--lg, .ui-avatar--xl) { box-shadow: none; border-color: transparent; }
 
 /* Enter / exit motion for floating layers (opacity + transform only). */
 .glass-enter { animation: glass-in var(--duration-moderate) var(--ease-enter) both; }

@@ -21,13 +21,13 @@
 .ui-btn--lg { min-height: var(--control-h-lg); padding-inline: var(--space-6); }
 .ui-btn--block { display: flex; width: 100%; }
 
-/* Primary (minimal, solid accent): white label 5.62:1 → hover 7.27 → pressed 9.43 */
+/* Primary (minimal, solid crimson): white label 6.43:1 → hover 8.46 → pressed 10.91 */
 .ui-btn--primary {
   background: var(--color-accent-strong); color: var(--color-text-on-accent);
   transition: background-color var(--duration-fast) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
 }
 @media (hover: hover) { .ui-btn--primary:hover:not(:disabled) { background: var(--color-accent-strong-hover); } }
-.ui-btn--primary:active:not(:disabled) { background: var(--color-accent-strong-pressed); transform: translateY(1px); }
+.ui-btn--primary:active:not(:disabled) { background: var(--color-accent-strong-pressed); } /* no translate on press (CONST §7, X8) */
 .ui-btn--primary:disabled { background: var(--color-skeleton); color: var(--color-text-disabled); cursor: not-allowed; }
 
 /* Secondary = neumorphic (compose with .neu-control) */
@@ -51,13 +51,14 @@
 .ui-btn[aria-busy="true"] { position: relative; color: transparent !important; pointer-events: none; }
 .ui-btn[aria-busy="true"]::before {
   content: ""; position: absolute; width: var(--icon-md); height: var(--icon-md);
-  border-radius: 50%; border: 2px solid currentColor; border-color: var(--color-accent) transparent var(--color-accent) transparent;
-  animation: ui-spin 0.9s linear infinite;
+  border-radius: 50%; border: 2px solid var(--color-accent-deep); border-right-color: transparent; border-bottom-color: transparent;
+  animation: ui-spin var(--duration-spin) linear infinite;
 }
-.ui-btn--primary[aria-busy="true"]::before { border-color: var(--color-text-on-accent) transparent var(--color-text-on-accent) transparent; }
+.ui-btn--primary[aria-busy="true"]::before { border-color: var(--color-text-on-accent); border-right-color: transparent; border-bottom-color: transparent; }
 
 /* ---- C37 Spinner ---------------------------------------------------------------- */
-.ui-spinner { width: var(--icon-lg); height: var(--icon-lg); border-radius: 50%; border: 2.5px solid var(--color-accent); border-right-color: transparent; animation: ui-spin 0.9s linear infinite; }
+/* C37: accent-strong arc, transparent track (T16-10) */
+.ui-spinner { width: var(--icon-lg); height: var(--icon-lg); border-radius: 50%; border: 2.5px solid var(--color-accent-deep); border-right-color: transparent; border-bottom-color: transparent; animation: ui-spin var(--duration-spin) linear infinite; }
 @keyframes ui-spin { to { transform: rotate(360deg); } }
 
 /* ---- C41 IconButton · C20 LikeButton · C42 FAB ------------------------------- */
@@ -71,9 +72,11 @@
 .ui-icon-btn--sm { width: var(--icon-btn-sm); height: var(--icon-btn-sm); }
 .ui-icon-btn--sm::before { content: ""; position: absolute; inset: -2px; } /* 44 px hit area */
 
-/* LikeButton: pink is reserved for likes. Liked = inset well + filled pink-strong heart. */
-.ui-like[aria-pressed="true"] { color: var(--color-highlight-strong); }
+/* LikeButton. Liked = primary-light well + ring + filled crimson heart (crimson for relevant highlights, A-16). */
+/* Label and count stay text-primary when liked, so the liked state is not carried by colour alone (C20, X5). */
 .ui-like[aria-pressed="true"] svg { fill: var(--color-highlight); stroke: var(--color-highlight-strong); }
+.ui-like.neu-control[aria-pressed="true"] { color: var(--color-text-primary); } /* overrides the generic accent label of the selected language */
+.ui-like--labelled { width: auto; min-height: var(--icon-btn-lg); padding-inline: var(--space-4) var(--space-5); gap: var(--space-2); display: inline-flex; font-size: var(--text-label); font-weight: var(--font-weight-semibold); }
 .ui-like .ui-like__count { font-size: var(--text-metadata); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
 
 .ui-fab {
@@ -89,10 +92,10 @@
 .ui-field__error { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-danger); display: flex; gap: var(--space-1); align-items: flex-start; }
 .ui-input {
   width: 100%; min-height: var(--input-h); padding-inline: var(--space-4);
-  border: 0; border-radius: var(--radius-control); color: var(--color-text-primary);
+  border: 0; border-radius: var(--radius-control-lg); /* all TextFields 14 px (T16-23) */ color: var(--color-text-primary);
   font-size: var(--text-body); /* ≥ 16 px: no iOS zoom */
 }
-.ui-input--lg { border-radius: var(--radius-control-lg); min-height: var(--control-h-lg); }
+.ui-input--lg { min-height: var(--control-h-lg); }
 .ui-input::placeholder { color: var(--color-text-secondary); opacity: 1; }
 .ui-input:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 .ui-input:disabled { color: var(--color-text-disabled); cursor: not-allowed; }
@@ -120,17 +123,60 @@
   font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--font-weight-medium);
   color: var(--color-text-primary); text-decoration: none; white-space: nowrap;
 }
+/* 40 px visual sizes extend their hit area to 44 px and need a 12 px row gap (A11Y-07, X1/X2). */
 .ui-pill--sm { min-height: var(--control-h-sm); }
+.ui-pill--sm::before, .ui-chip::before { content: ""; position: absolute; inset: -2px 0; }
+.ui-pill-row:has(.ui-pill--sm) { gap: var(--space-3); }
+.ui-chip-row { display: flex; flex-wrap: wrap; gap: var(--space-3); list-style: none; margin: 0; padding: 0; }
 .ui-chip { /* TagChip: minimal outline-free chip on card surfaces */
+  position: relative;
   display: inline-flex; align-items: center; min-height: var(--control-h-sm); padding-inline: var(--space-3);
   border-radius: var(--radius-pill); background: var(--color-bg-2);
   font-size: var(--text-caption); color: var(--color-text-primary); text-decoration: none;
   transition: background-color var(--duration-fast) var(--ease-standard);
 }
 @media (hover: hover) { .ui-chip:hover { background: var(--color-accent-subtle-hover); } }
+.ui-chip:active { background: var(--color-accent-subtle); }
+/* On a bg-2 surface (filter panel, footer) a bg-2 chip would vanish: use the elevated fill. */
+.neu-context-bg2 .ui-chip { background: var(--color-surface-elevated); }
+.ui-chip[aria-current]:not([aria-current="false"]) { background: var(--color-accent-subtle); box-shadow: inset 0 0 0 var(--selected-ring-width) var(--color-selected-ring); color: var(--color-accent-deep); font-weight: var(--font-weight-semibold); }
+/* Removable chip (TagFilter): flush trailing 44 px remove button. */
+.ui-chip--removable { padding-right: 0; gap: var(--space-1); }
+.ui-chip--removable::before { display: none; }
+.ui-chip__remove { display: inline-grid; place-items: center; width: var(--touch-min); height: var(--touch-min); margin-block: -2px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--color-text-primary); }
+.ui-chip__remove svg { width: var(--icon-sm); height: var(--icon-sm); }
+@media (hover: hover) { .ui-chip__remove:hover { background: var(--color-accent-subtle-hover); } }
+
+/* ---- C14 TimeframeFilter: radio rows (≥ md) ------------------------------------ */
+.ui-radio-group { display: grid; gap: 0; }
+.ui-radio { display: flex; align-items: center; gap: var(--space-3); min-height: var(--touch-min); padding-inline: var(--space-3); border-radius: var(--radius-control); font-size: var(--text-label); color: var(--color-text-primary); text-decoration: none; cursor: pointer; }
+@media (hover: hover) { .ui-radio:hover { background: var(--color-accent-subtle-hover); } }
+.ui-radio__dot { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--neu-fill); box-shadow: var(--neu-well-sm), inset 0 0 0 var(--selected-ring-width) var(--color-control-boundary); }
+.ui-radio:active .ui-radio__dot { box-shadow: var(--neu-press), inset 0 0 0 var(--selected-ring-width) var(--color-control-boundary); }
+.ui-radio[aria-checked="true"], .ui-radio[aria-current]:not([aria-current="false"]) { font-weight: var(--font-weight-semibold); }
+.ui-radio[aria-checked="true"] .ui-radio__dot, .ui-radio[aria-current]:not([aria-current="false"]) .ui-radio__dot { background: var(--color-accent-strong); box-shadow: none; }
+.ui-radio[aria-checked="true"] .ui-radio__dot::after, .ui-radio[aria-current]:not([aria-current="false"]) .ui-radio__dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--color-text-on-accent); }
+
+/* ---- C12 Filter bar and FilterPanel --------------------------------------------- */
+.ui-filter-bar { display: grid; gap: var(--space-3); align-items: center; grid-template-columns: minmax(0, 1fr); /* minmax: the scrolling pill row must not widen the bar */ padding-block: var(--space-6) var(--space-4); }
+.ui-filter-bar > .ui-pill-row { min-width: 0; }
+.ui-filter-bar > .ui-btn { justify-self: start; } /* only the sort trigger goes full width below md (C11) */
+.ui-filter-bar__sort .ui-btn { width: 100%; justify-content: space-between; }
+@media (min-width: 48rem) {
+  .ui-filter-bar { grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--space-4); }
+  .ui-filter-bar__sort .ui-btn { width: auto; }
+}
+.ui-filter-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); padding: var(--space-6); border-radius: var(--radius-panel); background: var(--color-bg-2); }
+@media (min-width: 48rem) { .ui-filter-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); } }
+.ui-filter-panel__group { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); align-content: start; min-width: 0; }
+.ui-filter-panel__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.ui-filter-panel__title { font-size: var(--text-label); font-weight: var(--font-weight-semibold); }
+.ui-filter-panel__mobile { display: block; }
+.ui-filter-panel__desktop { display: none; }
+@media (min-width: 48rem) { .ui-filter-panel__mobile { display: none; } .ui-filter-panel__desktop { display: grid; } }
 
 /* ---- C44 SegmentedControl (neumorphic well with raised thumb) ----------------- */
-.ui-segmented { display: inline-flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; gap: var(--space-1); padding: var(--space-1); border-radius: var(--radius-pill); box-shadow: var(--neu-well); background: var(--neu-parent); }
+.ui-segmented { display: inline-flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; gap: var(--space-1); padding: var(--space-1); border-radius: var(--radius-pill); box-shadow: var(--neu-well); background: var(--neu-fill); }
 .ui-segmented__item {
   flex: none; white-space: nowrap;
   min-height: var(--control-h-md); padding-inline: var(--space-4); border: 0; border-radius: var(--radius-pill);
@@ -138,15 +184,15 @@
 }
 .ui-segmented::-webkit-scrollbar { display: none; }
 .ui-segmented__item[aria-checked="true"], .ui-segmented__item[aria-current]:not([aria-current="false"]) {
-  background: var(--neu-parent); box-shadow: var(--neu-rest-sm), inset 0 0 0 var(--selected-ring-width) var(--color-selected-ring);
-  color: var(--color-accent-strong); font-weight: var(--font-weight-semibold);
+  background: var(--color-surface-elevated); box-shadow: var(--neu-rest-sm), inset 0 0 0 var(--selected-ring-width) var(--color-selected-ring);
+  color: var(--color-accent-deep); font-weight: var(--font-weight-semibold);
 }
 
 /* ---- C43 Toggle (switch) ----------------------------------------------------------- */
 .ui-switch { display: inline-flex; align-items: center; gap: var(--space-3); min-height: var(--touch-min); padding: 0; border: 0; background: transparent; cursor: pointer; font-size: var(--text-label); color: var(--color-text-primary); text-align: left; }
 .ui-switch__track {
   position: relative; flex: none; width: var(--switch-w); height: var(--switch-h); border-radius: var(--radius-pill);
-  background: var(--neu-parent); box-shadow: var(--neu-well-sm), inset 0 0 0 1px var(--color-control-boundary); /* ≥ 3:1 off boundary */
+  background: var(--neu-fill); box-shadow: var(--neu-well-sm), inset 0 0 0 1px var(--color-control-boundary); /* ≥ 3:1 off boundary */
   transition: background-color var(--duration-base) var(--ease-standard);
 }
 .ui-switch__thumb {
@@ -158,3 +204,13 @@
 .ui-switch[aria-checked="true"] .ui-switch__thumb { transform: translateX(calc(var(--switch-w) - var(--switch-h))); }
 .ui-switch[aria-disabled="true"] { cursor: not-allowed; color: var(--color-text-disabled); }
 .ui-switch[aria-disabled="true"] .ui-switch__track { box-shadow: var(--neu-well-sm), inset 0 0 0 1px var(--color-text-disabled); }
+
+/* ---- Forced colours (A11Y-15, X7): shadows and box-shadow rings vanish, so every
+   control family gets a real border, and selected / invalid states get a visible one. */
+@media (forced-colors: active) {
+  .ui-btn, .ui-icon-btn, .ui-chip, .ui-pill, .ui-segmented__item, .ui-input, .ui-switch__track, .ui-radio__dot { border: 1px solid ButtonText; }
+  :is(.ui-btn, .ui-icon-btn, .ui-chip, .ui-pill, .ui-segmented__item, .ui-radio, .neu-control):is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), .is-selected) { border: 2px solid Highlight; }
+  .ui-radio[aria-checked="true"] .ui-radio__dot { background: Highlight; }
+  :is(.ui-input, .neu-field)[aria-invalid="true"] { border: 2px dashed CanvasText; }
+  .ui-switch[aria-checked="true"] .ui-switch__track { background: Highlight; }
+}

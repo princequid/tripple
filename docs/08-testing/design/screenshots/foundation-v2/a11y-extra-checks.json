@@ -1,0 +1,48 @@
+{
+ "reducedTransparency": {
+  "mediaMatches": true,
+  "surfaces": [
+   [
+    ".ui-header",
+    "rgb(255, 255, 255)",
+    "none"
+   ],
+   [
+    ".ui-menu",
+    "rgb(255, 255, 255)",
+    "none"
+   ],
+   [
+    ".ui-modal",
+    "rgb(255, 255, 255)",
+    "none"
+   ],
+   [
+    ".ui-drawer",
+    "rgb(255, 255, 255)",
+    "none"
+   ],
+   [
+    ".ui-toast",
+    "rgb(255, 255, 255)",
+    "none"
+   ]
+  ]
+ },
+ "zoom200@1440": {
+  "overflow": 0,
+  "clipped": []
+ },
+ "textspacing@390": {
+  "overflow": 0,
+  "clipped": []
+ },
+ "textspacing@1440": {
+  "overflow": 0,
+  "clipped": []
+ },
+ "focusNotObscured": {
+  "tabStops": 140,
+  "obscured": []
+ }
+}

@@ -1,0 +1,369 @@
+{
+  "at": "2026-11-13T15:53:20.538Z",
+  "base": "http://localhost:3000",
+  "results": [
+    {
+      "route": "/",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/shots/popular",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/shots/popular",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/shots/61-gig-poster-series-clean",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/shots/61-gig-poster-series-clean",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/mei-tanaka",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/mei-tanaka",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/ines-moreau/collections",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/ines-moreau/collections",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/mei-tanaka/followers",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/mei-tanaka/followers",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/northfield/members",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/northfield/members",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/kofi-asante/services",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/kofi-asante/services",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/hire",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/hire",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/services",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/services",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/services/1019-a-distinctive-logo-and-wordmark-for-your-business",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/services/1019-a-distinctive-logo-and-wordmark-for-your-business",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/jobs",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/jobs",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/jobs/",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/jobs/",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/jobs/new",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/jobs/new",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/search/dashboard?type=designers",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/search/dashboard?type=designers",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/not-a-real/page",
+      "width": 1440,
+      "status": "404",
+      "overflow": 0
+    },
+    {
+      "route": "/not-a-real/page",
+      "width": 390,
+      "status": "404",
+      "overflow": 0
+    },
+    {
+      "route": "/notifications",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/notifications",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/messages",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/messages",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/messages/",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/messages/",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/settings/profile",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/settings/profile",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/settings/account",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/settings/account",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/settings/sessions",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/settings/sessions",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/settings/teams",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/settings/teams",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/settings/jobs",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/settings/jobs",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/settings/blocked",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/settings/blocked",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/teams/new",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/teams/new",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/uploads/new",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/uploads/new",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/demo/likes",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/demo/likes",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/admin/reports",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/admin/reports",
+      "width": 390,
+      "status": "200",
+      "overflow": 14
+    },
+    {
+      "route": "/onboarding/details",
+      "width": 1440,
+      "status": "200",
+      "overflow": 0
+    },
+    {
+      "route": "/onboarding/details",
+      "width": 390,
+      "status": "200",
+      "overflow": 0
+    }
+  ],
+  "errors": [
+    "http://localhost:3000/not-a-real/page :: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}

@@ -346,7 +346,7 @@ This document states **what** the product must do (functional requirements, FR-x
 | Aspect | Specification |
 |---|---|
 | Purpose | Browse all eligible shots (observed routes `/shots/popular[/:category]`, `/shots/recent[/:category]`) |
-| User interaction | Choose sort (Popular / New & noteworthy), a category pill or filters (FR-25) |
+| User interaction | Choose sort (Popular / Recent; label per D-25, A-15), a category pill or filters (FR-25) |
 | Expected behaviour | The URL is the state: the path holds sort and category, the query holds `tag` and `timeframe`. The server renders page 1 (24 shots). Ordering per BR-32–BR-34; only eligible shots (BR-37) |
 | Required data | Shots (id, slug, title, cover derivative, dominant colour, author summary, counts), categories |
 | Business rules | BR-32–BR-37 |

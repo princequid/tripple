@@ -1,81 +1,89 @@
 /* =============================================================================
    Design tokens: Hybrid Soft UI (40% neumorphism · 30% glass · 30% minimalism)
+   Identity v2.1 (A-16, A-17, 2026-11-13): Premium Crimson + White + Soft Grey + Charcoal.
    Single source of every colour, type, spacing, radius, shadow, blur, motion,
    layout, z-index and control-size value. Spec: docs/05-design-system/DESIGN_TOKENS.md
    Raw hex / px shadow values may appear ONLY in this file.
-   Values marked [D-23] are derived tints pending user approval (DECISION_LOG D-23).
+   Values marked [D-26] are derived from the approved palette and pending the user's approval (DECISION_LOG D-26).
    ========================================================================== */
 
 :root {
   /* ---- 2.1 Raw palette (components never use these directly) ------------ */
-  --palette-neutral-0: #FFFFFF;    /* official: elevated surface, neu highlight */
-  --palette-neutral-25: #F8FAFC;   /* official: card surface */
-  --palette-neutral-50: #F1F3F7;   /* official: secondary background */
-  --palette-neutral-100: #E9EDF3;  /* official: main background */
-  --palette-neutral-150: #DDE1E9;  /* official: border */
-  --palette-neutral-200: #C5CFDC;  /* official: neu dark shadow */
-  --palette-neutral-250: #B5C2D1;  /* official: neu deeper shadow */
-  --palette-neutral-400: #929BA9;  /* official: muted (disabled only) */
-  --palette-neutral-500: #647184;  /* official: secondary text (card/elevated only) */
-  --palette-neutral-600: #5E6A7C;  /* D-05: secondary text on bg/bg2 */
-  --palette-neutral-900: #252B36;  /* official: primary text */
-  --palette-blue-300: #A5B5CA;     /* official: muted blue (decorative only) */
-  --palette-lavender-50: #F6F4FB;  /* [D-23] */
-  --palette-lavender-100: #EEE9F6; /* [D-23] */
-  --palette-lavender-500: #9273C7; /* official: primary accent */
-  --palette-lavender-600: #7556B3; /* D-05: accent-strong */
-  --palette-lavender-700: #624896; /* [D-23] */
-  --palette-lavender-800: #503A7A; /* [D-23] */
-  --palette-pink-50: #FDF4F8;      /* [D-23] */
-  --palette-pink-500: #EA78A5;     /* official: secondary accent */
-  --palette-pink-600: #C2507F;     /* D-05: pink-strong (icons) */
-  --palette-red-50: #F9EFF1;       /* [D-23] */
-  --palette-red-600: #B3364F;      /* D-05: danger */
-  --palette-green-50: #EEF4F1;     /* [D-23] */
-  --palette-green-600: #2B7355;    /* D-05: success */
+  /* Approved identity (A-16, 2026-11-13): Premium Crimson + Warm White + Soft Grey + Charcoal. */
+  /* v2.1 (A-17): primary brightened ~25% (the brightest step that keeps white text ≥ 4.5:1); tints re-derived from it. */
+  --palette-crimson-50: #FCEEF1;   /* primary light: 8% of crimson-500 on white */
+  --palette-crimson-100: #FBE2E6;  /* hover tint: 14% */
+  --palette-crimson-200: #F5C1CA;  /* primary border: 30% (decorative, 1.6:1) */
+  --palette-crimson-500: #DF2F4D;  /* primary (bright): fills, brand, heart, dot. White text 4.51:1 */
+  --palette-crimson-600: #B3263E;  /* primary deep: hover fill, text, rings, thin indicators. 6.43:1 */
+  --palette-crimson-700: #941D33;  /* primary pressed. White text 8.46:1 */
+  --palette-warm-0: #FFFFFF;       /* approved: surface */
+  --palette-warm-50: #F2F0F0;      /* approved: secondary surface (soft grey) */
+  --palette-warm-100: #EAE7E8;     /* approved: tertiary surface */
+  --palette-warm-150: #E7E1E3;     /* approved: border (decorative, 1.3:1) */
+  --palette-warm-400: #969096;     /* approved: muted text (disabled only, ~3:1) */
+  --palette-warm-600: #706A70;     /* approved: secondary text */
+  --palette-warm-900: #252326;     /* approved: primary text (charcoal) */
+  --palette-lavender-50: #EEEBF4;  /* [D-26] derived tint */
+  --palette-lavender-500: #8D7AB8; /* approved supporting accent */
+  --palette-sage-50: #ECF0ED;      /* [D-26] derived tint */
+  --palette-sage-500: #829889;     /* approved supporting accent */
+  --palette-sage-700: #556359;     /* [D-26] derived: success text (sage + 35% black) */
+  --palette-gold-50: #F6F0E6;      /* [D-26] derived tint */
+  --palette-gold-500: #C69A55;     /* approved supporting accent (decorative only, 2.5:1) */
+  --palette-sienna-50: #F8EEEA;    /* [D-26] derived tint */
+  --palette-sienna-700: #9A3412;   /* [D-26] proposed: danger, distinct from crimson */
 
   /* ---- 2.2 Semantic colour ---------------------------------------------- */
-  --color-bg: var(--palette-neutral-100);
-  --color-bg-2: var(--palette-neutral-50);
-  --color-surface-card: var(--palette-neutral-25);
-  --color-surface-elevated: var(--palette-neutral-0);
-  --color-border-subtle: var(--palette-neutral-150);
-  --color-text-primary: var(--palette-neutral-900);
-  --color-text-secondary: var(--palette-neutral-600);
-  --color-text-secondary-on-card: var(--palette-neutral-500);
-  --color-text-disabled: var(--palette-neutral-400);
-  --color-text-link: var(--palette-lavender-600);
-  --color-text-on-accent: var(--palette-neutral-0);
-  --color-text-on-highlight: var(--palette-neutral-900);
-  --color-accent: var(--palette-lavender-500);
-  --color-accent-strong: var(--palette-lavender-600);
-  --color-accent-strong-hover: var(--palette-lavender-700);
-  --color-accent-strong-pressed: var(--palette-lavender-800);
-  --color-accent-subtle: var(--palette-lavender-50);
-  --color-accent-subtle-hover: var(--palette-lavender-100);
-  --color-highlight: var(--palette-pink-500);
-  --color-highlight-strong: var(--palette-pink-600);
-  --color-highlight-subtle: var(--palette-pink-50);
-  --color-support: var(--palette-blue-300);
-  --color-danger: var(--palette-red-600);
-  --color-danger-subtle: var(--palette-red-50);
-  --color-success: var(--palette-green-600);
-  --color-success-subtle: var(--palette-green-50);
-  --color-control-boundary: var(--palette-neutral-600);
-  --color-focus-ring: var(--palette-lavender-600);
-  --color-selected-ring: var(--palette-lavender-600);
-  --color-neu-light: var(--palette-neutral-0);
-  --color-neu-dark: var(--palette-neutral-200);
-  --color-neu-deep: var(--palette-neutral-250);
-  --color-skeleton: var(--palette-neutral-150);
-  --color-skeleton-shine: var(--palette-neutral-50);
-  --scrim: rgb(37 43 54 / 0.48);
+  --color-bg: var(--palette-warm-0);                    /* page, content and gallery areas (white, A-17) */
+  --color-bg-2: var(--palette-warm-50);                 /* soft grey: control fills, panels, footer */
+  --color-bg-3: var(--palette-warm-100);                /* tertiary: skeletons, pressed fills (primary text only) */
+  --color-surface-card: var(--palette-warm-0);
+  --color-surface-elevated: var(--palette-warm-0);
+  --color-border-subtle: var(--palette-warm-150);
+  --color-primary-border: var(--palette-crimson-200);  /* decorative edge of primary-light elements */
+  --color-text-primary: var(--palette-warm-900);
+  --color-text-secondary: var(--palette-warm-600);     /* not on bg-3 (4.29:1) */
+  --color-text-secondary-on-card: var(--palette-warm-600);
+  --color-text-disabled: var(--palette-warm-400);
+  --color-text-link: var(--palette-crimson-600);       /* deep crimson: text never uses the bright step */
+  --color-text-on-accent: var(--palette-warm-0);
+  --color-text-on-highlight: var(--palette-warm-0);
+  --color-accent: var(--palette-crimson-500);           /* bright crimson: large marks (heading emphasis, state icons) */
+  --color-accent-strong: var(--palette-crimson-500);    /* bright crimson FILLS: primary button, radio, switch */
+  --color-accent-strong-hover: var(--palette-crimson-600);
+  --color-accent-strong-pressed: var(--palette-crimson-700);
+  --color-accent-deep: var(--palette-crimson-600);      /* crimson TEXT and thin indicators (labels, check, underline, bar, spinner) */
+  --color-accent-subtle: var(--palette-crimson-50);     /* selected fills */
+  --color-accent-subtle-hover: var(--palette-crimson-100); /* hover rows and ghost hover */
+  --color-highlight: var(--palette-crimson-500);        /* liked heart fill, notification dot */
+  --color-highlight-strong: var(--palette-crimson-600);
+  --color-highlight-subtle: var(--palette-crimson-50);
+  --color-support: var(--palette-lavender-500);         /* supporting accents: decorative, secondary to crimson */
+  --color-support-subtle: var(--palette-lavender-50);
+  --color-support-sage: var(--palette-sage-500);
+  --color-support-sage-subtle: var(--palette-sage-50);
+  --color-support-gold: var(--palette-gold-500);
+  --color-support-gold-subtle: var(--palette-gold-50);
+  --color-danger: var(--palette-sienna-700);
+  --color-danger-subtle: var(--palette-sienna-50);
+  --color-success: var(--palette-sage-700);
+  --color-success-subtle: var(--palette-sage-50);
+  --color-control-boundary: var(--palette-warm-600);   /* ≥ 3:1 on bg, bg-2, bg-3 */
+  --color-focus-ring: var(--palette-crimson-600);      /* deep: ≥ 4.01:1 everywhere incl. subtle glass (bright is 2.81 there) */
+  --color-selected-ring: var(--palette-crimson-600);
+  --color-neu-light: var(--palette-warm-0);
+  --color-neu-dark: rgb(84 70 76 / 0.16);               /* warm taupe shadow (distinct from charcoal glass shadows) */
+  --color-neu-deep: rgb(84 70 76 / 0.24);
+  --color-skeleton: var(--palette-warm-100);
+  --color-skeleton-shine: var(--palette-warm-50);
+  --scrim: rgb(37 35 38 / 0.48);
   --color-scrim: var(--scrim);
 
   /* ---- 3. Typography ------------------------------------------------------ */
   --font-inter: "Inter";
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -117,18 +125,20 @@
   --radius-checkbox: 6px;
 
   /* ---- 6. Neumorphic shadows (light source top-left) ---------------------- */
-  --neu-raised-sm: -3px -3px 6px var(--color-neu-light), 3px 3px 6px var(--color-neu-dark);
-  --neu-raised: -5px -5px 12px var(--color-neu-light), 5px 5px 12px var(--color-neu-dark);
-  --neu-raised-lg: -8px -8px 18px var(--color-neu-light), 8px 8px 18px var(--color-neu-dark);
-  --neu-inset-sm: inset 2px 2px 4px var(--color-neu-dark), inset -2px -2px 4px var(--color-neu-light);
-  --neu-inset: inset 4px 4px 8px var(--color-neu-dark), inset -4px -4px 8px var(--color-neu-light);
-  --neu-pressed: inset 3px 3px 6px var(--color-neu-deep), inset -3px -3px 6px var(--color-neu-light);
-  /* on bg-2 (lighter parent): dark shadow at 80% */
-  --neu-raised-sm-bg2: -3px -3px 6px var(--color-neu-light), 3px 3px 6px rgb(197 207 220 / 0.8);
-  --neu-raised-bg2: -5px -5px 12px var(--color-neu-light), 5px 5px 12px rgb(197 207 220 / 0.8);
-  --neu-inset-sm-bg2: inset 2px 2px 4px rgb(197 207 220 / 0.8), inset -2px -2px 4px var(--color-neu-light);
-  --neu-inset-bg2: inset 4px 4px 8px rgb(197 207 220 / 0.8), inset -4px -4px 8px var(--color-neu-light);
-  --neu-pressed-bg2: inset 3px 3px 6px rgb(181 194 209 / 0.8), inset -3px -3px 6px var(--color-neu-light);
+  /* On the warm-white page the soft-grey control is lifted by a warm dark shadow plus an inner top highlight
+     (tactile, not embossed). Inside soft-grey zones (.neu-context-bg2) the classic light/dark pair is used. */
+  --neu-raised-sm: inset 1px 1px 0 rgb(255 255 255 / 0.85), -2px -2px 5px var(--color-neu-light), 2px 3px 7px var(--color-neu-dark);
+  --neu-raised: inset 1px 1px 0 rgb(255 255 255 / 0.85), -3px -3px 8px var(--color-neu-light), 4px 6px 14px var(--color-neu-dark);
+  --neu-raised-lg: inset 1px 1px 0 rgb(255 255 255 / 0.85), -5px -5px 12px var(--color-neu-light), 6px 9px 22px var(--color-neu-dark);
+  --neu-inset-sm: inset 2px 2px 4px var(--color-neu-dark), inset -2px -2px 4px rgb(255 255 255 / 0.9);
+  --neu-inset: inset 3px 3px 7px var(--color-neu-dark), inset -3px -3px 7px rgb(255 255 255 / 0.9);
+  --neu-pressed: inset 3px 3px 6px var(--color-neu-deep), inset -2px -2px 5px rgb(255 255 255 / 0.8);
+  /* on bg-2 (soft-grey parent): classic neumorphism, fill = parent */
+  --neu-raised-sm-bg2: -3px -3px 6px var(--color-neu-light), 3px 3px 6px var(--color-neu-dark);
+  --neu-raised-bg2: -5px -5px 12px var(--color-neu-light), 5px 5px 12px var(--color-neu-dark);
+  --neu-inset-sm-bg2: inset 2px 2px 4px var(--color-neu-dark), inset -2px -2px 4px var(--color-neu-light);
+  --neu-inset-bg2: inset 4px 4px 8px var(--color-neu-dark), inset -4px -4px 8px var(--color-neu-light);
+  --neu-pressed-bg2: inset 3px 3px 6px var(--color-neu-deep), inset -3px -3px 6px var(--color-neu-light);
   /* semantic aliases (Tailwind --shadow-* namespace in P10-01) */
   --shadow-neu-raised-sm: var(--neu-raised-sm);
   --shadow-neu-raised: var(--neu-raised);
@@ -147,16 +157,16 @@
   --blur-glass-lg: 24px;
   --glass-saturate: 140%;
   --glass-border: 1px solid rgb(255 255 255 / 0.70);
-  --glass-hairline: 0 0 0 1px rgb(37 43 54 / 0.08);
+  --glass-hairline: 0 0 0 1px rgb(37 35 38 / 0.08);
   --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.90);
-  --shadow-glass-sm: 0 4px 16px rgb(37 43 54 / 0.08);
-  --shadow-glass-md: 0 12px 32px rgb(37 43 54 / 0.12);
-  --shadow-glass-lg: 0 24px 56px rgb(37 43 54 / 0.18);
+  --shadow-glass-sm: 0 4px 16px rgb(37 35 38 / 0.08);
+  --shadow-glass-md: 0 12px 32px rgb(37 35 38 / 0.12);
+  --shadow-glass-lg: 0 24px 56px rgb(37 35 38 / 0.18);
 
   /* ---- 8. Elevation (minimal cards) --------------------------------------- */
   --shadow-elevation-0: none;
-  --shadow-elevation-1: 0 1px 2px rgb(37 43 54 / 0.05), 0 2px 8px rgb(37 43 54 / 0.04);
-  --shadow-elevation-2: 0 2px 4px rgb(37 43 54 / 0.06), 0 8px 24px rgb(37 43 54 / 0.08);
+  --shadow-elevation-1: 0 1px 2px rgb(37 35 38 / 0.05), 0 2px 8px rgb(37 35 38 / 0.04);
+  --shadow-elevation-2: 0 2px 4px rgb(37 35 38 / 0.06), 0 8px 24px rgb(37 35 38 / 0.08);
 
   /* ---- 9. Motion ----------------------------------------------------------- */
   --duration-fast: 120ms;
@@ -166,6 +176,7 @@
   --duration-exit-moderate: 160ms;
   --duration-exit-slow: 200ms;
   --duration-shimmer: 1600ms;
+  --duration-spin: 900ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);

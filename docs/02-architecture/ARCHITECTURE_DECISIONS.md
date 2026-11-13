@@ -1,6 +1,6 @@
 # Architecture Decisions (ADRs)
 
-Deliverable of **P02-12**. ADRs for non-spike choices are added when P02-01…P02-06 are written. This first part records the **technical spikes** (P02-07…P02-11), which were executed on 2026-11-12 after gate G1 was approved.
+Deliverable of **P02-12**. Part 1 (ADR-001…005) records the **technical spikes** (P02-07…P02-11), which were executed on 2026-11-12 after gate G1 was approved. Part 2 (ADR-006…010) records choices made while writing P02-01…P02-06.
 
 - **Spike code:** `spikes/` (throwaway, outside `src/`, deleted at G5).
 - **Raw outputs:** `spikes/*/result-*.json`.
@@ -141,3 +141,95 @@ The auth tables (`user`, `session`, `account`, `verification`, `rate_limit`) wer
 ## ADR-005: Deployment build (SPIKE-05, P02-11)
 
 **Status:** Not run. Blocked on the host account (D-09 Vercel / B-10). Partial evidence: `next build` of the SPIKE-03 app (Next 16.4.3 + `@libsql/client` + Better Auth, with `serverExternalPackages: ['@libsql/client', 'libsql']`) succeeds locally on Windows.
+
+---
+
+# Part 2: Architecture ADRs from P02-01…P02-06
+
+These ADRs record significant choices made while writing the architecture documents on 2026-11-13. Status **Proposed** means it is recommended by the lead and is formally approved at **G2**. None of them introduces a new technology. Each one applies an approved decision.
+
+## ADR-006: Dynamic rendering with a tagged data cache (nonce CSP)
+
+**Status:** Proposed (G2). Applies NFR-22, D-21. See [SYSTEM_ARCHITECTURE §1](SYSTEM_ARCHITECTURE.md#1-architectural-summary) and [FRONTEND_ARCHITECTURE §3](FRONTEND_ARCHITECTURE.md#3-r1-route-map-rendering-mode-and-data-source).
+
+**Context.** NFR-22 requires a CSP with nonces and no `unsafe-inline` scripts. Next.js can apply a nonce only to HTML rendered per request, so a statically generated or ISR page cannot carry it. The NFRs also require fast public pages (NFR-01…03) and ≤ 3 DB round trips (NFR-09).
+
+**Options.**
+
+| Option | Assessment |
+|---|---|
+| A. Static/ISR pages with a hash-based CSP | Hashes do not cover the framework's per-build inline scripts reliably. Fragile. Breaks NFR-22's wording |
+| B. Static/ISR pages and relax the CSP (`unsafe-inline`) | Violates NFR-22 |
+| **C. All HTML dynamic; cache data, not pages** | Meets NFR-22. Cost: every page view runs a function. Mitigated by tagged data-cache entries around service reads |
+
+**Decision.** C. Service read functions are cached with `"use cache"` + `cacheTag` + `cacheLife` at the module service boundary. Per-viewer data is never cached. Mutations invalidate by tag. Lifetimes are in FRONTEND §3.
+
+**Consequences.** Function invocations scale with traffic (Vercel cost; measured in P11-05). TTFB depends on data-cache hit rate (NFR-03, measured early). If NFR-03 fails under load, the fallback is option A for legal pages only (no user data), recorded as a new ADR.
+
+## ADR-007: Server Actions for internal mutations, Route Handlers for URL contracts
+
+**Status:** Proposed (G2). Applies A-01, D-21, D-22. See [FRONTEND_ARCHITECTURE §7.1](FRONTEND_ARCHITECTURE.md#71-server-actions-vs-route-handlers) and [BACKEND_ARCHITECTURE §4.2](BACKEND_ARCHITECTURE.md#42-error-type).
+
+**Decision.** Mutations triggered by our own UI are **Server Actions**. Endpoints that need a stable URL, method or status code, or are called by something other than our React tree, are **Route Handlers**: auth, view beacon, health, cron, internal revalidation and, in R2, uploads. Both call the same services.
+
+**Consequence: BR-77 for Server Actions.** A Server Action cannot set an HTTP status. BR-77 ("the server returns 429 with `Retry-After`") is therefore met as follows:
+
+- **Route Handlers:** literally (429 + `Retry-After` + problem details).
+- **Server Actions:** `ActionResult { ok: false, code: 'RATE_LIMITED', retryAfter }`.
+
+The user-visible behaviour is identical. Contract tests assert the code and `retryAfter` value for actions. This interpretation is review item **AR-1** for G2. If BR-77 must be literal, the fallback is to move rate-limited mutations to Route Handlers.
+
+## ADR-008: Module layering enforced by lint
+
+**Status:** Proposed (G2). See [BACKEND_ARCHITECTURE §2](BACKEND_ARCHITECTURE.md#2-layering-and-import-rules).
+
+**Decision.**
+- Entry → service → repository → infrastructure.
+- Cross-module access goes through services only.
+- Each table has one writing module.
+- Rules L-01…L-08 are enforced with ESLint's built-in `no-restricted-imports` and `no-restricted-syntax` (flat-config `files` scopes) and `server-only`, plus an architecture test.
+
+**Options rejected.** `eslint-plugin-boundaries` or `dependency-cruiser`: more expressive, but an extra dependency for rules that the built-in rules cover (TECHNOLOGY_STACK §3).
+
+**Consequences.** A use case spanning modules needs its own service function. Atomic cross-module writes use statement builders exported by the owning module's service (BACKEND §2.2 rule 2).
+
+## ADR-009: Rate limiting and view counting on Turso, after the response
+
+**Status:** Proposed (G2). Applies D-11, D-12. See [BACKEND_ARCHITECTURE §6–§7](BACKEND_ARCHITECTURE.md#7-rate-limiter-d-12-br-76) and [DATA_FLOW_DIAGRAM DF-6](DATA_FLOW_DIAGRAM.md#df-6-view-counting).
+
+**Decision.**
+- Non-auth rate-limit classes use a **fixed-window counter table** with one upsert per check. Auth classes use Better Auth's DB limiter.
+- Views are recorded in `after()` from a 204 beacon. The de-dup insert, daily aggregate and `views_count` update form one atomic batch, applied only when the de-dup insert succeeded.
+
+**Consequences.**
+- Every limited request and every counted view is a Turso write. The write volume is modelled in P11-05 against NFR-10.
+- Fallbacks behind the same interfaces:
+  - Upstash for limits (D-12 alternative).
+  - In-function batching of views per instance, flushed every N seconds. This was rejected for R1 because serverless instances are short-lived and lost increments would be silent.
+
+## ADR-010: R1 seed media and environment fallbacks
+
+**Status:** Proposed (G2). Applies D-19, D-10. See [SYSTEM_ARCHITECTURE §5](SYSTEM_ARCHITECTURE.md#5-environments).
+
+**Context.** D-19 says R2 is set up before R1 and seed images use the production storage path. The R2 account does not exist yet (B-11), and local development should not wait for it.
+
+**Decision.**
+- `media.urlFor()` builds every media URL as `${NEXT_PUBLIC_MEDIA_BASE_URL}/${key}/${variant}.webp`. Object keys and derivative names are identical in every environment.
+- **Local development only:** the base URL may be `/seed-media`, served from `public/seed-media/`. That folder is produced by the same seed pipeline (sharp derivatives) that later uploads to R2.
+- The env schema **rejects a relative base URL** when `NODE_ENV=production` or `VERCEL_ENV` is `preview`/`production`.
+
+**Consequences.**
+- There is one code path, so D-19's objection to a "second code path" does not apply. Only the base URL differs.
+- `public/seed-media/` is git-ignored and generated (licence manifest per BR-87).
+- Preview and production require R2. B-11 stays a blocker for the first preview deployment.
+
+## Review items carried to P02-13
+
+| ID | Source | Item | Severity | Proposal |
+|---|---|---|---|---|
+| AR-1 | ADR-007 | BR-77 "429" met as `RATE_LIMITED` result for Server Actions | Medium | Accept the interpretation; amend BR-77 wording at G2 |
+| SR-1 | SECURITY §13 | Sign-out has no rate-limit class | Low | Keep exempt, or assign `RL-ACCOUNT` |
+| SR-2 | SECURITY §13 | Inline `style` attributes vs strict `style-src` | Medium | Colour-bucket classes (decide at P08) |
+| SR-3 | SECURITY §13 | Session lifetime 30 d must be configured (library default 7 d) | Medium | Configure and test in P09-03 |
+| SR-4 | SECURITY §13 | Proxy uses Better Auth's signed cookie cache for BR-16 | Low | Verify in P09-03; per-page fallback |
+| AR-2 | FRONTEND §3 | System endpoints (`/api/views`, `/api/cron/*`, `/api/internal/revalidate`) are not in INFORMATION_ARCHITECTURE §6.2 | Low | Add to the P04-02 API inventory |

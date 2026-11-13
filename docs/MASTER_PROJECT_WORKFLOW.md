@@ -1,7 +1,7 @@
 # Master Project Workflow
 
 **Project:** independent functional clone of a design-community portfolio and hiring marketplace. It has original branding (name pending decision D-01) and uses the reverse-engineering study in [reverse-engineering/](reverse-engineering/00-executive-summary.md) as its functional reference.
-**Document owner:** Technical Project Manager + QA Lead · **Last updated:** 2026-11-12
+**Document owner:** Technical Project Manager + QA Lead · **Last updated:** 2026-11-13
 **Companion documents:** [TASK_TRACKER.md](TASK_TRACKER.md) (flat task list, same IDs and statuses), [BLOCKERS_AND_RISKS.md](BLOCKERS_AND_RISKS.md), [TESTING_PROGRESS.md](TESTING_PROGRESS.md), [DECISION_LOG.md](DECISION_LOG.md) and [CHANGELOG.md](CHANGELOG.md) (owned by the lead), [00-project-assessment/TECHNOLOGY_EVALUATION.md](00-project-assessment/TECHNOLOGY_EVALUATION.md).
 
 > **Current state:** the reverse-engineering study is complete (P00-01 Completed). **G1 was approved on 2026-11-12** and P00 is Completed. P01 (requirements), P05 (design constitution) and the local-capable spikes (SPIKE-01..03) are In Progress. Every task from P01 onward is **Not Started**. No application code, scaffold or package installation exists or is permitted yet.
@@ -107,7 +107,7 @@ All gates are approved by the **user**. The TPM / QA Lead prepares the evidence 
 |---|---|---|---|---|---|
 | **G1** Project Understanding | P00 | The product is understood. Stack confirmed. Plan, risks and testing strategy accepted. MVP scope (D-02), branding (D-01) and repository (D-13) decided or scheduled. Spike execution authorised | Reverse-engineering docs 00–10, TECHNOLOGY_EVALUATION.md, this workflow, TASK_TRACKER.md, BLOCKERS_AND_RISKS.md, TESTING_PROGRESS.md, DECISION_LOG.md; T-01 and T-02 results | User | **Approved 2026-11-12** |
 | **G2** Technical Specification | P01–P04 | Requirements are traceable. Architecture is validated by spikes. Schema and API are specified for R1 in full and for R2/R3 at signature level. D-03, D-04, D-07, D-11, D-12 decided | All P01–P04 deliverables; review notes from P01-07, P02-13, P03-06; spike ADRs; T-03, T-04, T-05..T-09, T-10, T-13 results | User | Not Started |
-| **G3** Design Foundation | P05 | Constitution, tokens, colour, typography and component guidelines approved. All text and control colour pairs meet WCAG 2.2 AA. D-05 and D-06 decided | P05 deliverables; T-15 contrast report; T-16 review | User | Not Started |
+| **G3** Design Foundation | P05 | Constitution, tokens, colour, typography and component guidelines approved. All text and control colour pairs meet WCAG 2.2 AA. D-05 and D-06 decided | P05 deliverables; T-15 contrast report; T-16 review | User | **Approved 2026-11-13** (A-15); revision **G3-R2** (identity v2, A-16) awaiting review |
 | **G4** UI/UX Approval (G4-R1, G4-R2, G4-R3) | P06–P07 (per release) | Every screen of the release is prototyped, validated at 6 widths, accessible and usable, and signed off screen by screen | Prototype screenshots (1440/1280/1024/768/390/360); DESIGN_QA_CHECKLIST, RESPONSIVE_VALIDATION_REPORT, ACCESSIBILITY_REVIEW, USABILITY_REVIEW, DESIGN_APPROVAL_RECORD | User | Not Started |
 | **G5** Development Readiness | P08 | Toolchain, CI, environments, DB tooling and test configuration work. Preview deploy is healthy. G2 and G3 approved | P08 deliverables; green CI run link; preview health check; T-21 result | User | Not Started |
 | **G6** Module Implementation (per module and release, see [§6](#6-module-map-p09p10)) | P09 + P10 task pair | Module meets the Definition of Done ([§9](#9-definition-of-done)) | Test run output (unit, integration, contract, component, E2E), coverage, axe report, screenshots at 6 widths vs approved designs, updated docs | User | Not Started |
@@ -172,6 +172,8 @@ Two agents work in parallel streams. A cell holds the tasks one stream can run i
 | W7: R2 | P09-10..P09-19 | P10-12..P10-19 | Per-module G6, then P11-09, P12-08 | R2 starts after G7-R1; FE needs G4-R2 |
 | W8: R3 | P09-20..P09-28 | P10-20..P10-25 | Per-module G6, then P11-10, P12-09 | R3 starts after G7-R2; FE needs G4-R3 |
 
+> **2026-11-13 (A-22):** backend and frontend now run as separate sessions. The R2 backend (P09-10…P09-19, P09-30) is implemented and tested ahead of the R2 UI; the integration contract is `docs/04-api/API_SPECIFICATION.md` v2.0. Gate reviews (G6-*-R2) continue on the built result.
+
 **Pairs that can run in parallel within a phase** are named in each task's "Parallelizable" field in [§10](#10-task-breakdown-by-phase).
 
 ---
@@ -211,7 +213,7 @@ Every module is delivered as a backend task (P09) and a frontend task (P10). The
 Figma is **not authorised** in this environment. High-fidelity designs are therefore built as **coded static HTML/CSS prototypes**. If the user connects and authorises Figma later, Figma can replace steps 4–5 without changing the gates.
 
 1. **Constitution (P05-01).** Fix the 40% Neumorphism / 30% Glassmorphism / 30% Minimalism mix as concrete usage rules:
-   - Neumorphism is used for controls and cards on the neutral `#E9EDF3` surface, and each control also gets a ≥3:1 boundary or outline, because soft shadows alone fail WCAG 1.4.11.
+   - Neumorphism is used for controls and small widgets on the neutral `#E9EDF3` surface (never cards, per the constitution; T16-34), and each control also gets a ≥3:1 boundary or outline, because soft shadows alone fail WCAG 1.4.11.
    - Glassmorphism is used for overlays, the header and modals, never behind body text without a solid fallback.
    - Minimalism governs layout, content density and imagery.
 2. **Colour and type (P05-02, P05-03).** Build a contrast matrix for the lavender `#9273C7`, pink `#EA78A5` and neutral palette. The known failures must be resolved through D-05 before tokens are frozen: text2 `#647184` 4.22:1, white on lavender 3.82:1, white on pink 2.72:1, muted 2.39:1. The font (Inter vs Geist) is decided by D-06.
@@ -442,7 +444,7 @@ Feeds **G2** through checkpoint P02-13. Deliverables in `docs/02-architecture/`.
 - **Deliverables:** `docs/02-architecture/SYSTEM_ARCHITECTURE.md`
 - **Acceptance criteria:** Every module from the module list is placed in a container; Each external dependency names its pending decision ID.
 - **Tests / validation:** T-04 architecture review
-- **Estimate:** 1.5 d · **Parallelizable:** Y (with P02-03, spikes) · **Owner:** Lead / Architect · **Status:** In Progress
+- **Estimate:** 1.5 d · **Parallelizable:** Y (with P02-03, spikes) · **Owner:** Lead / Architect · **Status:** Awaiting Review
 
 #### P02-02 — Technology stack
 
@@ -451,7 +453,7 @@ Feeds **G2** through checkpoint P02-13. Deliverables in `docs/02-architecture/`.
 - **Deliverables:** `docs/02-architecture/TECHNOLOGY_STACK.md`
 - **Acceptance criteria:** No technology listed as confirmed without a DECISION_LOG entry.
 - **Tests / validation:** T-04 architecture review
-- **Estimate:** 0.5 d · **Parallelizable:** Y (with P02-01) · **Owner:** Lead / Architect · **Status:** In Progress
+- **Estimate:** 0.5 d · **Parallelizable:** Y (with P02-01) · **Owner:** Lead / Architect · **Status:** Awaiting Review
 
 #### P02-03 — Frontend architecture
 
@@ -460,7 +462,7 @@ Feeds **G2** through checkpoint P02-13. Deliverables in `docs/02-architecture/`.
 - **Deliverables:** `docs/02-architecture/FRONTEND_ARCHITECTURE.md`
 - **Acceptance criteria:** Every R1 route has a rendering mode (static/dynamic/ISR) and a data source; Client components are listed with their reason.
 - **Tests / validation:** T-04 architecture review
-- **Estimate:** 1.5 d · **Parallelizable:** Y (with P02-04) · **Owner:** Lead / Architect · **Status:** In Progress
+- **Estimate:** 1.5 d · **Parallelizable:** Y (with P02-04) · **Owner:** Lead / Architect · **Status:** Awaiting Review
 
 #### P02-04 — Backend architecture
 
@@ -469,7 +471,7 @@ Feeds **G2** through checkpoint P02-13. Deliverables in `docs/02-architecture/`.
 - **Deliverables:** `docs/02-architecture/BACKEND_ARCHITECTURE.md`
 - **Acceptance criteria:** Layering rules are expressed as lintable import rules; Each module lists its services and repositories.
 - **Tests / validation:** T-04 architecture review
-- **Estimate:** 1.5 d · **Parallelizable:** Y (with P02-03) · **Owner:** Lead / Architect · **Status:** In Progress
+- **Estimate:** 1.5 d · **Parallelizable:** Y (with P02-03) · **Owner:** Lead / Architect · **Status:** Awaiting Review
 
 #### P02-05 — Security architecture
 
@@ -478,7 +480,7 @@ Feeds **G2** through checkpoint P02-13. Deliverables in `docs/02-architecture/`.
 - **Deliverables:** `docs/02-architecture/SECURITY_ARCHITECTURE.md`
 - **Acceptance criteria:** Every R1 mutation has an authorization rule and a rate-limit class; Threat model covers auth, uploads, Server Actions, IDOR.
 - **Tests / validation:** T-04 architecture review; T-28 security test design input
-- **Estimate:** 1.5 d · **Parallelizable:** Y (with P02-06) · **Owner:** Lead / Architect · **Status:** In Progress
+- **Estimate:** 1.5 d · **Parallelizable:** Y (with P02-06) · **Owner:** Lead / Architect · **Status:** Awaiting Review
 
 #### P02-06 — Data flow diagrams
 
@@ -487,7 +489,7 @@ Feeds **G2** through checkpoint P02-13. Deliverables in `docs/02-architecture/`.
 - **Deliverables:** `docs/02-architecture/DATA_FLOW_DIAGRAM.md`
 - **Acceptance criteria:** Each flow is a Mermaid diagram that parses; Each flow marks trust boundaries.
 - **Tests / validation:** T-04 architecture review; Mermaid parse check
-- **Estimate:** 1 d · **Parallelizable:** Y (with P02-05) · **Owner:** Lead / Architect · **Status:** In Progress
+- **Estimate:** 1 d · **Parallelizable:** Y (with P02-05) · **Owner:** Lead / Architect · **Status:** Awaiting Review
 
 #### P02-07 — SPIKE-01 Turso full-text search (FTS5 vs Tantivy `USING fts`)
 
@@ -596,7 +598,7 @@ Feeds **G2** through checkpoint P03-06. Deliverables in `docs/03-database/`. Ada
 - **Deliverables:** `docs/03-database/MIGRATION_PLAN.md`
 - **Acceptance criteria:** Each environment has a documented migrate and roll-forward procedure; A table-rebuild migration example is specified.
 - **Tests / validation:** T-12 migration test design
-- **Estimate:** 1 d · **Parallelizable:** Y (with P03-05) · **Owner:** Lead / Architect · **Status:** Not Started
+- **Estimate:** 1 d · **Parallelizable:** Y (with P03-05) · **Owner:** Lead / Architect · **Status:** Awaiting Review
 
 #### P03-05 — Database test plan
 
@@ -628,7 +630,7 @@ Closes **G2**. Deliverables in `docs/04-api/`. Internal mutations use Server Act
 - **Deliverables:** `docs/04-api/API_RESPONSE_CONVENTIONS.md`
 - **Acceptance criteria:** Every error class maps to an HTTP status and a code; Server Actions and Route Handlers share one error vocabulary.
 - **Tests / validation:** T-13 API spec review
-- **Estimate:** 1 d · **Parallelizable:** Y (with P03-01) · **Owner:** Lead / Architect · **Status:** Not Started
+- **Estimate:** 1 d · **Parallelizable:** Y (with P03-01) · **Owner:** Lead / Architect · **Status:** Awaiting Review
 
 #### P04-02 — API endpoint inventory
 
@@ -677,7 +679,7 @@ Closes **G3**. Deliverables in `docs/05-design-system/`. **7 tasks · 8 d.**
 - **Deliverables:** `docs/05-design-system/FRONTEND_DESIGN_CONSTITUTION.md`
 - **Acceptance criteria:** Each style has allowed/forbidden usage rules with examples; Accessibility rules are testable (contrast, focus, motion).
 - **Tests / validation:** T-16 visual consistency review
-- **Estimate:** 1 d · **Parallelizable:** Y (with P01, P02) · **Owner:** Designer · **Status:** In Progress
+- **Estimate:** 1 d · **Parallelizable:** Y (with P01, P02) · **Owner:** Designer · **Status:** Awaiting Review (G3-R2)
 
 #### P05-02 — Colour system and contrast refinement proposal
 
@@ -686,7 +688,7 @@ Closes **G3**. Deliverables in `docs/05-design-system/`. **7 tasks · 8 d.**
 - **Deliverables:** `docs/05-design-system/COLOR_SYSTEM.md`
 - **Acceptance criteria:** Every text pair used in components meets 4.5:1 (3:1 for large text) after refinement; Every control boundary meets 3:1 against adjacent colours; Proposal submitted for D-05.
 - **Tests / validation:** T-15 token contrast validation
-- **Estimate:** 1.5 d · **Parallelizable:** Y (with P05-01) · **Owner:** Designer · **Status:** In Progress
+- **Estimate:** 1.5 d · **Parallelizable:** Y (with P05-01) · **Owner:** Designer · **Status:** Awaiting Review (G3-R2)
 
 #### P05-03 — Typography system
 
@@ -695,7 +697,7 @@ Closes **G3**. Deliverables in `docs/05-design-system/`. **7 tasks · 8 d.**
 - **Deliverables:** `docs/05-design-system/TYPOGRAPHY_SYSTEM.md`
 - **Acceptance criteria:** Scale defined for 360–1440 px; Body text ≥ 16 px on mobile.
 - **Tests / validation:** T-16 visual consistency review
-- **Estimate:** 0.5 d · **Parallelizable:** Y (with P05-02) · **Owner:** Designer · **Status:** Awaiting Review
+- **Estimate:** 0.5 d · **Parallelizable:** Y (with P05-02) · **Owner:** Designer · **Status:** Awaiting Review (G3-R2)
 
 #### P05-04 — Design tokens
 
@@ -704,7 +706,7 @@ Closes **G3**. Deliverables in `docs/05-design-system/`. **7 tasks · 8 d.**
 - **Deliverables:** `docs/05-design-system/DESIGN_TOKENS.md`
 - **Acceptance criteria:** Every token has a name, value, usage note; No raw hex values needed by components outside tokens.
 - **Tests / validation:** T-15 token contrast validation
-- **Estimate:** 1 d · **Parallelizable:** N · **Owner:** Designer · **Status:** In Progress
+- **Estimate:** 1 d · **Parallelizable:** N · **Owner:** Designer · **Status:** Awaiting Review (G3-R2)
 
 #### P05-05 — Design system catalogue
 
@@ -713,7 +715,7 @@ Closes **G3**. Deliverables in `docs/05-design-system/`. **7 tasks · 8 d.**
 - **Deliverables:** `docs/05-design-system/DESIGN_SYSTEM.md`
 - **Acceptance criteria:** Every component in R1 screens is catalogued with all states; Each component names the tokens it uses.
 - **Tests / validation:** T-16 visual consistency review
-- **Estimate:** 1.5 d · **Parallelizable:** N · **Owner:** Designer · **Status:** In Progress
+- **Estimate:** 1.5 d · **Parallelizable:** N · **Owner:** Designer · **Status:** Awaiting Review (G3-R2)
 
 #### P05-06 — Component guidelines
 
@@ -722,7 +724,7 @@ Closes **G3**. Deliverables in `docs/05-design-system/`. **7 tasks · 8 d.**
 - **Deliverables:** `docs/05-design-system/COMPONENT_GUIDELINES.md`
 - **Acceptance criteria:** Every interactive component has keyboard behaviour and ARIA pattern documented.
 - **Tests / validation:** T-16 visual consistency review; T-19 a11y criteria input
-- **Estimate:** 1.5 d · **Parallelizable:** N · **Owner:** Designer · **Status:** In Progress
+- **Estimate:** 1.5 d · **Parallelizable:** N · **Owner:** Designer · **Status:** Awaiting Review (G3-R2)
 
 #### P05-07 — G3 Design Foundation: validation and approval
 
@@ -731,7 +733,7 @@ Closes **G3**. Deliverables in `docs/05-design-system/`. **7 tasks · 8 d.**
 - **Deliverables:** `Gate entry in this workflow; approval in docs/DECISION_LOG.md`
 - **Acceptance criteria:** T-15 shows zero failing text/control pairs; User approval recorded.
 - **Tests / validation:** T-15 token contrast validation; T-16 visual consistency review
-- **Estimate:** 1 d · **Parallelizable:** N · **Owner:** TPM / QA Lead · **Status:** In Progress
+- **Estimate:** 1 d · **Parallelizable:** N · **Owner:** TPM / QA Lead · **Status:** Awaiting Review (G3-R2)
 
 ### P06 UI/UX Design & Prototyping
 
@@ -771,7 +773,7 @@ Feeds **G4**. Deliverables in `docs/06-ui-ux/` and `prototypes/`. Screenshots go
 - **Deliverables:** `prototypes/ (static HTML/CSS, outside src)`, `docs/08-testing/design/screenshots/`
 - **Acceptance criteria:** One command produces screenshots for every prototype page at 6 widths.
 - **Tests / validation:** T-18 viewport validation harness smoke
-- **Estimate:** 1 d · **Parallelizable:** Y (with P06-03) · **Owner:** Designer · **Status:** Not Started
+- **Estimate:** 1 d · **Parallelizable:** Y (with P06-03) · **Owner:** Designer · **Status:** Completed
 - **Notes:** Figma only if the user authorises it; currently not authorised
 
 #### P06-05 — High-fidelity prototypes: R1 screens
@@ -1086,7 +1088,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/media/ (server)`, `tests`
 - **Acceptance criteria:** Malformed/oversized/wrong-MIME uploads rejected (tests); 20 MB image processed within the host limit measured in SPIKE-04; Contributes to G6-MEDIA-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 6 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 6 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-11 — [R2] Shot composer: create/edit/delete/draft/publish
 
@@ -1095,7 +1097,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/shots/ (server)`, `tests`
 - **Acceptance criteria:** Only the owner can edit/delete (test); Block reordering is persisted atomically; Contributes to G6-SHOTS-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-12 — [R2] Users/profiles: onboarding, profile edit, settings, account deletion
 
@@ -1104,7 +1106,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/users/ (server)`, `tests`
 - **Acceptance criteria:** Deletion removes or anonymises per BUSINESS_RULES (test); Contributes to G6-PROFILES-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 3 d · **Parallelizable:** Y (with P09-11) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y (with P09-11) · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-13 — [R2] Collections
 
@@ -1113,7 +1115,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/collections/ (server)`, `tests`
 - **Acceptance criteria:** Private collections invisible to others (test); Duplicate save rejected; Contributes to G6-COLLECTIONS-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 3 d · **Parallelizable:** Y (with P09-14) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y (with P09-14) · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-14 — [R2] Follows
 
@@ -1122,7 +1124,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/follows/ (server)`, `tests`
 - **Acceptance criteria:** Self-follow rejected; double follow idempotent (tests); Contributes to G6-FOLLOWS-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 2 d · **Parallelizable:** Y (with P09-13) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 2 d · **Parallelizable:** Y (with P09-13) · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-15 — [R2] Comments
 
@@ -1131,7 +1133,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/comments/ (server)`, `tests`
 - **Acceptance criteria:** Reply to a reply rejected; comments on disabled shot rejected (tests); Contributes to G6-COMMENTS-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 3.5 d · **Parallelizable:** Y (with P09-16) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3.5 d · **Parallelizable:** Y (with P09-16) · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-16 — [R2] Teams and members
 
@@ -1140,7 +1142,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/teams/ (server)`, `tests`
 - **Acceptance criteria:** Only team owners manage members (test); Contributes to G6-TEAMS-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 3 d · **Parallelizable:** Y (with P09-15) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y (with P09-15) · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-17 — [R2] Discovery: popularity ranking job
 
@@ -1149,7 +1151,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/discovery/ (server)`, `tests`
 - **Acceptance criteria:** Score function unit-tested with fixed fixtures; Recompute of 10k shots within the job limit; Contributes to G6-FEED-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 2.5 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 2.5 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-18 — [R2] Search: header search types (shots/designers) and autocomplete
 
@@ -1158,7 +1160,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/search/ (server)`, `tests`
 - **Acceptance criteria:** Autocomplete p95 < 150 ms on seed data; Contributes to G6-SEARCH-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 2 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 2 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-19 — [R2] Jobs: list, filters, detail, free posting
 
@@ -1167,7 +1169,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/jobs/ (server)`, `tests`
 - **Acceptance criteria:** Apply URL validated as https URL; Expired jobs hidden from listing (test); Contributes to G6-JOBS-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 4 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 4 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 
 #### P09-20 — [R3] Notifications
 
@@ -1268,7 +1270,7 @@ Each task ends in a contribution to a **G6** module gate (see [§6](#6-module-ma
 - **Deliverables:** `src/modules/moderation/ (server)`, `tests`
 - **Acceptance criteria:** One open report per reporter per target (unique); non-staff get 403 on queue actions; resolving writes an audit row. Contributes to G6-MODERATION-R2.
 - **Tests / validation:** T-22 unit; T-23 integration; T-14 API contract; T-11 integrity (where data changes)
-- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review (backend done 2026-11-13; see BACKEND_PROGRESS_REPORT)
 - **Notes:** Approved via OQ-04 (A-14)
 
 ### P10 Frontend Implementation

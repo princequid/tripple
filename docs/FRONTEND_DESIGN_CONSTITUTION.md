@@ -1,10 +1,10 @@
 # FRONTEND DESIGN CONSTITUTION — HYBRID SOFT UI DESIGN SYSTEM
 
-> **Status:** Authoritative source text, supplied by the user (2026-11-12) and recorded verbatim below. It is a **permanent rule**: changes need an approved design-system revision recorded in [DECISION_LOG.md](DECISION_LOG.md).
+> **Status:** Authoritative source text, supplied by the user (2026-11-12; §3 revised by the user on 2026-11-13, revisions 2 and 2.1, A-16 and A-17) and recorded verbatim below. It is a **permanent rule**: changes need an approved design-system revision recorded in [DECISION_LOG.md](DECISION_LOG.md).
 >
 > **How it is implemented:**
 > - [05-design-system/FRONTEND_DESIGN_CONSTITUTION.md](05-design-system/FRONTEND_DESIGN_CONSTITUTION.md): operational rules and measurable checks.
-> - [COLOR_SYSTEM.md](05-design-system/COLOR_SYSTEM.md): contrast-validated refinements, approved as D-05; D-23 pending.
+> - [COLOR_SYSTEM.md](05-design-system/COLOR_SYSTEM.md): contrast-validated refinements of the revision-2 palette (derived values D-26).
 > - [DESIGN_TOKENS.md](05-design-system/DESIGN_TOKENS.md).
 > - [DESIGN_SYSTEM.md](05-design-system/DESIGN_SYSTEM.md).
 > - [COMPONENT_GUIDELINES.md](05-design-system/COMPONENT_GUIDELINES.md).
@@ -114,42 +114,116 @@ The platform must never feel cluttered or visually overwhelming.
 
 ## 3. OFFICIAL COLOR SYSTEM
 
-Use the following palette as the initial design foundation.
+> **Revision 2 (2026-11-13, A-16).** The user finalised the visual identity. The text of this section is the user's directive of 2026-11-13, recorded verbatim (headings demoted one level). It replaces the revision-1 colour system, which is kept in [Appendix A](#appendix-a--superseded-colour-system-revision-1-2026-11-12) for traceability. Contrast-validated refinements and derived values are in [COLOR_SYSTEM.md](05-design-system/COLOR_SYSTEM.md) (D-26).
 
-### Primary surfaces
+### 3.1 Visual identity
 
-- Main background: #E9EDF3
-- Secondary background: #F1F3F7
-- Card surfaces: #F8FAFC
-- Elevated surfaces: #FFFFFF
-- Border color: #DDE1E9
+The application's primary visual identity is:
 
-### Neumorphic shadow colors
+**Premium Crimson + Warm White + Soft Grey + Charcoal.**
 
-- Light highlight: #FFFFFF
-- Dark shadow: #C5CFDC
-- Deeper shadow: #B5C2D1
+The design must feel:
+- Premium and professionally crafted.
+- Modern and visually distinctive.
+- Creative, expressive and welcoming.
+- Clean, elegant and easy to navigate.
+- Suitable for a professional creative inspiration and discovery platform.
 
-### Typography
+### 3.2 Approved primary colour palette
 
-- Primary text: #252B36
-- Secondary text: #647184
-- Muted text: #929BA9
+> **Revision 2.1 (2026-11-13, A-17, user directive):** "remove any gradient colors", change primary light, primary border, background and hover tint, and "increase the brightness of the red by 30%". The user chose the brightest red that keeps white text accessible (+24.5%, `#DF2F4D`) and tints re-derived from it. Values below are updated accordingly; the previous values are noted in brackets. "Warm white" below now means pure white `#FFFFFF`.
 
-### Accent colors
+| Token | Hex |
+|---|---|
+| Primary | #DF2F4D (was #B3263E) |
+| Primary hover | #B3263E (was #941D33; #941D33 is now the pressed state) |
+| Primary light | #FCEEF1 (was #FBECEF) |
+| Primary border | #F5C1CA (was #E9C5CC) |
+| Background | #FFFFFF (was #FFFCFA) |
+| Surface | #FFFFFF |
+| Secondary surface | #F2F0F0 |
+| Tertiary surface | #EAE7E8 |
+| Primary text | #252326 |
+| Secondary text | #706A70 |
+| Muted text | #969096 |
+| Border | #E7E1E3 |
 
-- Primary accent: #9273C7 (Lavender/Purple)
-- Secondary accent: #EA78A5 (Soft Pink)
-- Supporting accent: #A5B5CA (Muted Blue)
+Supporting accents:
 
-Color usage rules:
-- Lavender should be the primary brand interaction color.
-- Pink should be used selectively for likes, highlights, special actions and emphasis.
-- Muted blue should support secondary visual elements.
-- Neutral colors should dominate the overall interface.
-- Never introduce additional accent colors without a clear design reason.
+- Muted lavender: #8D7AB8
+- Muted sage: #829889
+- Antique gold: #C69A55
 
-The palette may be refined when necessary, but changes must preserve the visual identity.
+These supporting colours must remain secondary to crimson.
+
+### 3.3 Colour application
+
+Use crimson for:
+- Primary actions.
+- Brand elements.
+- Active navigation indicators.
+- Selected filters and categories.
+- Important interactive states.
+- Relevant highlights and notifications.
+
+Use warm white for:
+- Main page backgrounds.
+- Content areas.
+- Gallery sections.
+- Elevated surfaces.
+
+Use soft grey for:
+- Neumorphic controls.
+- Inset search fields.
+- Secondary interactive surfaces.
+- Subtle visual separation.
+
+Use charcoal for readable typography and strong visual hierarchy.
+
+### 3.4 Design philosophy
+
+Preserve the established design influence:
+
+- 40% Neumorphism.
+- 30% Glassmorphism.
+- 30% Minimalism.
+
+Neumorphism should create tactile interactions, not make every element look embossed.
+
+Glassmorphism should be used for appropriate floating and layered interface elements.
+
+Minimalism should preserve clean layouts, generous whitespace and strong content hierarchy.
+
+### 3.5 Component requirements
+
+Define consistent styling for:
+- Primary and secondary buttons.
+- Search fields.
+- Navigation.
+- Gallery thumbnails.
+- Cards and content containers.
+- Category filters.
+- Dropdowns.
+- Modals.
+- Forms and inputs.
+- Notifications.
+- User profiles.
+- Interactive icons and controls.
+
+Keep creative artwork visually independent of the interface colour palette. Do not force crimson borders, backgrounds or filters onto every gallery item.
+
+### 3.6 Accessibility and responsiveness
+
+- Validate colour contrast, especially text on crimson backgrounds.
+- Provide visible keyboard focus states.
+- Maintain accessible interaction sizes.
+- Define hover, active, disabled, loading, success and error states.
+- Ensure the colour system works across desktop, tablet and mobile.
+- Do not use colour alone to communicate status.
+
+### 3.7 No gradients (revision 2.1)
+
+No gradient colours anywhere in the interface: surfaces, controls, skeletons, backdrops and placeholders use flat colours (user directive 2026-11-13, A-17).
 
 ## 4. TYPOGRAPHY AND SPACING
 
@@ -318,3 +392,48 @@ The final experience should communicate:
 **40% tactile elegance + 30% translucent sophistication + 30% clean simplicity.**
 
 The result must feel like a premium creative technology platform with a recognizable visual identity, rather than a generic website using three fashionable design trends.
+
+---
+
+## Appendix A — Superseded colour system (revision 1, 2026-11-12)
+
+> Superseded on 2026-11-13 by revision 2 (A-16). Kept verbatim for traceability; do not apply.
+
+### A.1 OFFICIAL COLOR SYSTEM (revision 1)
+
+Use the following palette as the initial design foundation.
+
+#### Primary surfaces
+
+- Main background: #E9EDF3
+- Secondary background: #F1F3F7
+- Card surfaces: #F8FAFC
+- Elevated surfaces: #FFFFFF
+- Border color: #DDE1E9
+
+#### Neumorphic shadow colors
+
+- Light highlight: #FFFFFF
+- Dark shadow: #C5CFDC
+- Deeper shadow: #B5C2D1
+
+#### Typography
+
+- Primary text: #252B36
+- Secondary text: #647184
+- Muted text: #929BA9
+
+#### Accent colors
+
+- Primary accent: #9273C7 (Lavender/Purple)
+- Secondary accent: #EA78A5 (Soft Pink)
+- Supporting accent: #A5B5CA (Muted Blue)
+
+Color usage rules:
+- Lavender should be the primary brand interaction color.
+- Pink should be used selectively for likes, highlights, special actions and emphasis.
+- Muted blue should support secondary visual elements.
+- Neutral colors should dominate the overall interface.
+- Never introduce additional accent colors without a clear design reason.
+
+The palette may be refined when necessary, but changes must preserve the visual identity.

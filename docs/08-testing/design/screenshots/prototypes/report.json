@@ -1,0 +1,132 @@
+{
+ "date": "2026-11-13T03:43:52.506Z",
+ "widths": [
+  1440,
+  1280,
+  1024,
+  768,
+  390,
+  360
+ ],
+ "pages": {
+  "index.html": {
+   "default@1440": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": [],
+    "axe": []
+   },
+   "default@1280": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "default@1024": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "default@768": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "default@390": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": [],
+    "axe": []
+   },
+   "default@360": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   }
+  },
+  "r1/_template.html": {
+   "default@1440": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": [],
+    "axe": []
+   },
+   "default@1280": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "default@1024": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "default@768": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "default@390": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": [],
+    "axe": []
+   },
+   "default@360": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "loading@1440": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": [],
+    "axe": []
+   },
+   "loading@1280": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "loading@1024": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "loading@768": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   },
+   "loading@390": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": [],
+    "axe": []
+   },
+   "loading@360": {
+    "overflow": 0,
+    "small": [],
+    "raisedOnGlass": [],
+    "errors": []
+   }
+  }
+ },
+ "failures": []
+}

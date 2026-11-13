@@ -1,0 +1,53 @@
+/* App-level layout glue (A-12): page structure only. Every colour, radius, shadow and space comes from the
+   design-system tokens; components keep their design-system classes. Nothing here adds a new visual value. */
+
+.site-main { min-height: 60vh; padding-bottom: var(--space-16, 4rem); }
+.page-head { padding-block: var(--space-8) var(--space-4); }
+.page-head__sub { margin-top: var(--space-2); }
+
+/* Shot cards: real images fill the 4:3 media box; the dominant colour shows while loading. */
+.ui-shot-card__media img { width: 100%; height: 100%; object-fit: cover; }
+.shot-feed { list-style: none; padding: 0; margin: 0; }
+/* Grid items default to min-width: auto, which let a long meta row widen a card past its track (cards overlapped). */
+.shot-feed > .ui-shot-card { min-width: 0; }
+.shot-feed .ui-shot-card__meta { min-width: 0; }
+.ui-shot-card__stats svg, .ui-shot-card__author .ui-avatar { flex-shrink: 0; }
+/* The visitor Like control is a link (to sign in); it must look like the button it replaces. */
+a.ui-like { text-decoration: none; }
+/* Timeframe choices sit in one wrapping row under the filter bar, not a tall column. */
+.feed-timeframes { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+.shot-feed-wrap { padding-top: var(--space-6); }
+
+/* Account menu anchored under its trigger. */
+.account { position: relative; }
+.account .ui-menu { position: absolute; right: 0; top: calc(100% + var(--space-2)); }
+
+/* Shot detail. */
+.detail { max-width: var(--container-detail); margin-inline: auto; }
+.detail__body { position: relative; }
+.detail__media { display: grid; gap: var(--space-6); }
+.detail__media img { width: 100%; height: auto; border-radius: var(--radius-card); background: var(--shot-placeholder, var(--color-bg-2)); }
+.detail__text { max-width: var(--measure-reading); }
+.detail__rail { margin-top: var(--space-6); }
+@media (min-width: 80rem) {
+  .detail__rail { position: absolute; right: calc(-1 * (var(--space-16, 4rem) + var(--space-6))); top: 0; margin-top: 0; }
+}
+.detail__section { padding-top: var(--space-12); }
+.detail__facts { margin-top: var(--space-8); }
+
+/* Auth pages: a centred card column. */
+.auth-shell { min-height: 100vh; display: grid; place-items: center; padding: var(--space-8) var(--gutter); }
+.auth-card { width: min(var(--container-auth), 100%); }
+.auth-brand { display: inline-block; margin-bottom: var(--space-8); }
+
+/* Footer lists. */
+.ui-footer ul { list-style: none; padding: 0; margin: 0; }
+
+/* Tag index. */
+.tag-index { columns: 2 14rem; column-gap: var(--space-8); }
+.tag-index section { break-inside: avoid; margin-bottom: var(--space-6); }
+.tag-index ul { list-style: none; padding: 0; margin: var(--space-2) 0 0; }
+
+/* Legal and static pages. */
+.prose { max-width: var(--measure-reading); }
+.prose > * + * { margin-top: var(--space-4); }

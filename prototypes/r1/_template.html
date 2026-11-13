@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Copy this file to start an R1 prototype page. Name: <surface-id>-<slug>.html, e.g. scr-02-explore.html -->
+  <title>Template · Trippple prototype</title>
+  <meta name="proto-surface" content="TEMPLATE">
+  <meta name="proto-states" content="default loading">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../design-system/index.css">
+  <script src="../_shared/proto.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- SH-01 Site header (signed out) -->
+  <header class="ui-header glass-subtle glass-subtle--md">
+    <a class="ui-brand" href="#" aria-label="Trippple home">Trippple</a>
+    <form class="ui-search ui-header__search" role="search" action="#" onsubmit="return false">
+      <svg class="ui-search__icon" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><use href="../_shared/icons.svg#i-search"/></svg>
+      <label class="visually-hidden" for="hdr-q">Search shots</label>
+      <input id="hdr-q" class="ui-input neu-field" type="search" placeholder="Search shots">
+    </form>
+    <nav class="ui-header__nav" aria-label="Primary">
+      <button class="ui-btn ui-btn--ghost ui-nav-link" type="button" aria-expanded="false">Explore <svg class="ui-chevron" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="../_shared/icons.svg#i-chev"/></svg></button>
+      <a class="ui-btn ui-btn--ghost ui-nav-link" href="#">Tags</a>
+    </nav>
+    <span class="ui-header__spacer"></span>
+    <a class="ui-btn ui-btn--on-glass ui-header__secondary" href="#">Log in</a>
+    <a class="ui-btn ui-btn--primary" href="#">Sign up</a>
+    <button class="ui-icon-btn ui-btn--ghost ui-header__burger" type="button" aria-label="Open menu" aria-expanded="false">
+      <svg fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><use href="../_shared/icons.svg#i-menu"/></svg>
+    </button>
+  </header>
+
+  <main id="main" class="container section">
+    <h1 class="t-h2">Page title</h1>
+    <div data-proto-state="default" class="stack">
+      <p class="text-secondary measure">Default state content.</p>
+    </div>
+    <div data-proto-state="loading" aria-busy="true">
+      <ol class="gallery-grid" style="list-style:none; padding:0; margin:0" aria-hidden="true">
+        <li><div class="ui-skeleton ui-skeleton--media"></div></li>
+        <li><div class="ui-skeleton ui-skeleton--media"></div></li>
+        <li><div class="ui-skeleton ui-skeleton--media"></div></li>
+      </ol>
+    </div>
+  </main>
+
+  <!-- SH-05 Site footer -->
+  <footer class="ui-footer neu-context-bg2">
+    <div class="ui-footer__inner">
+      <div class="stack" style="--stack-gap: var(--space-3)"><a class="ui-brand" href="#" aria-label="Trippple home">Trippple</a><p class="t-body-sm text-secondary">A home for independent design work.</p></div>
+      <nav aria-label="Explore"><p class="ui-footer__title">Explore</p><ul><li><a class="ui-footer__link" href="#">Popular</a></li><li><a class="ui-footer__link" href="#">Recent</a></li><li><a class="ui-footer__link" href="#">Tags</a></li></ul></nav>
+      <nav aria-label="Company"><p class="ui-footer__title">Company</p><ul><li><a class="ui-footer__link" href="#">About</a></li><li><a class="ui-footer__link" href="#">Contact</a></li></ul></nav>
+      <nav aria-label="Legal"><p class="ui-footer__title">Legal</p><ul><li><a class="ui-footer__link" href="#">Terms</a></li><li><a class="ui-footer__link" href="#">Privacy</a></li></ul></nav>
+    </div>
+    <p class="ui-footer__legal">© 2026 Trippple</p>
+  </footer>
+</body>
+</html>

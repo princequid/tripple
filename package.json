@@ -1,0 +1,49 @@
+{
+  "name": "trippple",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Trippple: design-community portfolio and hiring platform (Next.js full-stack, Turso/libSQL, Drizzle).",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx --conditions=react-server scripts/migrate.ts",
+    "db:verify": "tsx --conditions=react-server scripts/verify-db.ts",
+    "db:seed": "tsx --conditions=react-server scripts/seed.ts",
+    "db:reset": "tsx --conditions=react-server scripts/reset-db.ts && tsx --conditions=react-server scripts/migrate.ts && tsx --conditions=react-server scripts/seed.ts",
+    "moderate": "tsx --conditions=react-server scripts/moderate.ts",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@libsql/client": "0.18.0",
+    "better-auth": "1.7.14",
+    "drizzle-orm": "0.45.4",
+    "next": "16.4.3",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "sanitize-html": "2.18.1",
+    "server-only": "0.0.1",
+    "sharp": "0.35.5",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "22.18.0",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.3",
+    "@types/sanitize-html": "2.16.2",
+    "drizzle-kit": "0.31.11",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5"
+  }
+}

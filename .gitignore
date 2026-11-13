@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+coverage/
+test-results/
+playwright-report/
+next-env.d.ts
+*.tsbuildinfo
+# local data: libSQL files, dev email outbox, generated seed media
+.data/
+*.db
+*.db-wal
+*.db-shm
+public/seed-media/
+# secrets
+.env
+.env*.local

@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRIPPLE — Signature Loading Architecture & Motion System</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Editorial & Geometric Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Cormorant Garamond"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            obsidian: '#0B0B0C',
+            charcoal: '#131316',
+            limestone: '#F5F3EE',
+            alabaster: '#F4F2ED',
+            bronze: '#C5A880',
+            slateHairline: '#242427',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS & ARCHITECTURAL THEME VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-canvas: #0B0B0C;
+      --bg-surface: #121215;
+      --bg-elevated: #18181C;
+      --fg-primary: #F4F2ED;
+      --fg-secondary: #8E8D8A;
+      --fg-muted: #525256;
+      --accent-bronze: #C5A880;
+      --hairline: rgba(244, 242, 237, 0.09);
+      --hairline-strong: rgba(244, 242, 237, 0.18);
+      --grid-dot: rgba(244, 242, 237, 0.07);
+
+      /* Motion Curves */
+      --ease-architectural: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-symmetric: cubic-bezier(0.65, 0, 0.35, 1);
+      --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    html.light-theme {
+      --bg-canvas: #F5F3EE;
+      --bg-surface: #ECE9E2;
+      --bg-elevated: #E3DFD6;
+      --fg-primary: #121214;
+      --fg-secondary: #5E5D59;
+      --fg-muted: #8C8A84;
+      --accent-bronze: #9C7C50;
+      --hairline: rgba(18, 18, 20, 0.09);
+      --hairline-strong: rgba(18, 18, 20, 0.18);
+      --grid-dot: rgba(18, 18, 20, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg-canvas);
+      color: var(--fg-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.55s var(--ease-architectural), color 0.55s var(--ease-architectural);
+      overflow-x: hidden;
+    }
+
+    /* Subtle architectural drafting dot matrix */
+    .architectural-grid {
+      background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ==========================================================================
+       2. TRIPPLE SIGNATURE LOADER OVERLAY & CURTAIN CHOREOGRAPHY
+       ========================================================================== */
+    .tripple-loader-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-canvas);
+      color: var(--fg-primary);
+      will-change: transform, opacity;
+      transform: translateY(0%);
+      transition: background-color 0.55s var(--ease-architectural), color 0.55s var(--ease-architectural);
+    }
+
+    /* Phase 3: Curtain upward release */
+    .tripple-loader-overlay[data-phase="exiting"] {
+      transform: translateY(-100%);
+      transition: transform 0.95s var(--ease-curtain);
+      pointer-events: none;
+    }
+
+    .tripple-loader-overlay[data-phase="hidden"] {
+      display: none;
+      pointer-events: none;
+    }
+
+    /* Framing registration hairlines around the viewport */
+    .loader-frame-line-h {
+      position: absolute;
+      left: clamp(20px, 4vw, 48px);
+      right: clamp(20px, 4vw, 48px);
+      height: 1px;
+      background-color: var(--hairline);
+      transform-origin: center;
+      transform: scaleX(0);
+      transition: transform 0.9s var(--ease-architectural);
+    }
+    .loader-frame-line-h.top { top: clamp(20px, 4vw, 40px); }
+    .loader-frame-line-h.bottom { bottom: clamp(20px, 4vw, 40px); }
+
+    .tripple-loader-overlay[data-phase="entering"] .loader-frame-line-h,
+    .tripple-loader-overlay[data-phase="looping"] .loader-frame-line-h {
+      transform: scaleX(1);
+    }
+
+    /* ==========================================================================
+       3. MONOLITH SVG GEOMETRY & PHASED KEYFRAMES
+       ========================================================================== */
+    .monolith-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+
+    .monolith-svg {
+      width: 96px;
+      height: 108px;
+      overflow: visible;
+    }
+
+    /* Base transforms for each of the 3 architectural planes */
+    .blade {
+      will-change: transform, clip-path, opacity;
+      transform-box: fill-box;
+    }
+
+    /* Blade 1: Left Cantilevered Monolith */
+    .blade-left {
+      transform-origin: 22px 54px;
+    }
+
+    /* Blade 2: Central Vertical Axis & Crown */
+    .blade-center {
+      transform-origin: 48px 54px;
+    }
+
+    /* Blade 3: Right Counter-balanced Monolith */
+    .blade-right {
+      transform-origin: 74px 54px;
+    }
+
+    /* Horizontal Registration Hairline inside emblem */
+    .axis-rule {
+      transform-origin: 48px 54px;
+      will-change: transform, opacity;
+    }
+
+    /* --- PHASE 1: ENTRANCE UNFOLD (0.0s -> 0.9s, 90ms stagger) --- */
+    .tripple-loader-overlay[data-phase="entering"] .blade-left {
+      animation: bladeEnterLeft 0.78s var(--ease-architectural) 0.05s both;
+    }
+    .tripple-loader-overlay[data-phase="entering"] .blade-center {
+      animation: bladeEnterCenter 0.78s var(--ease-architectural) 0.14s both;
+    }
+    .tripple-loader-overlay[data-phase="entering"] .blade-right {
+      animation: bladeEnterRight 0.78s var(--ease-architectural) 0.23s both;
+    }
+    .tripple-loader-overlay[data-phase="entering"] .axis-rule {
+      animation: ruleExpand 0.72s var(--ease-architectural) 0.36s both;
+    }
+
+    @keyframes bladeEnterLeft {
+      0% {
+        opacity: 0;
+        clip-path: inset(100% 0% 0% 0%);
+        transform: translate3d(-10px, 18px, 0);
+      }
+      100% {
+        opacity: 1;
+        clip-path: inset(0% 0% 0% 0%);
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    @keyframes bladeEnterCenter {
+      0% {
+        opacity: 0;
+        clip-path: inset(0% 0% 100% 0%);
+        transform: translate3d(0, -18px, 0);
+      }
+      100% {
+        opacity: 1;
+        clip-path: inset(0% 0% 0% 0%);
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    @keyframes bladeEnterRight {
+      0% {
+        opacity: 0;
+        clip-path: inset(100% 0% 0% 0%);
+        transform: translate3d(10px, 18px, 0);
+      }
+      100% {
+        opacity: 1;
+        clip-path: inset(0% 0% 0% 0%);
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    @keyframes ruleExpand {
+      0% {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      100% {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+    }
+
+    /* --- PHASE 2: KINETIC EQUILIBRIUM & PARALLAX SHIFT (Seamless 2.4s Loop) --- */
+    .tripple-loader-overlay[data-phase="looping"] .blade-left {
+      animation: parallaxLeft 2.4s var(--ease-symmetric) infinite;
+    }
+    .tripple-loader-overlay[data-phase="looping"] .blade-center {
+      animation: parallaxCenter 2.4s var(--ease-symmetric) infinite;
+    }
+    .tripple-loader-overlay[data-phase="looping"] .blade-right {
+      animation: parallaxRight 2.4s var(--ease-symmetric) infinite;
+    }
+    .tripple-loader-overlay[data-phase="looping"] .axis-rule {
+      animation: parallaxRule 2.4s var(--ease-symmetric) infinite;
+    }
+
+    @keyframes parallaxLeft {
+      0%, 100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+      }
+      45%, 55% {
+        transform: translate3d(-3.5px, -5px, 0);
+        opacity: 0.78;
+      }
+    }
+
+    @keyframes parallaxCenter {
+      0%, 100% {
+        transform: translate3d(0, 0, 0) scaleY(1);
+      }
+      45%, 55% {
+        transform: translate3d(0, 2.5px, 0) scaleY(0.95);
+      }
+    }
+
+    @keyframes parallaxRight {
+      0%, 100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+      }
+      45%, 55% {
+        transform: translate3d(3.5px, 5px, 0);
+        opacity: 0.78;
+      }
+    }
+
+    @keyframes parallaxRule {
+      0%, 100% {
+        transform: scaleX(1);
+        opacity: 0.9;
+      }
+      45%, 55% {
+        transform: scaleX(1.22);
+        opacity: 1;
+      }
+    }
+
+    /* --- PHASE 3: CONVERGENCE INTO RAZOR AXIS BEFORE CURTAIN LIFT --- */
+    .tripple-loader-overlay[data-phase="exiting"] .blade-left {
+      transform: translate3d(26px, 0, 0) scaleX(0.3);
+      opacity: 0;
+      transition: transform 0.42s var(--ease-architectural), opacity 0.35s ease;
+    }
+    .tripple-loader-overlay[data-phase="exiting"] .blade-right {
+      transform: translate3d(-26px, 0, 0) scaleX(0.3);
+      opacity: 0;
+      transition: transform 0.42s var(--ease-architectural), opacity 0.35s ease;
+    }
+    .tripple-loader-overlay[data-phase="exiting"] .blade-center {
+      transform: scaleX(0.25) scaleY(1.18);
+      opacity: 0;
+      transition: transform 0.52s var(--ease-architectural) 0.08s, opacity 0.4s ease 0.12s;
+    }
+    .tripple-loader-overlay[data-phase="exiting"] .axis-rule {
+      transform: scaleX(0);
+      opacity: 0;
+      transition: transform 0.32s var(--ease-architectural), opacity 0.25s ease;
+    }
+
+    /* ==========================================================================
+       4. WORDMARK & TELEMETRY REVEAL MASKS
+       ========================================================================== */
+    .wordmark-mask {
+      overflow: hidden;
+      padding: 4px 0;
+    }
+
+    .wordmark-text {
+      display: block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.8125rem;
+      letter-spacing: 0.42em;
+      padding-left: 0.42em; /* Optical centering for tracking */
+      text-transform: uppercase;
+      color: var(--fg-primary);
+      will-change: transform, opacity;
+    }
+
+    .tripple-loader-overlay[data-phase="entering"] .wordmark-text {
+      animation: wordmarkRise 0.75s var(--ease-architectural) 0.38s both;
+    }
+
+    .tripple-loader-overlay[data-phase="looping"] .wordmark-text {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .tripple-loader-overlay[data-phase="exiting"] .wordmark-text {
+      transform: translateY(115%);
+      opacity: 0;
+      transition: transform 0.38s var(--ease-architectural), opacity 0.3s ease;
+    }
+
+    @keyframes wordmarkRise {
+      0% {
+        transform: translateY(115%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0%);
+        opacity: 1;
+      }
+    }
+
+    /* Subtle status caption */
+    .status-caption {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg-secondary);
+      opacity: 0;
+      transition: opacity 0.5s ease 0.45s;
+    }
+
+    .tripple-loader-overlay[data-phase="entering"] .status-caption,
+    .tripple-loader-overlay[data-phase="looping"] .status-caption {
+      opacity: 1;
+    }
+
+    .tripple-loader-overlay[data-phase="exiting"] .status-caption {
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    /* ==========================================================================
+       5. ACCESSIBILITY: REDUCED MOTION FALLBACK (OS OR STUDIO TOGGLE)
+       ========================================================================== */
+    @media (prefers-reduced-motion: reduce) {
+      .tripple-loader-overlay,
+      .blade,
+      .axis-rule,
+      .wordmark-text,
+      .loader-frame-line-h {
+        animation: none !important;
+        transition: opacity 0.35s ease !important;
+        transform: none !important;
+        clip-path: none !important;
+      }
+      .tripple-loader-overlay[data-phase="exiting"] {
+        opacity: 0 !important;
+      }
+    }
+
+    html.force-reduced-motion .tripple-loader-overlay,
+    html.force-reduced-motion .blade,
+    html.force-reduced-motion .axis-rule,
+    html.force-reduced-motion .wordmark-text,
+    html.force-reduced-motion .loader-frame-line-h {
+      animation: none !important;
+      transition: opacity 0.35s ease !important;
+      transform: none !important;
+      clip-path: none !important;
+    }
+    html.force-reduced-motion .tripple-loader-overlay[data-phase="exiting"] {
+      opacity: 0 !important;
+    }
+
+    /* ==========================================================================
+       6. STUDIO SHOWCASE UI POLISH
+       ========================================================================== */
+    .surface-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--hairline);
+      transition: background-color 0.4s var(--ease-architectural), border-color 0.4s var(--ease-architectural);
+    }
+
+    .btn-architectural {
+      border: 1px solid var(--hairline-strong);
+      background-color: transparent;
+      color: var(--fg-primary);
+      transition: all 0.28s var(--ease-architectural);
+    }
+    .btn-architectural:hover {
+      border-color: var(--accent-bronze);
+      background-color: rgba(197, 168, 128, 0.08);
+    }
+
+    .btn-primary-architectural {
+      background-color: var(--fg-primary);
+      color: var(--bg-canvas);
+      border: 1px solid var(--fg-primary);
+      transition: all 0.28s var(--ease-architectural);
+    }
+    .btn-primary-architectural:hover {
+      background-color: var(--accent-bronze);
+      border-color: var(--accent-bronze);
+      color: #0B0B0C;
+    }
+
+    /* Custom subtle scrollbar for code modal */
+    pre::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    pre::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    pre::-webkit-scrollbar-thumb {
+      background: var(--hairline-strong);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen architectural-grid selection:bg-[#C5A880]/30 selection:text-[#C5A880]">
+
+  <!-- ========================================================================
+       SIGNATURE TRIPPLE LOADING OVERLAY
+       ======================================================================== -->
+  <div
+    id="trippleLoader"
+    class="tripple-loader-overlay"
+    data-phase="entering"
+    role="status"
+    aria-live="polite"
+    aria-label="Loading Tripple"
+  >
+    <!-- Top & Bottom Architectural Registration Hairlines -->
+    <div class="loader-frame-line-h top" aria-hidden="true"></div>
+    <div class="loader-frame-line-h bottom" aria-hidden="true"></div>
+
+    <!-- Top Corner Micro-Telemetry -->
+    <div class="absolute top-7 sm:top-12 left-6 sm:left-12 right-6 sm:right-12 flex justify-between items-center text-[10px] font-mono tracking-[0.22em] uppercase" style="color: var(--fg-muted);">
+      <span>TRIPPLE // IDENTITY</span>
+      <span id="phaseReadout">PHASE 01 — UNFOLD</span>
+    </div>
+
+    <!-- Central Tri-Fold Parallax Monolith -->
+    <div class="monolith-stage">
+      <svg
+        class="monolith-svg"
+        viewBox="0 0 96 108"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        shape-rendering="geometricPrecision"
+        aria-hidden="true"
+      >
+        <!-- Subtle vertical structural guide hairlines -->
+        <line x1="22" y1="6" x2="22" y2="102" stroke="currentColor" stroke-opacity="0.08" stroke-width="0.75" />
+        <line x1="48" y1="6" x2="48" y2="102" stroke="currentColor" stroke-opacity="0.08" stroke-width="0.75" />
+        <line x1="74" y1="6" x2="74" y2="102" stroke="currentColor" stroke-opacity="0.08" stroke-width="0.75" />
+
+        <!-- BLADE 1: Left Cantilevered Monolith (Beveled top-left architectural cut) -->
+        <polygon
+          class="blade blade-left"
+          points="15,24 29,16 29,82 15,90"
+          fill="currentColor"
+        />
+
+        <!-- BLADE 2: Central Axis Monolith (Forms the 'T' crown & central spine) -->
+        <polygon
+          class="blade blade-center"
+          points="35,14 61,14 61,25 54,25 54,94 42,94 42,25 35,25"
+          fill="currentColor"
+        />
+
+        <!-- BLADE 3: Right Counter-Balanced Monolith (Inverted bevel symmetry) -->
+        <polygon
+          class="blade blade-right"
+          points="67,18 81,26 81,92 67,84"
+          fill="currentColor"
+        />
+
+        <!-- Brushed Champagne/Bronze Registration Hairline -->
+        <line
+          class="axis-rule"
+          x1="8"
+          y1="54"
+          x2="88"
+          y2="54"
+          stroke="var(--accent-bronze)"
+          stroke-width="1.25"
+        />
+      </svg>
+
+      <!-- Masked Editorial Wordmark -->
+      <div class="flex flex-col items-center gap-2.5">
+        <div class="wordmark-mask">
+          <span class="wordmark-text">TRIPPLE</span>
+        </div>
+        <span id="loaderStatusText" class="status-caption">CALIBRATING SPACE</span>
+      </div>
+    </div>
+
+    <!-- Floating Studio Control Bar (Only visible when user chooses "Inspect Loop Mode") -->
+    <div
+      id="loopInspectorBar"
+      class="hidden fixed bottom-12 sm:bottom-14 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full flex items-center gap-3 sm:gap-4 shadow-2xl backdrop-blur-md"
+      style="background-color: var(--bg-elevated); border: 1px solid var(--hairline-strong);"
+    >
+      <div class="flex items-center gap-2 pl-2">
+        <span class="w-2 h-2 rounded-full bg-[#C5A880]"></span>
+        <span class="text-[11px] font-mono tracking-[0.16em] uppercase" style="color: var(--fg-secondary);">Loop Hold Active</span>
+      </div>
+      <div class="h-4 w-[1px]" style="background-color: var(--hairline-strong);"></div>
+      <button
+        onclick="toggleTheme()"
+        class="px-3 py-1.5 rounded-full text-xs font-medium btn-architectural cursor-pointer"
+        title="Switch Obsidian / Limestone Theme"
+      >
+        Theme
+      </button>
+      <button
+        onclick="triggerExitToApp()"
+        class="px-4 py-1.5 rounded-full text-xs font-medium btn-primary-architectural cursor-pointer"
+      >
+        Release Curtain →
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       UNDERLYING APPLICATION & MOTION IDENTITY SHOWCASE CANVAS
+       ======================================================================== -->
+  <main id="appShell" class="min-h-screen flex flex-col justify-between max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-8 sm:py-12">
+    
+    <!-- Header Navigation Bar -->
+    <header class="flex flex-wrap items-center justify-between gap-4 pb-8 border-b" style="border-color: var(--hairline);">
+      <div class="flex items-center gap-3.5">
+        <!-- Mini Static Monolith Mark -->
+        <svg class="w-6 h-7" viewBox="0 0 96 108" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <polygon points="15,24 29,16 29,82 15,90" fill="currentColor"/>
+          <polygon points="35,14 61,14 61,25 54,25 54,94 42,94 42,25 35,25" fill="currentColor"/>
+          <polygon points="67,18 81,26 81,92 67,84" fill="currentColor"/>
+          <line x1="8" y1="54" x2="88" y2="54" stroke="var(--accent-bronze)" stroke-width="2"/>
+        </svg>
+        <div>
+          <span class="text-xs font-semibold tracking-[0.34em] uppercase block">TRIPPLE</span>
+          <span class="text-[11px] font-mono tracking-[0.14em] uppercase" style="color: var(--fg-secondary);">Motion Identity System v1.0</span>
+        </div>
+      </div>
+
+      <!-- Quick Studio Actions -->
+      <div class="flex flex-wrap items-center gap-2.5">
+        <button
+          id="themeToggleBtn"
+          onclick="toggleTheme()"
+          class="px-3.5 py-2 rounded-lg text-xs font-medium btn-architectural flex items-center gap-2 cursor-pointer"
+        >
+          <span id="themeIndicatorDot" class="w-2 h-2 rounded-full bg-[#C5A880]"></span>
+          <span id="themeLabel">Obsidian Dark</span>
+        </button>
+
+        <button
+          id="reducedMotionBtn"
+          onclick="toggleReducedMotion()"
+          class="px-3.5 py-2 rounded-lg text-xs font-medium btn-architectural flex items-center gap-2 cursor-pointer"
+          aria-pressed="false"
+        >
+          <span id="motionStatusLabel">Reduced Motion: Off</span>
+        </button>
+
+        <button
+          onclick="openCodeModal()"
+          class="px-4 py-2 rounded-lg text-xs font-medium btn-primary-architectural cursor-pointer"
+        >
+          Inspect / Copy Code
+        </button>
+      </div>
+    </header>
+
+    <!-- Editorial Hero & Interactive Choreography Controls -->
+    <section class="py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <div class="lg:col-span-7 space-y-6">
+        <div class="inline-flex items-center gap-2.5 px-3 py-1 rounded-full text-[11px] font-mono tracking-[0.18em] uppercase" style="background-color: var(--bg-surface); border: 1px solid var(--hairline); color: var(--accent-bronze);">
+          <span>Art Direction</span>
+          <span>•</span>
+          <span>Tri-Fold Parallax Monolith</span>
+        </div>
+
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] tracking-tight">
+          Architectural restraint in motion.
+        </h1>
+
+        <p class="text-sm sm:text-base leading-relaxed max-w-xl" style="color: var(--fg-secondary);">
+          Designed exclusively for <strong style="color: var(--fg-primary); font-weight: 500;">Tripple</strong>, this signature loading sequence rejects generic spinners in favor of three precision-beveled geometric monoliths. Choreographed purely on the GPU with custom architectural deceleration curves, it unfolds from masked space, balances in quiet parallax equilibrium, and lifts cleanly as a curtain.
+        </p>
+
+        <!-- Primary Interactive Trigger Buttons -->
+        <div class="pt-2 flex flex-wrap items-center gap-3.5">
+          <button
+            onclick="replayFullSequence()"
+            class="px-5 py-3 rounded-xl text-xs sm:text-sm font-medium btn-primary-architectural flex items-center gap-2.5 cursor-pointer shadow-lg"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 3v5h5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Replay Full Sequence</span>
+          </button>
+
+          <button
+            onclick="enterInspectLoopMode()"
+            class="px-5 py-3 rounded-xl text-xs sm:text-sm font-medium btn-architectural flex items-center gap-2.5 cursor-pointer"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M10 9v6M14 9v6" stroke-linecap="round"/>
+            </svg>
+            <span>Inspect Loop Mode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Stage Preview Card (Synchronized Mini Specimen) -->
+      <div class="lg:col-span-5 surface-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between min-h-[300px] relative overflow-hidden">
+        <div class="flex items-center justify-between text-[11px] font-mono tracking-[0.18em] uppercase" style="color: var(--fg-muted);">
+          <span>SPECIMEN // 01</span>
+          <span style="color: var(--accent-bronze);">60 FPS GPU</span>
+        </div>
+
+        <!-- Always-visible miniature specimen running the Phase 2 Loop -->
+        <div class="my-8 flex flex-col items-center justify-center gap-5">
+          <div class="tripple-loader-overlay !static !inset-auto !bg-transparent !w-auto !h-auto !z-0" data-phase="looping">
+            <svg class="w-20 h-24 overflow-visible" viewBox="0 0 96 108" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+              <line x1="22" y1="6" x2="22" y2="102" stroke="currentColor" stroke-opacity="0.08" stroke-width="0.75" />
+              <line x1="48" y1="6" x2="48" y2="102" stroke="currentColor" stroke-opacity="0.08" stroke-width="0.75" />
+              <line x1="74" y1="6" x2="74" y2="102" stroke="currentColor" stroke-opacity="0.08" stroke-width="0.75" />
+              <polygon class="blade blade-left" points="15,24 29,16 29,82 15,90" fill="currentColor" />
+              <polygon class="blade blade-center" points="35,14 61,14 61,25 54,25 54,94 42,94 42,25 35,25" fill="currentColor" />
+              <polygon class="blade blade-right" points="67,18 81,26 81,92 67,84" fill="currentColor" />
+              <line class="axis-rule" x1="8" y1="54" x2="88" y2="54" stroke="var(--accent-bronze)" stroke-width="1.25" />
+            </svg>
+          </div>
+          <span class="text-[11px] font-medium tracking-[0.42em] pl-[0.42em] uppercase">TRIPPLE</span>
+        </div>
+
+        <div class="pt-4 border-t flex items-center justify-between text-[11px] font-mono" style="border-color: var(--hairline); color: var(--fg-secondary);">
+          <span>COMPOSITE: TRANSFORM / OPACITY</span>
+          <span>ZERO JS LOOPS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Choreographed Timeline Breakdown -->
+    <section class="py-6 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+      <div class="surface-card rounded-2xl p-6 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-mono tracking-[0.18em] uppercase" style="color: var(--accent-bronze);">Phase 01 // 0.0s – 0.9s</span>
+          <span class="text-[11px] font-mono" style="color: var(--fg-muted);">90ms Stagger</span>
+        </div>
+        <h2 class="text-base font-medium">Architectural Unfold</h2>
+        <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--fg-secondary);">
+          Three geometric blades emerge sequentially from masked clip-paths along vertical structural guides, interlocking into the Tripple monogram while the bronze registration axis draws outward.
+        </p>
+      </div>
+
+      <div class="surface-card rounded-2xl p-6 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-mono tracking-[0.18em] uppercase" style="color: var(--accent-bronze);">Phase 02 // 0.9s – Ready</span>
+          <span class="text-[11px] font-mono" style="color: var(--fg-muted);">2.4s Cycle</span>
+        </div>
+        <h2 class="text-base font-medium">Kinetic Equilibrium</h2>
+        <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--fg-secondary);">
+          Rather than rotating, the outer monoliths counter-shift in subtle spatial parallax while the central 'T' axis anchors the composition, breathing in symmetric <code class="font-mono text-[11px]">cubic-bezier(0.65, 0, 0.35, 1)</code> cadence.
+        </p>
+      </div>
+
+      <div class="surface-card rounded-2xl p-6 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-mono tracking-[0.18em] uppercase" style="color: var(--accent-bronze);">Phase 03 // On Ready</span>
+          <span class="text-[11px] font-mono" style="color: var(--fg-muted);">0.95s Curtain</span>
+        </div>
+        <h2 class="text-base font-medium">Convergence & Release</h2>
+        <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--fg-secondary);">
+          Once content resolves, the lateral blades collapse inward into a single razor-thin spine, the wordmark masks downward, and the viewport lifts cleanly with zero layout shift.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer Metadata -->
+    <footer class="pt-8 mt-8 border-t flex flex-wrap items-center justify-between gap-4 text-xs" style="border-color: var(--hairline); color: var(--fg-muted);">
+      <span>TRIPPLE DESIGN SYSTEM — STANDALONE MOTION COMPONENT</span>
+      <span class="font-mono">EASING: CUBIC-BEZIER(0.22, 1, 0.36, 1)</span>
+    </footer>
+  </main>
+
+  <!-- ========================================================================
+       PRODUCTION CODE INSPECTION & COPY DRAWER MODAL
+       ======================================================================== -->
+  <div
+    id="codeModal"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="codeModalTitle"
+  >
+    <div class="w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[88vh]" style="background-color: var(--bg-surface); border: 1px solid var(--hairline-strong);">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b flex items-center justify-between" style="border-color: var(--hairline);">
+        <div>
+          <h3 id="codeModalTitle" class="text-sm font-medium tracking-wide">TrippleLoader — Production Component Snippet</h3>
+          <p class="text-xs mt-0.5" style="color: var(--fg-secondary);">Self-contained HTML, CSS keyframes, SVG monogram, and state controller.</p>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <button
+            id="copyCodeBtn"
+            onclick="copySnippetToClipboard()"
+            class="px-3.5 py-1.5 rounded-lg text-xs font-medium btn-primary-architectural cursor-pointer"
+          >
+            Copy Code
+          </button>
+          <button
+            onclick="closeCodeModal()"
+            class="p-2 rounded-lg btn-architectural cursor-pointer"
+            aria-label="Close code modal"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Code Display -->
+      <div class="p-6 overflow-auto flex-1" style="background-color: var(--bg-canvas);">
+        <pre id="productionCodeBlock" class="text-xs font-mono leading-relaxed whitespace-pre overflow-x-auto" style="color: var(--fg-primary);"></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification (Replaces alert()) -->
+  <div
+    id="toastBanner"
+    class="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl text-xs font-mono tracking-wider uppercase shadow-xl opacity-0 pointer-events-none transition-opacity duration-300"
+    style="background-color: var(--fg-primary); color: var(--bg-canvas);"
+  >
+    Copied to clipboard
+  </div>
+
+  <!-- ========================================================================
+       LIGHTWEIGHT STATE MACHINE & SHOWCASE CONTROLLER
+       ======================================================================== -->
+  <script>
+    const loaderEl = document.getElementById('trippleLoader');
+    const phaseReadoutEl = document.getElementById('phaseReadout');
+    const loaderStatusTextEl = document.getElementById('loaderStatusText');
+    const loopInspectorBarEl = document.getElementById('loopInspectorBar');
+
+    let sequenceTimers = [];
+    let isLoopHoldMode = false;
+
+    function clearSequenceTimers() {
+      sequenceTimers.forEach(id => clearTimeout(id));
+      sequenceTimers = [];
+    }
+
+    function setLoaderPhase(phase) {
+      loaderEl.setAttribute('data-phase', phase);
+
+      if (phase === 'entering') {
+        phaseReadoutEl.textContent = 'PHASE 01 — UNFOLD';
+        loaderStatusTextEl.textContent = 'CALIBRATING SPACE';
+      } else if (phase === 'looping') {
+        phaseReadoutEl.textContent = 'PHASE 02 — EQUILIBRIUM';
+        loaderStatusTextEl.textContent = isLoopHoldMode ? 'INSPECTING LOOP CADENCE' : 'SYNCHRONIZING';
+      } else if (phase === 'exiting') {
+        phaseReadoutEl.textContent = 'PHASE 03 — RELEASE';
+        loaderStatusTextEl.textContent = 'READY';
+      }
+    }
+
+    /**
+     * Plays the complete 3-phase loading sequence:
+     * 1. Entrance Unfold (0ms -> 880ms)
+     * 2. Equilibrium Loop (880ms -> 2350ms)
+     * 3. Convergence & Curtain Lift (2350ms -> 3300ms)
+     */
+    function replayFullSequence() {
+      clearSequenceTimers();
+      isLoopHoldMode = false;
+      loopInspectorBarEl.classList.add('hidden');
+
+      // Reset DOM animation cleanly
+      loaderEl.style.display = 'flex';
+      loaderEl.setAttribute('data-phase', 'reset');
+      void loaderEl.offsetWidth; // Force reflow once on explicit user replay
+
+      setLoaderPhase('entering');
+
+      const toLoopTimer = setTimeout(() => {
+        setLoaderPhase('looping');
+      }, 880);
+
+      const toExitTimer = setTimeout(() => {
+        triggerExitToApp();
+      }, 2350);
+
+      sequenceTimers.push(toLoopTimer, toExitTimer);
+    }
+
+    /**
+     * Holds the loader in Phase 2 (Continuous Parallax Equilibrium)
+     * so designers/engineers can inspect easing and light/dark themes.
+     */
+    function enterInspectLoopMode() {
+      clearSequenceTimers();
+      isLoopHoldMode = true;
+
+      loaderEl.style.display = 'flex';
+      loaderEl.setAttribute('data-phase', 'reset');
+      void loaderEl.offsetWidth;
+
+      setLoaderPhase('entering');
+
+      const toLoopTimer = setTimeout(() => {
+        setLoaderPhase('looping');
+        loopInspectorBarEl.classList.remove('hidden');
+      }, 880);
+
+      sequenceTimers.push(toLoopTimer);
+    }
+
+    /**
+     * Triggers Phase 3: Monolith convergence + upward curtain release
+     */
+    function triggerExitToApp() {
+      clearSequenceTimers();
+      isLoopHoldMode = false;
+      loopInspectorBarEl.classList.add('hidden');
+
+      setLoaderPhase('exiting');
+
+      const hideTimer = setTimeout(() => {
+        setLoaderPhase('hidden');
+      }, 960);
+
+      sequenceTimers.push(hideTimer);
+    }
+
+    /**
+     * Toggle Obsidian Dark (#0B0B0C) vs Warm Limestone (#F5F3EE)
+     */
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      const isLight = htmlEl.classList.toggle('light-theme');
+      const themeLabel = document.getElementById('themeLabel');
+      themeLabel.textContent = isLight ? 'Limestone Light' : 'Obsidian Dark';
+    }
+
+    /**
+     * Toggle Reduced Motion Preview (simulates prefers-reduced-motion: reduce)
+     */
+    function toggleReducedMotion() {
+      const htmlEl = document.documentElement;
+      const btn = document.getElementById('reducedMotionBtn');
+      const label = document.getElementById('motionStatusLabel');
+      const isReduced = htmlEl.classList.toggle('force-reduced-motion');
+
+      btn.setAttribute('aria-pressed', String(isReduced));
+      label.textContent = isReduced ? 'Reduced Motion: On' : 'Reduced Motion: Off';
+      showToast(isReduced ? 'Reduced motion fallback enabled' : 'Full motion choreography enabled');
+    }
+
+    /**
+     * Production Code Snippet Modal & Clipboard Copy
+     */
+    const PRODUCTION_SNIPPET = `<!-- TRIPPLE SIGNATURE LOADER COMPONENT -->
+<div id="tripple-loader" class="tripple-loader" data-phase="entering" role="status" aria-live="polite" aria-label="Loading Tripple">
+  <div class="tripple-stage">
+    <svg class="tripple-monolith" viewBox="0 0 96 108" fill="none" shape-rendering="geometricPrecision" aria-hidden="true">
+      <line x1="22" y1="6" x2="22" y2="102" stroke="currentColor" stroke-opacity="0.08" stroke-width="0.75" />
+      <line x1="48" y1="6" x2="48" y2="102" stroke="currentColor" stroke-opacity="0.08" stroke-width="0.75" />
+      <line x1="74" y1="6" x2="74" y2="102" stroke="currentColor" stroke-opacity="0.08" stroke-width="0.75" />
+      <polygon class="blade blade-left" points="15,24 29,16 29,82 15,90" fill="currentColor" />
+      <polygon class="blade blade-center" points="35,14 61,14 61,25 54,25 54,94 42,94 42,25 35,25" fill="currentColor" />
+      <polygon class="blade blade-right" points="67,18 81,26 81,92 67,84" fill="currentColor" />
+      <line class="axis-rule" x1="8" y1="54" x2="88" y2="54" stroke="#C5A880" stroke-width="1.25" />
+    </svg>
+    <div class="tripple-wordmark-mask">
+      <span class="tripple-wordmark">TRIPPLE</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .tripple-loader {
+    --bg: #0B0B0C;
+    --fg: #F4F2ED;
+    --ease-arch: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-sym: cubic-bezier(0.65, 0, 0.35, 1);
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg); color: var(--fg);
+    transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .tripple-loader[data-phase="exiting"] { transform: translateY(-100%); pointer-events: none; }
+  .tripple-stage { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .tripple-monolith { width: 96px; height: 108px; overflow: visible; }
+  .blade { will-change: transform, clip-path, opacity; transform-box: fill-box; }
+  .axis-rule { transform-origin: 48px 54px; will-change: transform, opacity; }
+
+  /* Phase 1: Staggered Architectural Unfold */
+  .tripple-loader[data-phase="entering"] .blade-left { animation: tEnterL 0.78s var(--ease-arch) 0.05s both; }
+  .tripple-loader[data-phase="entering"] .blade-center { animation: tEnterC 0.78s var(--ease-arch) 0.14s both; }
+  .tripple-loader[data-phase="entering"] .blade-right { animation: tEnterR 0.78s var(--ease-arch) 0.23s both; }
+  .tripple-loader[data-phase="entering"] .axis-rule { animation: tRule 0.72s var(--ease-arch) 0.36s both; }
+
+  /* Phase 2: Kinetic Parallax Equilibrium */
+  .tripple-loader[data-phase="looping"] .blade-left { animation: tLoopL 2.4s var(--ease-sym) infinite; }
+  .tripple-loader[data-phase="looping"] .blade-center { animation: tLoopC 2.4s var(--ease-sym) infinite; }
+  .tripple-loader[data-phase="looping"] .blade-right { animation: tLoopR 2.4s var(--ease-sym) infinite; }
+  .tripple-loader[data-phase="looping"] .axis-rule { animation: tLoopRule 2.4s var(--ease-sym) infinite; }
+
+  /* Phase 3: Razor Convergence */
+  .tripple-loader[data-phase="exiting"] .blade-left { transform: translate3d(26px,0,0) scaleX(0.3); opacity: 0; transition: all 0.4s var(--ease-arch); }
+  .tripple-loader[data-phase="exiting"] .blade-right { transform: translate3d(-26px,0,0) scaleX(0.3); opacity: 0; transition: all 0.4s var(--ease-arch); }
+  .tripple-loader[data-phase="exiting"] .blade-center { transform: scaleX(0.25) scaleY(1.18); opacity: 0; transition: all 0.5s var(--ease-arch) 0.08s; }
+  .tripple-loader[data-phase="exiting"] .axis-rule { transform: scaleX(0); opacity: 0; transition: all 0.3s var(--ease-arch); }
+
+  .tripple-wordmark-mask { overflow: hidden; }
+  .tripple-wordmark { display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.42em; padding-left: 0.42em; }
+  .tripple-loader[data-phase="entering"] .tripple-wordmark { animation: tWord 0.75s var(--ease-arch) 0.38s both; }
+  .tripple-loader[data-phase="exiting"] .tripple-wordmark { transform: translateY(115%); opacity: 0; transition: all 0.35s var(--ease-arch); }
+
+  @keyframes tEnterL { from { opacity: 0; clip-path: inset(100% 0 0 0); transform: translate3d(-10px,18px,0); } to { opacity: 1; clip-path: inset(0); transform: none; } }
+  @keyframes tEnterC { from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translate3d(0,-18px,0); } to { opacity: 1; clip-path: inset(0); transform: none; } }
+  @keyframes tEnterR { from { opacity: 0; clip-path: inset(100% 0 0 0); transform: translate3d(10px,18px,0); } to { opacity: 1; clip-path: inset(0); transform: none; } }
+  @keyframes tRule { from { opacity: 0; transform: scaleX(0); } to { opacity: 1; transform: scaleX(1); } }
+  @keyframes tWord { from { opacity: 0; transform: translateY(115%); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes tLoopL { 0%,100% { transform: none; opacity: 1; } 45%,55% { transform: translate3d(-3.5px,-5px,0); opacity: 0.78; } }
+  @keyframes tLoopC { 0%,100% { transform: none; } 45%,55% { transform: translate3d(0,2.5px,0) scaleY(0.95); } }
+  @keyframes tLoopR { 0%,100% { transform: none; opacity: 1; } 45%,55% { transform: translate3d(3.5px,5px,0); opacity: 0.78; } }
+  @keyframes tLoopRule { 0%,100% { transform: scaleX(1); } 45%,55% { transform: scaleX(1.22); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tripple-loader, .blade, .axis-rule, .tripple-wordmark { animation: none !important; transition: opacity 0.35s ease !important; transform: none !important; clip-path: none !important; }
+    .tripple-loader[data-phase="exiting"] { opacity: 0 !important; }
+  }
+</style>
+
+<script>
+  // Usage: Transition from 'entering' -> 'looping' after 880ms, then call dismissTrippleLoader() when app data resolves.
+  const loader = document.getElementById('tripple-loader');
+  setTimeout(() => { if (loader.dataset.phase === 'entering') loader.dataset.phase = 'looping'; }, 880);
+  window.dismissTrippleLoader = () => {
+    loader.dataset.phase = 'exiting';
+    setTimeout(() => loader.remove(), 960);
+  };
+<\/script>`;
+
+    function openCodeModal() {
+      document.getElementById('productionCodeBlock').textContent = PRODUCTION_SNIPPET;
+      document.getElementById('codeModal').classList.remove('hidden');
+    }
+
+    function closeCodeModal() {
+      document.getElementById('codeModal').classList.add('hidden');
+    }
+
+    function copySnippetToClipboard() {
+      const textArea = document.createElement('textarea');
+      textArea.value = PRODUCTION_SNIPPET;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-9999px';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Production component copied');
+      } catch (err) {
+        showToast('Unable to copy automatically');
+      }
+      document.body.removeChild(textArea);
+    }
+
+    let toastTimer;
+    function showToast(message) {
+      const toast = document.getElementById('toastBanner');
+      toast.textContent = message;
+      toast.style.opacity = '1';
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.style.opacity = '0';
+      }, 2400);
+    }
+
+    // Close modal on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCodeModal();
+    });
+
+    // Run signature sequence immediately on initial load
+    window.addEventListener('DOMContentLoaded', () => {
+      replayFullSequence();
+    });
+  </script>
+</body>
+</html>

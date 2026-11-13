@@ -1,0 +1,14 @@
+{
+  "name": "trippple-prototype-tools",
+  "private": true,
+  "description": "Screenshot and layout-check harness for the static prototypes (P06-04). Not part of the app.",
+  "type": "module",
+  "scripts": {
+    "shots": "node screenshot.mjs",
+    "shots:axe": "node screenshot.mjs --axe"
+  },
+  "devDependencies": {
+    "axe-core": "4.10.3",
+    "playwright": "1.58.2"
+  }
+}

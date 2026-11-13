@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Task | P05-05 |
-| Version | 1.1 — T-16 review fixes applied (2026-11-12); draft for G3 review |
+| Version | 2.1 — 2026-11-13 (A-17): bright crimson `#DF2F4D` for fills (button, radio, switch, heart, dot), deep crimson `#B3263E` (`--color-accent-deep`) for selected labels, checks, underlines, bars, spinners and rings; white background; tints re-derived; skeleton without gradient. 2.0: identity v2 (A-16). v1.2 (lavender) was approved at G3 (A-15). For review (G3-R2) |
 | Date | 2026-11-12 |
 | Scope | Every component on the R1 screens (D-02: discover, view, auth, likes, profile, search, tags, minimal username step) |
 | Sources | D-02; [03 Component inventory](../reverse-engineering/03-component-inventory.md) and [02 Frontend analysis](../reverse-engineering/02-frontend-analysis.md) (layout/behaviour only); [PROJECT_ASSESSMENT §8–9](../00-project-assessment/PROJECT_ASSESSMENT.md#8-navigation-structure-clone-information-architecture) |
@@ -13,7 +13,7 @@
 
 **Pillar key:** **N** = neumorphism · **G** = glassmorphism · **M** = minimalism.
 **State key:** Default · Hover · Focus · Active/Pressed · Selected · Disabled · Loading · Error · Empty. A state that can't occur is marked *n/a* with the reason. Focus is always the global ring (`--focus-ring-*`: 2 px `--color-focus-ring` outline, 2 px offset) unless stated. Reduced motion follows the global rule (DESIGN_TOKENS §9): transforms and loops stop; colour/opacity changes stay (≤ `--duration-fast`).
-**Selected language** (CONST §7, T16-11): on `bg`/`bg-2` = inset well + 1.5 px `--color-selected-ring` + `--color-accent-strong` 600 label; inside glass = opaque `--color-accent-subtle` fill + ring + `--color-accent-strong` 600 label; segment in an inset track = raised-sm thumb + ring + accent label; navigation current page = `aria-current` + `--color-accent-strong` indicator bar/underline + 600 label in `--color-text-primary`; radio = filled dot; menu option = `--color-accent-strong` check icon + 600 label in `--color-text-primary`.
+**Selected language** (CONST §7, T16-11; v2 crimson): on `bg`/`bg-2` = `--color-accent-subtle` (primary light) inset well + 1.5 px deep crimson `--color-selected-ring` + deep crimson `--color-accent-deep` 600 label (5.71:1); inside glass = opaque `--color-accent-subtle` fill + ring + `--color-accent-strong` 600 label; segment in an inset track = raised-sm thumb + ring + accent label; navigation current page = `aria-current` + `--color-accent-strong` indicator bar/underline + 600 label in `--color-text-primary`; radio = filled dot; menu option = `--color-accent-strong` check icon + 600 label in `--color-text-primary`.
 **Glass rule** (T16-02): raised neumorphism never appears inside glass. Any `.neu-control` inside `.glass-*` is flattened automatically (transparent; hover `--color-accent-subtle-hover`; pressed `--color-bg-2`; selected = glass selected language). Fields inside glass use the `--color-bg-2` fill with the bg-2 inset.
 
 ---
@@ -107,7 +107,7 @@ Auth actions (T16-02): "Log in" = **Secondary-on-glass** (`.ui-btn--on-glass`), 
 |---|---|
 | Default | Glass over `--color-bg`; `--glass-hairline` + `--shadow-glass-sm` |
 | Hover / Focus / Active | Per contained control (all flattened on glass) |
-| Selected | Current section: nav link gets a 2 px `--color-accent-strong` underline indicator (≥ 3.50:1 on worst-case subtle glass) + 600 `--color-text-primary` label + `aria-current="page"` |
+| Selected | Current section: nav link gets a 2 px `--color-accent-deep` underline indicator (deep crimson ≥ 4.01:1 on worst-case subtle glass; bright crimson would be 2.81) + 600 `--color-text-primary` label + `aria-current="page"` |
 | Disabled, Error, Empty | *n/a* |
 | Loading | Auth area shows a 32 px avatar skeleton until the session resolves (no layout shift) |
 | Reduced transparency / no backdrop-filter | Opaque `--glass-fallback-bg` + `--color-border-subtle` border |
@@ -122,7 +122,7 @@ States: focus ring; hover `opacity: 0.8`; others *n/a*.
 
 ### C05 PrimaryNav & ExploreMenu
 Pillar G. R1 nav: "Explore" (disclosure) and "Tags" (`.ui-header__nav`). ExploreMenu panel = `.glass-panel.ui-menu`, `--radius-card-lg`, padding 8, offset 8 below the trigger; links: Popular, Recent, 8 categories (neutral labels).
-Desktop-nav breakpoint: **pending the user (T16-04, see §12.2)**; CSS currently shows it from 1024 px.
+Desktop-nav breakpoint: **1024 px** (D-24e, approved 2026-11-12; see §12). Trigger and links use `.ui-btn--ghost.ui-nav-link`; current page = `[aria-current]` underline; open trigger = `[aria-expanded=true]` (accent-subtle + ring, chevron `.ui-chevron` rotated).
 
 | State | Treatment |
 |---|---|
@@ -139,14 +139,14 @@ Desktop-nav breakpoint: **pending the user (T16-04, see §12.2)**; CSS currently
 **Tokens:** `--glass-panel-bg`, `--blur-glass-md`, `--shadow-glass-md`, `--radius-card-lg`, `--radius-control`, `--space-2`, `--color-accent-subtle`, `--color-accent-subtle-hover`, `--color-bg-2`, `--duration-moderate`, `--duration-exit-moderate`, `--ease-enter`, `--ease-exit`, `--motion-offset-sm`, `--z-dropdown`.
 
 ### C06 MobileNavDrawer
-Pillar G (`.glass-panel`, over `.glass-scrim`). Burger IconButton opens a full-height sheet from the right (width `min(100%, 360px)`), `--radius-panel` on the leading corners. Content: search, Explore (accordion), Tags, auth actions (Log in = `.ui-btn--on-glass`, Sign up = primary, both full width).
+Pillar G (`.ui-drawer.glass-panel`, over `.glass-scrim`; rows `.ui-drawer__link`, sub-list `.ui-drawer__sub`, actions `.ui-drawer__actions`, enter `.glass-enter-drawer`). Burger IconButton opens a full-height sheet from the right (width `min(100%, 360px)`), `--radius-panel` on the leading corners. Content: search, Explore (accordion), Tags, auth actions (Log in = `.ui-btn--on-glass`, Sign up = primary, both full width).
 
 | State | Treatment |
 |---|---|
 | Default (closed) | Burger icon `--color-text-primary` |
 | Open | Panel slides in 8 px + fades (`--duration-slow`, `--ease-enter`); scrim fades; body scroll locked |
 | Hover / Focus / Active | Rows: `--color-accent-subtle-hover` / ring / `--color-bg-2` |
-| Selected (current page) | **`--color-text-primary` 600 label + 3 px `--color-accent-strong` leading bar** + `aria-current="page"` (T16-01: accent text is not allowed on panel glass; the bar is a ≥ 3:1 indicator, 4.38:1 worst case in T-15) |
+| Selected (current page) | **`--color-text-primary` 600 label + 3 px `--color-accent-strong` leading bar** + `aria-current="page"` (one selected language across glass levels; the deep crimson `--color-accent-deep` bar is 4.98:1 worst case in T-15 v2.1) |
 | Disabled, Error, Empty, Loading | *n/a* (static navigation) |
 | Reduced motion | Fade only |
 
@@ -169,7 +169,7 @@ Pillar G. Trigger = **flat** Avatar md (40 px, hit 44) — no neumorphic ring on
 **Tokens:** `--avatar-md`, `--touch-min`, `--glass-panel-bg`, `--radius-card-lg`, `--color-accent-subtle-hover`, `--color-bg-2`, `--color-selected-ring`, `--selected-ring-width`, `--text-body-sm`.
 
 ### C08 SiteFooter
-Pillar M. `--color-bg-2` band (`.neu-context-bg2`), `--gutter` padding, 3 link columns (Explore, Company, Legal), BrandSlot, © line. Links `--color-text-secondary` (4.94:1 on bg-2) → hover `--color-text-primary` + underline. **Each footer link is a block with min-height 44 px** (T16-08).
+Pillar M (`.ui-footer.neu-context-bg2`, links `.ui-footer__link`). `--color-bg-2` band, `--gutter` padding, 3 link columns (Explore, Company, Legal), BrandSlot, © line. Links `--color-text-secondary` (4.64:1 on bg-2) → hover `--color-text-primary` + underline. **Each footer link is a block with min-height 44 px** (T16-08).
 States: hover/focus per TextLink; others *n/a*.
 **Tokens:** `--color-bg-2`, `--color-text-secondary`, `--color-text-primary`, `--text-body-sm`, `--touch-min`, `--space-3`, `--space-4`, `--gutter`.
 
@@ -229,7 +229,7 @@ Pillar N trigger + G listbox. Trigger: "Popular ▾" (`.ui-btn.neu-control`); li
 **Tokens:** C10 shadow set + `--glass-panel-bg`, `--blur-glass-md`, `--shadow-glass-md`, `--radius-card-lg`, `--color-accent-subtle-hover`, `--color-accent-strong`, `--z-dropdown`.
 
 ### C12 FilterToggle & FilterPanel
-Pillar N. Explore and home feeds only — **search results pages have no explore filter bar** (FR-31: no C10–C14). Toggle: secondary button "Filters" with filter icon and accent Badge count. Panel: inline below the filter bar, `--color-bg-2` surface (`.neu-context-bg2`), `--radius-panel`, padding 24; two columns ≥ md (Tags | Timeframe), stacked below; "Clear" ghost button per group, "Clear all" when any set. URL is the state.
+Pillar N (`.ui-filter-bar` = sort · pill row · toggle; `.ui-filter-panel.neu-context-bg2` with `.ui-filter-panel__group`; open toggle = `.neu-control.is-selected` + `aria-expanded`). Explore and home feeds only — **search results pages have no explore filter bar** (FR-31: no C10–C14). Toggle: secondary button "Filters" with filter icon and accent Badge count. Panel: inline below the filter bar, `--color-bg-2` surface (`.neu-context-bg2`), `--radius-panel`, padding 24; two columns ≥ md (Tags | Timeframe), stacked below; "Clear" ghost button per group, "Clear all" when any set. URL is the state.
 
 | State | Treatment |
 |---|---|
@@ -245,7 +245,7 @@ Pillar N. Explore and home feeds only — **search results pages have no explore
 **Tokens:** `--color-bg-2`, `--radius-panel`, `--space-6`, bg-2 shadow set (`--neu-raised-sm-bg2`, `--neu-inset-bg2`, `--neu-pressed-bg2`), `--color-selected-ring`, `--color-accent-strong`, `--duration-moderate`.
 
 ### C13 TagFilter
-Pillar N. Combobox: TextField (C30) with tag icon and a suggestions listbox (`.glass-panel.ui-menu`) from popular tags. **R1 allows one tag** (FR-25, single `tag` URL parameter): the chosen tag is shown as one removable TagChip; choosing another tag replaces it.
+Pillar N (`.ui-search` with tag icon + `.ui-chip--removable` / `.ui-chip__remove`). Combobox: TextField (C30) with tag icon and a suggestions listbox (`.glass-panel.ui-menu`) from popular tags. **R1 allows one tag** (FR-25, single `tag` URL parameter): the chosen tag is shown as one removable TagChip; choosing another tag replaces it.
 
 | State | Treatment |
 |---|---|
@@ -260,7 +260,7 @@ Pillar N. Combobox: TextField (C30) with tag icon and a suggestions listbox (`.g
 **Tokens:** C30 tokens + `--glass-panel-bg`, `--color-accent-subtle-hover`, `--color-text-secondary`, `--color-skeleton`.
 
 ### C14 TimeframeFilter
-Pillar N. Radio group: **Trending now, Past 7 days, Past 30 days, Past 12 months, All time** (neutral labels). ≥ md: vertical radio rows (44 px each); below md: SegmentedControl (C44) scrolling horizontally.
+Pillar N (`.ui-radio-group` / `.ui-radio` / `.ui-radio__dot` ≥ md; `.ui-segmented` below md). Radio group: **Trending now, Past 7 days, Past 30 days, Past 12 months, All time** (neutral labels). ≥ md: vertical radio rows (44 px each); below md: SegmentedControl (C44) scrolling horizontally.
 
 | State | Treatment |
 |---|---|
@@ -310,24 +310,24 @@ Pillar M — **showcase priority applies** (`.ui-shot-card`). Anatomy: 4:3 media
 **Tokens:** `--radius-card`, `--shadow-elevation-0`, `--color-skeleton` (placeholder fallback), `--text-label`, `--text-metadata`, `--color-text-secondary`, `--color-highlight`, `--color-highlight-strong`, `--avatar-sm`, `--icon-sm`, `--space-2`, `--space-3`, `--focus-ring-*`.
 
 ### C17 ShotCardActionBar
-Pillar G (`.ui-shot-card__bar.glass-subtle`, `--blur-glass-sm`). Bottom strip of the media, inset 8 px, min-height 64 px, `--radius-control-lg`: title (1 line, `--text-label` 500 `--color-text-primary`) + LikeButton compact (opaque `--color-surface-elevated` 44 px circle, `--shadow-elevation-2`). R2/R3 add Save and **Message** here.
+Pillar G (`.ui-shot-card__bar.glass-subtle`, `--blur-glass-sm`). Bottom strip of the media, inset 8 px, min-height 64 px, `--radius-control-sm` (nearest token to the nested 8 px, T16-24): title (1 line, `--text-label` 500 `--color-text-primary`) + LikeButton compact (opaque `--color-surface-elevated` 44 px circle, `--shadow-elevation-2`). R2/R3 add Save and **Message** here.
 
 | State | Treatment |
 |---|---|
 | Default | Hidden (opacity 0, translateY 4 px); buttons stay in the tab order and reveal the bar on focus |
 | Hover / Focus-within | Opacity 1, translateY 0, `--duration-base`, `--ease-enter` |
 | Button hover / focus / pressed | Lift `--motion-lift` / ring / `scale(0.96)` |
-| Selected (liked) | Heart filled `--color-highlight` with `--color-highlight-strong` stroke on the opaque button (4.42:1) + `aria-pressed="true"` |
+| Selected (liked) | Heart filled `--color-highlight` with `--color-highlight-strong` stroke on the opaque button (bright fill 4.51:1, deep stroke 6.43:1) + `aria-pressed="true"` |
 | Loading | Like toggles optimistically; no spinner |
 | Error | Rollback + Toast |
 | Disabled, Empty | *n/a* |
 | Reduced motion | Opacity only (no translate, no lift, no scale) |
 
-Only `--color-text-primary` text on this glass (8.85:1 worst case); the heart sits in an opaque button.
-**Tokens:** `--glass-subtle-bg`, `--blur-glass-sm`, `--radius-control-lg`, `--space-2`, `--space-3`, `--space-4`, `--color-surface-elevated`, `--shadow-elevation-2`, `--z-raised`, `--duration-base`, `--duration-fast`, `--ease-enter`, `--motion-offset-sm`, `--motion-lift`.
+Only `--color-text-primary` text on this glass (9.71:1 worst case); the heart sits in an opaque button.
+**Tokens:** `--glass-subtle-bg`, `--blur-glass-sm`, `--radius-control-sm`, `--space-2`, `--space-3`, `--space-4`, `--color-surface-elevated`, `--shadow-elevation-2`, `--z-raised`, `--duration-base`, `--duration-fast`, `--ease-enter`, `--motion-offset-sm`, `--motion-lift`.
 
 ### C18 ShotGrid & feed loading
-Pillar M (`.gallery-grid`). `<ol>` grid: `repeat(auto-fill, minmax(min(100%, --gallery-min-col), 1fr))`, gap `--gallery-gap`. Column behaviour is **pending the user (T16-03, see §12.1)**. Loading: a sentinel loads the next 24 items automatically; a "Load more" secondary button is always present; a polite live region announces "Loaded 24 more shots".
+Pillar M (`.gallery-grid`). `<ol>` grid: `repeat(auto-fill, minmax(min(100%, --gallery-min-col), 1fr))`, gap `--gallery-gap`. Columns 1/2/3/4 at 360/768/1024/1280, max 5 (D-24e, approved 2026-11-12). Feed status rows: `.ui-feed-status` (Load more, error row `--error`, end caption `__caption`). Loading: a sentinel loads the next 24 items automatically; a "Load more" secondary button is always present; a polite live region announces "Loaded 24 more shots".
 **Focus (NFR-27, T16-05):** when the user activates **"Load more"**, focus moves to the first new card's link. Automatic (sentinel) loads never move focus.
 
 | State | Treatment |
@@ -348,7 +348,7 @@ Pillar M (`.gallery-grid`). `<ol>` grid: `repeat(auto-fill, minmax(min(100%, --g
 ## 4. Shot detail
 
 ### C19 ShotDetailHeader
-Pillar M. Title (`<h1>` styled `--text-h3`), author row (Avatar md, name link; "Follow" is R2 and not rendered), right: LikeButton (C20). Below md, actions wrap under the author row.
+Pillar M (`.ui-detail-header`, media `.ui-content-block`; Like uses `.ui-like--labelled`). Title (`<h1>` styled `--text-h3`), author row (author link 44 px high) (Avatar md, name link; "Follow" is R2 and not rendered), right: LikeButton (C20). Below md, actions wrap under the author row.
 
 | State | Treatment |
 |---|---|
@@ -362,7 +362,7 @@ Pillar M. Title (`<h1>` styled `--text-h3`), author row (Avatar md, name link; "
 **Tokens:** `--text-h3`, `--text-label`, `--avatar-md`, `--space-4`, `--space-6`.
 
 ### C20 LikeButton
-Pillar N (`.ui-like.neu-control`, toggle). Heart icon + count. Sizes: lg 48 px pill with "Like" label + count (detail); icon-only 44 px (cards; the action-bar variant is an opaque circle, C17). **There is no pink-filled button** (T16-12): the liked state uses the shared selected language plus a filled heart.
+Pillar N (`.ui-like.neu-control`, toggle). Heart icon + count. Sizes: lg 48 px pill with "Like" label + count (detail); icon-only 44 px (cards; the action-bar variant is an opaque circle, C17). **There is no crimson-filled like button** (T16-12): the liked state uses the shared selected language plus a filled crimson heart.
 
 | State | Treatment |
 |---|---|
@@ -370,7 +370,7 @@ Pillar N (`.ui-like.neu-control`, toggle). Heart icon + count. Sizes: lg 48 px p
 | Hover | `--shadow-neu-raised` + lift |
 | Focus | Ring |
 | Active | `--shadow-neu-pressed` |
-| Selected (liked) | Inset well + 1.5 px `--color-selected-ring`; heart filled `--color-highlight` with `--color-highlight-strong` stroke (icon ≥ 3.76:1); **label and count stay `--color-text-primary`** (pink-strong is not a text colour); `aria-pressed="true"`. Inside glass: `--color-accent-subtle` fill + ring (heart 4.10:1 on it) |
+| Selected (liked) | Primary-light inset well + 1.5 px `--color-selected-ring`; heart filled `--color-highlight` (crimson) with deep `--color-highlight-strong` stroke (5.71:1 on the well; bright fill 4.01:1); **label and count stay `--color-text-primary`** so the state is not carried by colour alone; `aria-pressed="true"`. Inside glass: `--color-accent-subtle` fill + ring (heart stroke 5.71:1) |
 | Disabled | *n/a* for signed-in users; signed-out users get an enabled button that opens AuthGateModal (C32) |
 | Loading | Optimistic (`useOptimistic`): state and count change instantly |
 | Error | Rollback + Toast "Couldn't save your like. Try again." |
@@ -380,7 +380,7 @@ Pillar N (`.ui-like.neu-control`, toggle). Heart icon + count. Sizes: lg 48 px p
 **Tokens:** `--shadow-neu-raised-sm`, `--shadow-neu-raised`, `--shadow-neu-inset`, `--shadow-neu-pressed`, `--color-selected-ring`, `--color-highlight`, `--color-highlight-strong`, `--color-text-primary`, `--color-accent-subtle`, `--icon-btn`, `--icon-btn-lg`, `--radius-pill`, `--text-metadata`.
 
 ### C21 ShotActionRail
-Pillar G (`.glass-subtle`, `--blur-glass-sm`). ≥ xl: vertical rail at the right edge, vertically centred, `--radius-pill`, padding 8, IconButtons Share and Details (Comments is R2). Below xl: a horizontal row of the same buttons under the media, as neumorphic IconButtons on `--color-bg` (no glass).
+Pillar G ≥ xl only (`.ui-action-rail.ui-action-rail--floating`: the class applies subtle-glass values and flattens its controls from 1280 px; below that it is a plain row, so no glass class is ever on raised controls). ≥ xl: vertical rail at the right edge, vertically centred, `--radius-pill`, padding 8, IconButtons Share and Details (Comments is R2). Below xl: a horizontal row of the same buttons under the media, as neumorphic IconButtons on `--color-bg` (no glass).
 
 | State | Treatment |
 |---|---|
@@ -392,20 +392,20 @@ Pillar G (`.glass-subtle`, `--blur-glass-sm`). ≥ xl: vertical rail at the righ
 **Tokens:** `--glass-subtle-bg`, `--blur-glass-sm`, `--radius-pill`, `--space-2`, `--icon-btn`, `--color-accent-subtle`, `--color-accent-subtle-hover`, `--color-bg-2`, `--color-selected-ring`, `--z-header`.
 
 ### C22 ShareModal
-Pillar G (Modal C48, `--container-modal-md`). Content: preview thumbnail (flat, `--radius-card`), title "Share this shot" `--text-h3`, external share links (X, Pinterest — no email share, FR-39) as **flat** IconButtons on an opaque `--color-bg-2` row (T16-37), "Copy link" read-only TextField + "Copy" primary button.
+Pillar G (Modal C48, `--container-modal-md`; share row `.ui-share-row`, copy row `.ui-copy-row`). Content: preview thumbnail (flat, `--radius-card`), title "Share this shot" `--text-h3`, external share links (X, Pinterest — no email share, FR-39) as **flat** IconButtons on an opaque `--color-bg-2` row (T16-37), "Copy link" read-only TextField + "Copy" primary button.
 
 | State | Treatment |
 |---|---|
 | Default / Hover / Focus / Pressed | Per contained controls (flat on glass) |
-| Selected (copied) | Button label → "Copied" with a **white check icon** (`--color-text-on-accent`, 5.62:1, T16-09) for 2 s + Toast "Link copied" (success icon in the toast) |
+| Selected (copied) | Button label → "Copied" with a **white check icon** (`--color-text-on-accent`, 4.51:1 on bright crimson, T16-09) for 2 s + Toast "Link copied" (success icon in the toast) |
 | Loading | *n/a* (local clipboard action) |
-| Error | Clipboard denied → field text auto-selected + caption "Press Ctrl+C / ⌘C to copy" (`--color-text-secondary`, 4.86:1 on modal glass) |
+| Error | Clipboard denied → field text auto-selected + caption "Press Ctrl+C / ⌘C to copy" (`--color-text-secondary`, 4.67:1 on modal glass) |
 | Disabled, Empty | *n/a* |
 
 **Tokens:** C48 tokens + `--radius-card`, `--color-bg-2`, `--color-accent-strong`, `--color-text-on-accent`, `--color-text-secondary`, `--text-h3`.
 
 ### C23 ShotDetailsModal
-Pillar G (Modal, md). "Shot details" `--text-h3`; "Posted 12 Nov 2026" `--color-text-secondary`; stats grid (Views, Likes; Saves/Comments in R2): numbers `--text-h4` tabular, labels `--text-caption` `--color-text-secondary`; Tags as TagChips.
+Pillar G (Modal, md; stats `.ui-stat-grid` as a `<dl>`). "Shot details" `--text-h3`; "Posted 12 Nov 2026" `--color-text-secondary`; stats grid (Views, Likes; Saves/Comments in R2): numbers `--text-h4` tabular, labels `--text-caption` `--color-text-secondary`; Tags as TagChips.
 
 | State | Treatment |
 |---|---|
@@ -501,7 +501,7 @@ Pillar M. Centred column (`--container-auth`) on `--color-bg`; BrandSlot on top;
 **Tokens:** `--container-auth`, `--text-h2`, `--text-caption`, `--color-text-secondary`, `--control-h-lg`, `--radius-panel`, `--space-4`, `--space-6`, `--space-8`.
 
 ### C30 TextField
-Pillar N (`.ui-field` + `.ui-input.neu-field`). Label above (`--text-label` 500, always visible), input `--input-h`, **`--radius-control` (12) by default; `.ui-input--lg` = `--radius-control-lg` (14) + `--control-h-lg` for auth** (T16-23); parent fill + `--shadow-neu-inset-sm` (bg-2 fill + bg-2 inset inside glass); text `--text-body`; placeholder `--color-text-secondary`; hint/error `--text-caption`.
+Pillar N (`.ui-field` + `.ui-input.neu-field`). Label above (`--text-label` 500, always visible), input `--input-h`, **`--radius-control-lg` (14) for every TextField; `.ui-input--lg` adds `--control-h-lg` for auth** (T16-23, matches the CSS); parent fill + `--shadow-neu-inset-sm` (bg-2 fill + bg-2 inset inside glass); text `--text-body`; placeholder `--color-text-secondary`; hint/error `--text-caption`.
 
 | State | Treatment |
 |---|---|
@@ -572,12 +572,12 @@ States: buttons per C40; others *n/a*.
 **Tokens:** `--color-danger`, `--text-h4`, `--color-text-secondary`, `--space-3`, `--space-16`.
 
 ### C36 Skeleton
-Pillar M (`.ui-skeleton`). Shapes mirror the final layout (card 4:3, text lines 12 px high, avatar circle). `--color-skeleton` base with a `--color-skeleton-shine` gradient (`--duration-shimmer`, linear, infinite); reduced motion: static. Container `aria-busy="true"`; skeletons `aria-hidden`. Decorative: not subject to contrast.
+Pillar M (`.ui-skeleton`). Shapes mirror the final layout (card 4:3, text lines 12 px high, avatar circle). `--color-skeleton` flat fill that pulses to `--color-skeleton-shine` (`--duration-shimmer`, ease-in-out, infinite; **no gradient**, A-17); reduced motion: static. Container `aria-busy="true"`; skeletons `aria-hidden`. Decorative: not subject to contrast.
 States: loading only; others *n/a*.
 **Tokens:** `--color-skeleton`, `--color-skeleton-shine`, `--duration-shimmer`, `--radius-card`, `--radius-pill`.
 
 ### C37 Spinner
-Pillar M (structural, `.ui-spinner`). 16/20/24 px ring: **arc `--color-accent-strong`, transparent track** (T16-10; ≥ 4.26:1 on every surface incl. panel glass); on primary buttons the arc is `--color-text-on-accent`. Rotation `--duration-spin` (900 ms, linear). **Reduced motion: static three-quarter arc** (the global rule stops the loop), always paired with visible or visually hidden text ("Loading").
+Pillar M (structural, `.ui-spinner`). 16/20/24 px ring: **arc `--color-accent-strong`, transparent track** (T16-10; ≥ 4.01:1 on every surface incl. worst-case glass); on primary buttons the arc is `--color-text-on-accent`. Rotation `--duration-spin` (900 ms, linear). **Reduced motion: static three-quarter arc** (the global rule stops the loop), always paired with visible or visually hidden text ("Loading").
 States: *n/a* (indicator only).
 **Tokens:** `--color-accent-strong`, `--color-text-on-accent`, `--duration-spin`, `--icon-sm`, `--icon-md`, `--icon-lg`.
 
@@ -655,8 +655,8 @@ Pillar N (`.ui-switch`). Track 44 × 26 (hit 44 × 44), `--radius-pill`. **No R1
 
 | State | Treatment |
 |---|---|
-| Off | Track `--shadow-neu-inset-sm` + 1 px inset `--color-control-boundary` ring (4.67:1); thumb 20 px `--color-surface-elevated` raised-sm |
-| On (= Selected) | Track `--color-accent-strong` fill (4.78:1 vs bg); thumb moves right (5.62:1 vs track) |
+| Off | Track `--shadow-neu-inset-sm` + 1 px inset `--color-control-boundary` ring (4.64:1 on the soft-grey track); thumb 20 px `--color-surface-elevated` raised-sm |
+| On (= Selected) | Track bright crimson `--color-accent-strong` fill (4.51:1 vs bg); thumb moves right (4.51:1 vs track) |
 | Hover | Thumb raised |
 | Focus | Ring around the control |
 | Active | Thumb pressed |
@@ -684,7 +684,7 @@ Segments are 44 × 44 targets, so the 4 px gap meets A11Y-07 (spacing applies on
 **Tokens:** `--shadow-neu-inset`, `--shadow-neu-raised-sm`, `--shadow-neu-pressed`, `--color-selected-ring`, `--selected-ring-width`, `--color-accent-strong`, `--color-accent-subtle-hover`, `--radius-pill`, `--control-h-md`, `--space-1`, `--space-4`.
 
 ### C45 Avatar
-Pillar N at lg/xl on `bg`/`bg-2` (raised-sm ring with a 3/4 px parent-colour border) / M at xs–md (flat circle). **Avatars inside glass are always flat** (T16-02). Fallback initials `--color-accent-strong` 600 on `--color-accent-subtle` (5.15:1). Linked avatars take their link's focus ring.
+Pillar N at lg/xl on `bg`/`bg-2` (raised-sm ring with a 3/4 px parent-colour border) / M at xs–md (flat circle). **Avatars inside glass are always flat** (T16-02). Fallback initials `--color-text-primary` 600 on `--color-support-subtle` (lavender tint, 13.23:1), so crimson stays reserved for actions. Linked avatars take their link's focus ring.
 
 | State | Treatment |
 |---|---|
@@ -729,7 +729,7 @@ Pillar G (`.ui-menu.glass-panel`, `--radius-card-lg`, **padding 8** (T16-13), `-
 | Hover | `--color-accent-subtle-hover` row |
 | Focus / active descendant | Same row tint (`[data-highlighted]` / `:focus-visible`) + ring for roving-focus menus |
 | Active | `--color-accent-subtle` row |
-| Selected | Check icon `--color-accent-strong` (4.26:1 worst case) + **600 label in `--color-text-primary`** (accent text is not allowed on panel glass) + `aria-selected`/`aria-checked` |
+| Selected | Deep crimson check icon `--color-accent-deep` (4.87:1 worst case) + **600 label in `--color-text-primary`** (one selected language; crimson text would also pass here) + `aria-selected`/`aria-checked` |
 | Disabled | Item `--color-text-disabled`, `aria-disabled` |
 | Loading | 3 skeleton rows |
 | Empty | One non-interactive row "No options" |
@@ -756,6 +756,17 @@ Pillar M (structural, `.ui-divider`). 1 px `--color-border-subtle` line (decorat
 **Tokens:** `--color-border-subtle`, `--color-text-secondary`, `--text-caption`, `--space-3`.
 
 ---
+
+
+### C52 Card (content container) — v2
+
+Pillar M (`.ui-card`; `.ui-card--muted` on soft grey with `.neu-context-bg2`). White surface on the warm page, `--radius-card-lg`, padding 24, inset 1 px `--color-border-subtle` hairline + `--shadow-elevation-1`; title `--text-h4`, meta `--text-body-sm` `--color-text-secondary`. Used for profile About, author card and grouped settings. **Never wraps showcase media** (C16 stays frameless) and never gets crimson borders (user §3.5).
+States: static container; contained controls carry their own states. Muted variant hosts classic neumorphic controls.
+**Tokens:** `--color-surface-card`, `--color-bg-2`, `--color-border-subtle`, `--shadow-elevation-1`, `--radius-card-lg`, `--space-6`, `--text-h4`, `--text-body-sm`, `--color-text-secondary`.
+
+### Notification indicator (C41 add-on) — R3, reserved
+
+`.ui-dot`: bright crimson count pill (18 px, white 11 px 600 count, 4.51:1) with a 2 px surface ring, top-right of an IconButton. Always paired with an accessible name ("Notifications, 3 unread"); the dot itself is `aria-hidden`. Not on any R1 screen.
 
 ## 9. Screen → component map (R1)
 
@@ -817,23 +828,23 @@ C42 FAB (R2+) and C43 Toggle (reserved) appear on no R1 screen.
 
 Where v1.0 of this catalogue differed from the implemented foundation CSS, v1.1 follows the CSS: skip-link style (C02), flat avatar and on-glass buttons in glass (C03, C06, C07), 44 px pills (C10), flat TagChip (C15), liked = inset + filled heart (C20), segment thumb (C44), field error ring (C30), OTP cell size/focus (C31), profile name `--text-h2` (C26), state icon 48 px (C34), alert text colours (C39), primary disabled fill and ghost label colour (C40), tooltip/menu padding (C47, C49).
 
-Where the CSS breaks a rule in this catalogue or the constitution, the catalogue keeps the rule and the CSS needs a fix (reported to the lead):
+Where the CSS broke a rule in this catalogue or the constitution, the catalogue kept the rule and the CSS was fixed. **All nine items were fixed on 2026-11-13** (X3 earlier, with T16-10) and verified by T-33 v1.2 ([DESIGN_QA_CHECKLIST §4](../08-testing/design/DESIGN_QA_CHECKLIST.md#4-defects-found-and-fixed-in-this-run-2026-11-13)):
 
-| # | CSS location | Issue | Rule |
-|---|---|---|---|
-| X1 | `controls.css` `.ui-chip` | 40 px min-height with no 44 px hit extension on fine pointers | A11Y-07, C15 |
-| X2 | `controls.css` `.ui-pill--sm` | 40 px with no hit extension, and `.ui-pill-row` keeps an 8 px gap | A11Y-07, C10 |
-| X3 | `controls.css` `.ui-spinner`, `.ui-btn[aria-busy]::before` | Arc uses `--color-accent` (2.89:1 inside panel glass) and a literal `0.9s` | C37, T-15, tokens-only rule (`--duration-spin`) |
-| X4 | `overlays.css` `.ui-menu__item[aria-selected/checked]` | Selected label in `--color-accent-strong` on panel glass (4.26:1 < 4.5) | C49, COLOR §7 |
-| X5 | `controls.css` `.ui-like[aria-pressed="true"]` | Sets the button `color` to `--color-highlight-strong`; any visible "Like/Liked" label becomes pink-strong text (3.76:1 < 4.5). Only the count is overridden | C20 |
-| X6 | `glassmorphism.css` header comment | States panel glass allows "secondary text" (fails 4.16:1); only `.glass-subtle .text-secondary` is remapped | COLOR §7 |
-| X7 | `neumorphism.css`, `controls.css` forced-colors | Only `.neu-*` and glass get a forced-colours border; `.ui-btn--primary/--on-glass/--ghost`, `.ui-chip`, `.ui-segmented__item`, `.ui-switch__track` (boundary is an inset shadow) and plain `.ui-input` have none; selected and invalid rings are box-shadows and disappear | A11Y-15 |
-| X8 | `controls.css` `.ui-btn--primary:active` | `translateY(1px)` on press | CONST §7 (no translate when pressed) |
-| X9 | `content.css` `.ui-avatar--lg/--xl` | Raised ring is not flattened inside glass | C45, CONST §3.2 |
+| # | CSS location | Issue | Rule | Status |
+|---|---|---|---|---|
+| X1 | `controls.css` `.ui-chip` | 40 px min-height with no 44 px hit extension on fine pointers | A11Y-07, C15 | Fixed |
+| X2 | `controls.css` `.ui-pill--sm` | 40 px with no hit extension, and `.ui-pill-row` keeps an 8 px gap | A11Y-07, C10 | Fixed |
+| X3 | `controls.css` `.ui-spinner`, `.ui-btn[aria-busy]::before` | Arc uses `--color-accent` (2.89:1 inside panel glass) and a literal `0.9s` | C37, T-15, tokens-only rule (`--duration-spin`) | Fixed |
+| X4 | `overlays.css` `.ui-menu__item[aria-selected/checked]` | Selected label in `--color-accent-strong` on panel glass (4.26:1 < 4.5) | C49, COLOR §7 | Fixed |
+| X5 | `controls.css` `.ui-like[aria-pressed="true"]` | Sets the button `color` to `--color-highlight-strong`; any visible "Like/Liked" label becomes pink-strong text (3.76:1 < 4.5). Only the count is overridden | C20 | Fixed |
+| X6 | `glassmorphism.css` header comment | States panel glass allows "secondary text" (fails 4.16:1); only `.glass-subtle .text-secondary` is remapped | COLOR §7 | Fixed |
+| X7 | `neumorphism.css`, `controls.css` forced-colors | Only `.neu-*` and glass get a forced-colours border; `.ui-btn--primary/--on-glass/--ghost`, `.ui-chip`, `.ui-segmented__item`, `.ui-switch__track` (boundary is an inset shadow) and plain `.ui-input` have none; selected and invalid rings are box-shadows and disappear | A11Y-15 | Fixed |
+| X8 | `controls.css` `.ui-btn--primary:active` | `translateY(1px)` on press | CONST §7 (no translate when pressed) | Fixed |
+| X9 | `content.css` `.ui-avatar--lg/--xl` | Raised ring is not flattened inside glass | C45, CONST §3.2 | Fixed |
 
-## 12. Decisions needed from the user (D-24e)
+## 12. Gallery columns and desktop-nav breakpoint (D-24e) — resolved
 
-These two findings contradict approved requirements and are **not** changed here. The current token behaviour is kept as **proposed**.
+**Outcome (2026-11-12):** the user accepted the defaults, and D-24(e) was resolved to **Option A for both** (the design-system values): 1/2/3/4 columns at 360/768/1024/1280, max 5 (container 1680 px), and the desktop nav from 1024 px. FR-01 and NFR-28 were updated to match (REQUIREMENTS_SPECIFICATION Revision 1). The analysis below is kept for traceability; its "Recommendation: Option B" lines were **not** adopted. Reverse-engineering trace: [RE_TO_DESIGN_MAPPING L-9 and I-1](RE_TO_DESIGN_MAPPING.md#7-inconsistencies-found-and-recommendations).
 
 ### 12.1 Gallery columns (T16-03)
 

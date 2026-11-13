@@ -1,0 +1,121 @@
+{
+ "360": {
+  "overflow": 0,
+  "small": [],
+  "raisedOnGlass": [],
+  "glassText": [],
+  "errors": [],
+  "axe": null
+ },
+ "390": {
+  "overflow": 0,
+  "small": [],
+  "raisedOnGlass": [],
+  "glassText": [],
+  "errors": [
+   "404 http://127.0.0.1:50450/preview/styles/design-tokens.css",
+   "404 http://127.0.0.1:50450/preview/styles/neumorphism.css",
+   "404 http://127.0.0.1:50450/preview/styles/glassmorphism.css",
+   "404 http://127.0.0.1:50450/preview/styles/base.css",
+   "404 http://127.0.0.1:50450/preview/components/controls.css",
+   "404 http://127.0.0.1:50450/preview/components/overlays.css",
+   "404 http://127.0.0.1:50450/preview/components/content.css"
+  ],
+  "axe": {
+   "version": "4.10.3",
+   "violations": [],
+   "passes": 36,
+   "incomplete": [
+    "aria-valid-attr-value",
+    "color-contrast"
+   ]
+  }
+ },
+ "768": {
+  "overflow": 0,
+  "small": [],
+  "raisedOnGlass": [],
+  "glassText": [],
+  "errors": [],
+  "axe": null
+ },
+ "1024": {
+  "overflow": 0,
+  "small": [],
+  "raisedOnGlass": [],
+  "glassText": [],
+  "errors": [
+   "404 http://127.0.0.1:50450/preview/styles/design-tokens.css",
+   "404 http://127.0.0.1:50450/preview/styles/neumorphism.css",
+   "404 http://127.0.0.1:50450/preview/styles/glassmorphism.css",
+   "404 http://127.0.0.1:50450/preview/styles/base.css",
+   "404 http://127.0.0.1:50450/preview/components/controls.css",
+   "404 http://127.0.0.1:50450/preview/components/overlays.css",
+   "404 http://127.0.0.1:50450/preview/components/content.css"
+  ],
+  "axe": {
+   "version": "4.10.3",
+   "violations": [],
+   "passes": 36,
+   "incomplete": [
+    "aria-valid-attr-value",
+    "color-contrast"
+   ]
+  }
+ },
+ "1280": {
+  "overflow": 0,
+  "small": [],
+  "raisedOnGlass": [],
+  "glassText": [],
+  "errors": [],
+  "axe": null
+ },
+ "1440": {
+  "overflow": 0,
+  "small": [],
+  "raisedOnGlass": [],
+  "glassText": [],
+  "errors": [
+   "404 http://127.0.0.1:50450/preview/styles/design-tokens.css",
+   "404 http://127.0.0.1:50450/preview/styles/neumorphism.css",
+   "404 http://127.0.0.1:50450/preview/styles/glassmorphism.css",
+   "404 http://127.0.0.1:50450/preview/styles/base.css",
+   "404 http://127.0.0.1:50450/preview/components/controls.css",
+   "404 http://127.0.0.1:50450/preview/components/overlays.css",
+   "404 http://127.0.0.1:50450/preview/components/content.css"
+  ],
+  "axe": {
+   "version": "4.10.3",
+   "violations": [],
+   "passes": 35,
+   "incomplete": [
+    "aria-valid-attr-value",
+    "color-contrast"
+   ]
+  }
+ },
+ "reducedMotion": {
+  "skeletonDuration": "1e-05s",
+  "spinnerIterations": "1"
+ },
+ "forcedColors": {
+  ".ui-btn--primary": "1px solid",
+  ".ui-btn--ghost": "1px solid",
+  ".ui-btn--on-glass": "1px solid",
+  ".ui-chip": "1px solid",
+  ".ui-pill": "2px solid",
+  ".ui-segmented__item": "1px solid",
+  ".ui-input": "1px solid",
+  ".ui-switch__track": "1px solid",
+  ".ui-radio__dot": "1px solid",
+  ".ui-pill[aria-current=\"page\"]": "2px solid",
+  ".ui-input[aria-invalid=\"true\"]": "2px dashed"
+ },
+ "interaction": {
+  "likeAfterClick": "true",
+  "panelHiddenAfterToggle": true,
+  "cardBarOpacityOnKeyboardFocus": "1",
+  "focusRing": "solid 2px rgb(179, 38, 62)"
+ }
+}

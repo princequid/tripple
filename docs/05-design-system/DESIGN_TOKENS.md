@@ -3,11 +3,11 @@
 | Field | Value |
 |---|---|
 | Task | P05-04 |
-| Version | 1.0 — draft for G3 review |
+| Version | 2.1 — 2026-11-13: revision 2.1 (A-17): primary brightened to `#DF2F4D` (fills), deep `#B3263E` for text and indicators (new `--color-accent-deep`), white background, tints re-derived, no gradients (skeleton pulses between flat colours). Earlier: 2.0 identity v2 (A-16). For review (G3-R2) |
 | Date | 2026-11-12 |
-| Depends on | [COLOR_SYSTEM](COLOR_SYSTEM.md) (P05-02), [TYPOGRAPHY_SYSTEM](TYPOGRAPHY_SYSTEM.md) (P05-03), D-05, D-06 |
+| Depends on | [COLOR_SYSTEM](COLOR_SYSTEM.md) v2 (P05-02), [TYPOGRAPHY_SYSTEM](TYPOGRAPHY_SYSTEM.md) (P05-03), A-16, D-06, D-26 |
 | Theme | **Light only** for R1. Dark mode is deferred (M-12); semantic names are theme-neutral so a dark set can be added later without renaming |
-| Implementation | Specification only. CSS files are written in **P10-01** after G5. Snippets below are specifications, not project files |
+| Implementation | **Implemented** in [`design-system/styles/design-tokens.css`](../../design-system/styles/design-tokens.css) (A-12, 2026-11-12); the Next.js app imports it in P10-01. That file is the single place raw values live; this document is its specification and must stay in sync |
 
 Tokens are the single source of every colour, shadow, blur, radius, spacing, type and motion value (A-05). Components use **semantic** tokens only; raw palette tokens exist so semantic tokens have something to point at.
 
@@ -17,91 +17,87 @@ Tokens are the single source of every colour, shadow, blur, radius, spacing, typ
 
 | Layer | Prefix | Example | Who may use it |
 |---|---|---|---|
-| Raw palette | `--palette-*` | `--palette-lavender-600` | Only semantic tokens |
+| Raw palette | `--palette-*` | `--palette-crimson-600` | Only semantic tokens |
 | Semantic | `--color-*`, `--shadow-*`, `--radius-*`, `--text-*`, … | `--color-accent-strong` | Components (via Tailwind utilities or `var()`) |
 | Component | `--<component>-*` | `--header-h` | One component family |
 
 - Names are kebab-case, describe **role not value** (`text-secondary`, not `grey-600`), and never include a hex or px value.
-- Planned files (P10-01): `src/styles/tokens.css` (`:root` raw + non-theme tokens) and `src/app/globals.css` (Tailwind `@theme`). Raw hex and px shadow values appear **only** in `tokens.css`; CI greps for hex literals elsewhere (rule proposed for P08).
+- Files: `design-system/styles/design-tokens.css` (all raw and semantic tokens, implemented) and, from P10-01, `src/app/globals.css` (Tailwind `@theme` mapping only). Raw hex and px shadow values appear **only** in `design-tokens.css`; CI greps for hex literals elsewhere (rule for P08).
 
 ## 2. Colour
+
+Identity v2.1 (A-16, A-17): **Premium Crimson + White + Soft Grey + Charcoal**, no gradients. Contrast evidence: [T-15 v2.1](../08-testing/design/T-15_CONTRAST_REPORT.md) (131 pairs, 0 failures).
 
 ### 2.1 Raw palette
 
 | Token | Value | Source |
 |---|---|---|
-| `--palette-neutral-0` | `#FFFFFF` | Official (elevated, neu highlight) |
-| `--palette-neutral-25` | `#F8FAFC` | Official (card) |
-| `--palette-neutral-50` | `#F1F3F7` | Official (bg2) |
-| `--palette-neutral-100` | `#E9EDF3` | Official (bg) |
-| `--palette-neutral-150` | `#DDE1E9` | Official (border) |
-| `--palette-neutral-200` | `#C5CFDC` | Official (neu shadow) |
-| `--palette-neutral-250` | `#B5C2D1` | Official (neu deep shadow) |
-| `--palette-neutral-400` | `#929BA9` | Official (muted) |
-| `--palette-neutral-500` | `#647184` | Official (text2) |
-| `--palette-neutral-600` | `#5E6A7C` | D-05 (text-secondary) |
-| `--palette-neutral-900` | `#252B36` | Official (text) |
-| `--palette-blue-300` | `#A5B5CA` | Official (muted blue) |
-| `--palette-lavender-50` | `#F6F4FB` | Derived — **pending approval** |
-| `--palette-lavender-100` | `#EEE9F6` | Derived — **pending approval** |
-| `--palette-lavender-500` | `#9273C7` | Official (accent) |
-| `--palette-lavender-600` | `#7556B3` | D-05 (accent-strong) |
-| `--palette-lavender-700` | `#624896` | Derived — **pending approval** |
-| `--palette-lavender-800` | `#503A7A` | Derived — **pending approval** |
-| `--palette-pink-50` | `#FDF4F8` | Derived — **pending approval** |
-| `--palette-pink-500` | `#EA78A5` | Official (pink) |
-| `--palette-pink-600` | `#C2507F` | D-05 (pink-strong) |
-| `--palette-red-50` | `#F9EFF1` | Derived — **pending approval** |
-| `--palette-red-600` | `#B3364F` | D-05 (danger) |
-| `--palette-green-50` | `#EEF4F1` | Derived — **pending approval** |
-| `--palette-green-600` | `#2B7355` | D-05 (success) |
+| `--palette-crimson-50` | `#FCEEF1` | Primary light — 8% of crimson-500 (A-17) |
+| `--palette-crimson-100` | `#FBE2E6` | Hover tint — 14% of crimson-500 (A-17) |
+| `--palette-crimson-200` | `#F5C1CA` | Primary border — 30% of crimson-500 (A-17) |
+| `--palette-crimson-500` | `#DF2F4D` | Primary, brightened +24.5% (A-17) |
+| `--palette-crimson-600` | `#B3263E` | Primary deep / hover (former primary) |
+| `--palette-crimson-700` | `#941D33` | Primary pressed (former hover) |
+| `--palette-warm-0` | `#FFFFFF` | Approved (background and surface, A-17) |
+| `--palette-warm-50` | `#F2F0F0` | Approved (secondary surface, soft grey) |
+| `--palette-warm-100` | `#EAE7E8` | Approved (tertiary surface) |
+| `--palette-warm-150` | `#E7E1E3` | Approved (border) |
+| `--palette-warm-400` | `#969096` | Approved (muted text) |
+| `--palette-warm-600` | `#706A70` | Approved (secondary text) |
+| `--palette-warm-900` | `#252326` | Approved (primary text) |
+| `--palette-lavender-50` / `-500` | `#EEEBF4` / `#8D7AB8` | Derived tint (D-26) / approved supporting accent |
+| `--palette-sage-50` / `-500` / `-700` | `#ECF0ED` / `#829889` / `#556359` | Derived tint (D-26) / approved / derived success text (D-26) |
+| `--palette-gold-50` / `-500` | `#F6F0E6` / `#C69A55` | Derived tint (D-26) / approved supporting accent |
+| `--palette-sienna-50` / `-700` | `#F8EEEA` / `#9A3412` | **Proposed** danger tint / danger (D-26) |
 
 ### 2.2 Semantic colour
 
 | Token | Value | Usage |
 |---|---|---|
-| `--color-bg` | neutral-100 | Page background; parent for raised neumorphism |
-| `--color-bg-2` | neutral-50 | Secondary areas (footer, filter panel), input and OTP fills |
-| `--color-surface-card` | neutral-25 | Minimal cards, about panel |
-| `--color-surface-elevated` | neutral-0 | Opaque buttons over media; glass fallback |
-| `--color-border-subtle` | neutral-150 | Decorative hairlines and dividers only |
-| `--color-text-primary` | neutral-900 | Text, headings, labels, icons (all surfaces incl. glass) |
-| `--color-text-secondary` | neutral-600 | Secondary text, placeholders, helper text, secondary icons |
-| `--color-text-secondary-on-card` | neutral-500 | Optional secondary text on card/elevated only |
-| `--color-text-disabled` | neutral-400 | Disabled labels/icons only |
-| `--color-text-link` | lavender-600 | Links |
-| `--color-text-on-accent` | neutral-0 | Labels on accent-strong fills |
-| `--color-text-on-highlight` | neutral-900 | Labels on pink fill |
-| `--color-accent` | lavender-500 | Non-text accents: active indicator, spinner, progress, lavender icons; display emphasis text |
-| `--color-accent-strong` | lavender-600 | Primary button fill, selected label, rings |
-| `--color-accent-strong-hover` | lavender-700 | Primary button hover |
-| `--color-accent-strong-pressed` | lavender-800 | Primary button pressed |
-| `--color-accent-subtle` | lavender-50 | Selected fill; accent badge; avatar fallback |
-| `--color-accent-subtle-hover` | lavender-100 | Hover fill for menu items, ghost buttons |
-| `--color-highlight` | pink-500 | Liked fill, highlight emphasis |
-| `--color-highlight-strong` | pink-600 | Liked heart icon |
-| `--color-highlight-subtle` | pink-50 | Highlight badge / liked-tint background |
-| `--color-support` | blue-300 | Decorative only |
-| `--color-danger` | red-600 | Error text, icons, invalid outline |
-| `--color-danger-subtle` | red-50 | Inline error alert fill |
-| `--color-success` | green-600 | Success text and icons |
-| `--color-success-subtle` | green-50 | Inline success alert fill |
-| `--color-control-boundary` | neutral-600 | Checkbox, radio and switch-off boundary (≥ 3:1) |
-| `--color-focus-ring` | lavender-600 | Focus outline |
-| `--color-selected-ring` | lavender-600 | Selected-state ring |
-| `--color-neu-light` | neutral-0 | Neumorphic highlight |
-| `--color-neu-dark` | neutral-200 | Neumorphic shadow |
-| `--color-neu-deep` | neutral-250 | Pressed shadow |
-| `--color-skeleton` | neutral-150 | Skeleton base (decorative) |
-| `--color-skeleton-shine` | neutral-50 | Skeleton shimmer (decorative) |
-| `--color-scrim` | `rgb(37 43 54 / 0.48)` | Modal/drawer backdrop (text at 48%) |
+| `--color-bg` | warm-0 | Page, content areas, gallery sections; parent of soft-grey controls |
+| `--color-bg-2` | warm-50 | Soft grey: neumorphic control fills (via `--neu-fill`), inset fields, filter panel, footer, muted cards, chips |
+| `--color-bg-3` | warm-100 | Tertiary: skeletons, pressed fills inside glass — **primary text only** |
+| `--color-surface-card` | warm-0 | Content cards (C52), about panel |
+| `--color-surface-elevated` | warm-0 | Opaque buttons over media; glass fallback; segmented thumb |
+| `--color-border-subtle` | warm-150 | Decorative hairlines and dividers only |
+| `--color-primary-border` | crimson-200 | Decorative edge of primary-light elements (accent badge) |
+| `--color-text-primary` | warm-900 | Text, headings, labels, icons (all surfaces incl. glass) |
+| `--color-text-secondary` | warm-600 | Secondary text, placeholders, helper text, secondary icons — not on `bg-3` or subtle/panel glass |
+| `--color-text-secondary-on-card` | warm-600 | Kept for compatibility (same value in v2) |
+| `--color-text-disabled` | warm-400 | Disabled labels/icons only |
+| `--color-text-link` | crimson-600 | Links (deep crimson) |
+| `--color-text-on-accent` | warm-0 | Labels on crimson fills (4.51 / 6.43 / 8.46) |
+| `--color-text-on-highlight` | warm-0 | Labels on crimson highlight (notification count) |
+| `--color-accent` | crimson-500 | Bright crimson heading emphasis, empty-state icon |
+| `--color-accent-strong` | crimson-500 | Bright crimson **fills**: primary button, radio, switch |
+| `--color-accent-deep` | crimson-600 | Crimson **text and thin indicators**: selected labels, accent badge, menu check, nav underline, drawer bar, spinner arc |
+| `--color-accent-strong-hover` | crimson-600 | Primary button hover |
+| `--color-accent-strong-pressed` | crimson-700 | Primary button pressed |
+| `--color-accent-subtle` | crimson-50 | Selected fill (pills, segments, chips, rows, controls in glass); accent badge |
+| `--color-accent-subtle-hover` | crimson-100 | Hover fill for menu items, ghost buttons, chips |
+| `--color-highlight` | crimson-500 | Liked heart fill, notification dot |
+| `--color-highlight-strong` | crimson-600 | Liked heart stroke |
+| `--color-highlight-subtle` | crimson-50 | Highlight badge background |
+| `--color-support` / `-subtle` | lavender-500 / lavender-50 | Supporting accent; avatar initials fill, "Team" badge |
+| `--color-support-sage` / `-subtle` | sage-500 / sage-50 | Supporting accent; "New" badge |
+| `--color-support-gold` / `-subtle` | gold-500 / gold-50 | Supporting accent; "Featured" badge (tint only) |
+| `--color-danger` / `-subtle` | sienna-700 / sienna-50 | Error text, icons, invalid ring / inline error fill |
+| `--color-success` / `-subtle` | sage-700 / sage-50 | Success text and icons / inline success fill |
+| `--color-control-boundary` | warm-600 | Radio, switch-off boundary (≥ 4.29 on every surface) |
+| `--color-focus-ring` | crimson-600 | Focus outline (deep: 4.01 even on subtle glass) |
+| `--color-selected-ring` | crimson-600 | Selected-state ring |
+| `--color-neu-light` | warm-0 | Neumorphic highlight |
+| `--color-neu-dark` | `rgb(84 70 76 / 0.16)` | Neumorphic shadow (warm taupe; distinct from charcoal glass shadows) |
+| `--color-neu-deep` | `rgb(84 70 76 / 0.24)` | Pressed shadow |
+| `--color-skeleton` / `-shine` | warm-100 / warm-50 | Skeleton: flat pulse between the two (no gradient, A-17) |
+| `--color-scrim` | `rgb(37 35 38 / 0.48)` | Modal/drawer backdrop (charcoal at 48%) |
 
 ## 3. Typography
 
 | Token | Value | Usage |
 |---|---|---|
-| `--font-sans` | `var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif` | All UI and content |
-| `--font-mono` | `ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace` | Hex values, codes |
+| `--font-sans` | `var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji"` | All UI and content (single source; TYPOGRAPHY_SYSTEM quotes it, T16-21) |
+| `--font-mono` | `ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace` | Hex values, codes |
 | `--font-weight-regular` | 400 | Body |
 | `--font-weight-medium` | 500 | Labels, metadata |
 | `--font-weight-semibold` | 600 | Headings, buttons, selected |
@@ -145,8 +141,8 @@ Token: `--spacing: 0.25rem`.
 | Token | Value | Usage |
 |---|---|---|
 | `--radius-control-sm` | 10 px | Badges (non-pill), tooltip, small inputs, checkbox (6 px exception: see below) |
-| `--radius-control` | 12 px | Text inputs, OTP cells, menu items, dropdown trigger |
-| `--radius-control-lg` | 14 px | Large inputs (auth), filter panel controls |
+| `--radius-control` | 12 px | OTP cells, menu items, inline alerts |
+| `--radius-control-lg` | 14 px | **All text inputs / TextField** (auth, filters, share field; T16-23), card hover bar fallback |
 | `--radius-card` | 16 px | Shot thumbnails, minimal cards, toasts |
 | `--radius-card-lg` | 20 px | About panel, share preview, dropdown panels |
 | `--radius-panel` | 24 px | Modals, filter panel, mobile drawer |
@@ -156,26 +152,34 @@ Token: `--spacing: 0.25rem`.
 
 ## 6. Neumorphic shadows
 
-Two sets: tuned for `bg` (`#E9EDF3`) and for `bg2` (`#F1F3F7`, lighter, so the dark shadow is reduced to 80% to keep the same perceived depth). Light source: top-left. Raised sets only on a parent of the same colour; inset sets work on any opaque fill because they render inside the element.
+**Model (v2).** Two contexts, set by the parent:
 
-| Token | Value (on bg) | Usage |
+| Context | `--neu-parent` | `--neu-fill` | Look |
+|---|---|---|---|
+| Default (warm-white page, white cards) | `--color-bg` | `--color-bg-2` (soft grey) | Soft-grey control lifted by a warm shadow + inner top highlight: tactile, not embossed |
+| `.neu-context-bg2` (filter panel, footer, muted card) | `--color-bg-2` | `--color-bg-2` | Classic neumorphism (fill = parent) |
+| Inside glass | `--color-bg-2` | `--color-bg-2` | Raised sets are flattened automatically; inset fields allowed |
+
+Light source: top-left. Inset sets render inside the element, so they work in both contexts.
+
+| Token | Value (default context) | Usage |
 |---|---|---|
-| `--shadow-neu-raised-sm` | `-3px -3px 6px #FFFFFF, 3px 3px 6px #C5CFDC` | Pills, tags, small widgets, avatar ring, rest state of secondary buttons |
-| `--shadow-neu-raised` | `-5px -5px 12px #FFFFFF, 5px 5px 12px #C5CFDC` | Secondary/icon button hover, filter toggle, sort trigger |
-| `--shadow-neu-raised-lg` | `-8px -8px 18px #FFFFFF, 8px 8px 18px #C5CFDC` | FAB (max depth in the system) |
-| `--shadow-neu-inset-sm` | `inset 2px 2px 4px #C5CFDC, inset -2px -2px 4px #FFFFFF` | Inputs, search, OTP cells, switch track |
-| `--shadow-neu-inset` | `inset 4px 4px 8px #C5CFDC, inset -4px -4px 8px #FFFFFF` | Selected pill/segment, segmented-control track |
-| `--shadow-neu-pressed` | `inset 3px 3px 6px #B5C2D1, inset -3px -3px 6px #FFFFFF` | `:active` of any neumorphic control |
+| `--shadow-neu-raised-sm` | `inset 1px 1px 0 rgb(255 255 255 / .85), -2px -2px 5px #FFFFFF, 2px 3px 7px neu-dark` | Pills, small widgets, avatar ring, secondary buttons at rest |
+| `--shadow-neu-raised` | `inset 1px 1px 0 rgb(255 255 255 / .85), -3px -3px 8px #FFFFFF, 4px 6px 14px neu-dark` | Hover depth (crossfaded), filter toggle, sort trigger |
+| `--shadow-neu-raised-lg` | `inset 1px 1px 0 rgb(255 255 255 / .85), -5px -5px 12px #FFFFFF, 6px 9px 22px neu-dark` | FAB (max depth in the system) |
+| `--shadow-neu-inset-sm` | `inset 2px 2px 4px neu-dark, inset -2px -2px 4px rgb(255 255 255 / .9)` | Inputs, search, OTP cells, switch track, radio |
+| `--shadow-neu-inset` | `inset 3px 3px 7px neu-dark, inset -3px -3px 7px rgb(255 255 255 / .9)` | Selected well, segmented-control track |
+| `--shadow-neu-pressed` | `inset 3px 3px 6px neu-deep, inset -2px -2px 5px rgb(255 255 255 / .8)` | `:active` of any neumorphic control |
 
-| Token (on bg2) | Value |
+| Token (`.neu-context-bg2`) | Value |
 |---|---|
-| `--shadow-neu-raised-sm-bg2` | `-3px -3px 6px #FFFFFF, 3px 3px 6px rgb(197 207 220 / 0.8)` |
-| `--shadow-neu-raised-bg2` | `-5px -5px 12px #FFFFFF, 5px 5px 12px rgb(197 207 220 / 0.8)` |
-| `--shadow-neu-inset-sm-bg2` | `inset 2px 2px 4px rgb(197 207 220 / 0.8), inset -2px -2px 4px #FFFFFF` |
-| `--shadow-neu-inset-bg2` | `inset 4px 4px 8px rgb(197 207 220 / 0.8), inset -4px -4px 8px #FFFFFF` |
-| `--shadow-neu-pressed-bg2` | `inset 3px 3px 6px rgb(181 194 209 / 0.8), inset -3px -3px 6px #FFFFFF` |
+| `--shadow-neu-raised-sm-bg2` | `-3px -3px 6px #FFFFFF, 3px 3px 6px neu-dark` |
+| `--shadow-neu-raised-bg2` | `-5px -5px 12px #FFFFFF, 5px 5px 12px neu-dark` |
+| `--shadow-neu-inset-sm-bg2` | `inset 2px 2px 4px neu-dark, inset -2px -2px 4px #FFFFFF` |
+| `--shadow-neu-inset-bg2` | `inset 4px 4px 8px neu-dark, inset -4px -4px 8px #FFFFFF` |
+| `--shadow-neu-pressed-bg2` | `inset 3px 3px 6px neu-deep, inset -3px -3px 6px #FFFFFF` |
 
-Limits: no offset > 8 px, no blur > 18 px, no coloured shadows. In `tokens.css` the hex values above are written as `var(--color-neu-light)` / `var(--color-neu-dark)` / `var(--color-neu-deep)`.
+`neu-dark` = `rgb(84 70 76 / 0.16)`, `neu-deep` = `rgb(84 70 76 / 0.24)`. Limits: no offset > 9 px, no blur > 22 px, no coloured (crimson or accent) shadows. Selected state adds `--color-accent-subtle` fill + 1.5 px `--color-selected-ring`.
 
 ## 7. Glass
 
@@ -190,14 +194,14 @@ Limits: no offset > 8 px, no blur > 18 px, no coloured shadows. In `tokens.css` 
 | `--blur-glass-lg` | 24 px | Modals |
 | `--glass-saturate` | 140% | Applied with blur: `backdrop-filter: blur(…) saturate(140%)` |
 | `--glass-border` | `1px solid rgb(255 255 255 / 0.70)` | Edge definition on all glass |
-| `--glass-hairline` | `0 0 0 1px rgb(37 43 54 / 0.08)` | Outer hairline (box-shadow) so glass separates on white media |
+| `--glass-hairline` | `0 0 0 1px rgb(37 35 38 / 0.08)` | Outer hairline (box-shadow) so glass separates on white media |
 | `--glass-highlight` | `inset 0 1px 0 rgb(255 255 255 / 0.90)` | Top inner highlight |
-| `--shadow-glass-sm` | `0 4px 16px rgb(37 43 54 / 0.08)` | Header (when scrolled), action bar |
-| `--shadow-glass-md` | `0 12px 32px rgb(37 43 54 / 0.12)` | Dropdowns, toasts, drawer |
-| `--shadow-glass-lg` | `0 24px 56px rgb(37 43 54 / 0.18)` | Modals |
-| `--color-scrim` | `rgb(37 43 54 / 0.48)` | Modal/drawer backdrop; **never blurred** (no stacked glass) |
+| `--shadow-glass-sm` | `0 4px 16px rgb(37 35 38 / 0.08)` | Header (when scrolled), action bar |
+| `--shadow-glass-md` | `0 12px 32px rgb(37 35 38 / 0.12)` | Dropdowns, toasts, drawer |
+| `--shadow-glass-lg` | `0 24px 56px rgb(37 35 38 / 0.18)` | Modals |
+| `--color-scrim` | `rgb(37 35 38 / 0.48)` | Modal/drawer backdrop; **never blurred** (no stacked glass) |
 
-Fallback contract (specification):
+Fallback contract (applies to **all three levels**, T16-30; implemented in `design-system/styles/glassmorphism.css`). Blur pairing: subtle → `--blur-glass-sm` (header: `--blur-glass-md`), panel → `--blur-glass-md`, modal → `--blur-glass-lg` (T16-39):
 
 ```css
 .glass-panel {
@@ -208,10 +212,10 @@ Fallback contract (specification):
   box-shadow: var(--glass-highlight), var(--glass-hairline), var(--shadow-glass-md);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass-panel { background: var(--glass-fallback-bg); }
+  .glass-subtle, .glass-panel, .glass-modal { background: var(--glass-fallback-bg); }
 }
 @media (prefers-reduced-transparency: reduce) {
-  .glass-panel {
+  .glass-subtle, .glass-panel, .glass-modal {
     background: var(--glass-fallback-bg);
     -webkit-backdrop-filter: none; backdrop-filter: none;
     border: 1px solid var(--color-border-subtle);
@@ -224,8 +228,8 @@ Fallback contract (specification):
 | Token | Value | Usage |
 |---|---|---|
 | `--shadow-elevation-0` | `none` | Shot cards, thumbnails, content (always) |
-| `--shadow-elevation-1` | `0 1px 2px rgb(37 43 54 / 0.05), 0 2px 8px rgb(37 43 54 / 0.04)` | About panel, author card, inline alerts |
-| `--shadow-elevation-2` | `0 2px 4px rgb(37 43 54 / 0.06), 0 8px 24px rgb(37 43 54 / 0.08)` | Opaque buttons on media (card action bar) |
+| `--shadow-elevation-1` | `0 1px 2px rgb(37 35 38 / 0.05), 0 2px 8px rgb(37 35 38 / 0.04)` | About panel, author card, inline alerts |
+| `--shadow-elevation-2` | `0 2px 4px rgb(37 35 38 / 0.06), 0 8px 24px rgb(37 35 38 / 0.08)` | Opaque buttons on media (card action bar) |
 
 ## 9. Motion
 
@@ -237,7 +241,8 @@ Fallback contract (specification):
 | `--duration-slow` | 280 ms | Modal/drawer enter |
 | `--duration-exit-moderate` | 160 ms | Dropdown/popover/toast exit |
 | `--duration-exit-slow` | 200 ms | Modal/drawer exit |
-| `--duration-shimmer` | 1600 ms | Skeleton shimmer loop |
+| `--duration-shimmer` | 1600 ms | Skeleton pulse loop (flat colours, no gradient) |
+| `--duration-spin` | 900 ms | Spinner rotation (T16-40) |
 | `--ease-standard` | `cubic-bezier(0.2, 0, 0, 1)` | State changes |
 | `--ease-enter` | `cubic-bezier(0.16, 1, 0.3, 1)` | Entering overlays (decelerate, no overshoot) |
 | `--ease-exit` | `cubic-bezier(0.4, 0, 1, 1)` | Leaving overlays (accelerate) |
@@ -281,7 +286,7 @@ Rules: animate `opacity` and `transform` only; neumorphic hover depth is a **cro
 | `--container-modal-lg` | 720 px | Reserved |
 | `--header-h` | 56 px → lg 64 px | Sticky header; also `scroll-padding-top` |
 
-Resulting gallery columns (verified arithmetic with a 15 px classic scrollbar): 1 column at 360/390, 2 at 768, 3 at 1024, 4 at 1280 and 1440, 5 from ≈ 1600 px.
+Resulting gallery columns (verified arithmetic with a 15 px classic scrollbar), **approved as final by D-24(e)** and matched by FR-01/NFR-28: 1 column at 360/390, 2 at 768, 3 at 1024, 4 at 1280 and 1440, 5 from ≈ 1600 px (max 5 with the 1680 px container). Desktop navigation from `lg` (1024 px).
 
 ## 11. Z-index
 
@@ -315,9 +320,14 @@ Resulting gallery columns (verified arithmetic with a 15 px classic scrollbar): 
   outline-offset: var(--focus-ring-offset);
 }
 @media (forced-colors: active) { :focus-visible { outline-color: Highlight; } }
+/* T16-15: shadows disappear in forced colours, so every control and glass layer gets a system border */
+@media (forced-colors: active) {
+  .neu-control, .neu-field, .neu-raised-sm, .neu-raised, .neu-raised-lg, .neu-inset-sm, .neu-inset { border: 1px solid ButtonText; }
+  .glass-subtle, .glass-panel, .glass-modal { border: 1px solid CanvasText; }
+}
 ```
 
-The ring is an `outline`, so it never combines with or is hidden by neumorphic `box-shadow`. Horizontal scrollers get `padding-block: 4px` so the offset ring isn't clipped. Measured ≥ 3.50:1 on every surface ([COLOR_SYSTEM §8](COLOR_SYSTEM.md#8-contrast-matrix-pairs-used-by-components)).
+The ring is an `outline`, so it never combines with or is hidden by neumorphic `box-shadow`. Horizontal scrollers get `padding-block: 4px` so the offset ring isn't clipped. Measured ≥ 4.01:1 (crimson, T-15 v2) on every surface ([COLOR_SYSTEM §8](COLOR_SYSTEM.md#8-contrast-matrix-pairs-used-by-components)).
 
 ## 13. Control sizes
 
@@ -330,6 +340,7 @@ The ring is an `outline`, so it never combines with or is hidden by neumorphic `
 | `--control-h-lg` | 52 px | Auth primary actions, mobile full-width buttons |
 | `--input-h` | 48 px | Text inputs, search field |
 | `--otp-cell-w` / `--otp-cell-h` | 48 px / 56 px | OTP cells |
+| `--otp-cell-w-sm` / `--otp-cell-h-sm` | 44 px / 52 px | OTP cells below 390 px (6 × 44 + 5 × 8 = 304 px fits the 312 px bottom sheet at 360; A-13) |
 | `--icon-btn-sm` | 40 px | Desktop icon buttons (with hit extension) |
 | `--icon-btn` | 44 px | Default icon button |
 | `--icon-btn-lg` | 48 px | Shot detail like/share |
@@ -342,6 +353,8 @@ The ring is an `outline`, so it never combines with or is hidden by neumorphic `
 Under `(pointer: coarse)` the `sm` sizes switch to `md`.
 
 ## 14. Tailwind v4 mapping (specification)
+
+All variables referenced below (`--scrim`, `--neu-raised-sm`, `--neu-raised`, `--neu-raised-lg`, `--neu-inset-sm`, `--neu-inset`, `--neu-pressed`, the `-bg2` sets, glass, elevation and every text step) are **defined** in `design-system/styles/design-tokens.css` (T16-14). The mapping file only aliases them into Tailwind namespaces; it never introduces a value.
 
 ```css
 /* src/app/globals.css — specification for P10-01 */
@@ -360,41 +373,49 @@ Under `(pointer: coarse)` the `sm` sizes switch to `md`.
 
   --spacing: 0.25rem;
 
-  --color-bg: var(--palette-neutral-100);
-  --color-bg-2: var(--palette-neutral-50);
-  --color-surface-card: var(--palette-neutral-25);
-  --color-surface-elevated: var(--palette-neutral-0);
-  --color-border-subtle: var(--palette-neutral-150);
-  --color-text-primary: var(--palette-neutral-900);
-  --color-text-secondary: var(--palette-neutral-600);
-  --color-text-secondary-on-card: var(--palette-neutral-500);
-  --color-text-disabled: var(--palette-neutral-400);
-  --color-text-link: var(--palette-lavender-600);
-  --color-text-on-accent: var(--palette-neutral-0);
-  --color-text-on-highlight: var(--palette-neutral-900);
-  --color-accent: var(--palette-lavender-500);
-  --color-accent-strong: var(--palette-lavender-600);
-  --color-accent-strong-hover: var(--palette-lavender-700);
-  --color-accent-strong-pressed: var(--palette-lavender-800);
-  --color-accent-subtle: var(--palette-lavender-50);
-  --color-accent-subtle-hover: var(--palette-lavender-100);
-  --color-highlight: var(--palette-pink-500);
-  --color-highlight-strong: var(--palette-pink-600);
-  --color-highlight-subtle: var(--palette-pink-50);
-  --color-support: var(--palette-blue-300);
-  --color-danger: var(--palette-red-600);
-  --color-danger-subtle: var(--palette-red-50);
-  --color-success: var(--palette-green-600);
-  --color-success-subtle: var(--palette-green-50);
-  --color-control-boundary: var(--palette-neutral-600);
-  --color-focus-ring: var(--palette-lavender-600);
-  --color-selected-ring: var(--palette-lavender-600);
-  --color-skeleton: var(--palette-neutral-150);
-  --color-skeleton-shine: var(--palette-neutral-50);
+  --color-bg: var(--palette-warm-0);
+  --color-bg-2: var(--palette-warm-50);
+  --color-bg-3: var(--palette-warm-100);
+  --color-surface-card: var(--palette-warm-0);
+  --color-surface-elevated: var(--palette-warm-0);
+  --color-border-subtle: var(--palette-warm-150);
+  --color-primary-border: var(--palette-crimson-200);
+  --color-text-primary: var(--palette-warm-900);
+  --color-text-secondary: var(--palette-warm-600);
+  --color-text-secondary-on-card: var(--palette-warm-600);
+  --color-text-disabled: var(--palette-warm-400);
+  --color-text-link: var(--palette-crimson-600);
+  --color-text-on-accent: var(--palette-warm-0);
+  --color-text-on-highlight: var(--palette-warm-0);
+  --color-accent: var(--palette-crimson-500);
+  --color-accent-strong: var(--palette-crimson-500);
+  --color-accent-strong-hover: var(--palette-crimson-600);
+  --color-accent-strong-pressed: var(--palette-crimson-700);
+  --color-accent-deep: var(--palette-crimson-600);
+  --color-accent-subtle: var(--palette-crimson-50);
+  --color-accent-subtle-hover: var(--palette-crimson-100);
+  --color-highlight: var(--palette-crimson-500);
+  --color-highlight-strong: var(--palette-crimson-600);
+  --color-highlight-subtle: var(--palette-crimson-50);
+  --color-support: var(--palette-lavender-500);
+  --color-support-subtle: var(--palette-lavender-50);
+  --color-support-sage: var(--palette-sage-500);
+  --color-support-sage-subtle: var(--palette-sage-50);
+  --color-support-gold: var(--palette-gold-500);
+  --color-support-gold-subtle: var(--palette-gold-50);
+  --color-danger: var(--palette-sienna-700);
+  --color-danger-subtle: var(--palette-sienna-50);
+  --color-success: var(--palette-sage-700);
+  --color-success-subtle: var(--palette-sage-50);
+  --color-control-boundary: var(--palette-warm-600);
+  --color-focus-ring: var(--palette-crimson-600);
+  --color-selected-ring: var(--palette-crimson-600);
+  --color-skeleton: var(--palette-warm-100);
+  --color-skeleton-shine: var(--palette-warm-50);
   --color-scrim: var(--scrim);
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -446,8 +467,8 @@ Under `(pointer: coarse)` the `sm` sizes switch to `md`.
   --container-auth: 25rem;
   --container-max: 105rem;
 
-  --animate-shimmer: shimmer 1.6s linear infinite;
-  @keyframes shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+  --animate-pulse-skeleton: pulse-skeleton 1.6s ease-in-out infinite;
+  @keyframes pulse-skeleton { 0%, 100% { background-color: var(--color-skeleton); } 50% { background-color: var(--color-skeleton-shine); } }
 }
 ```
 

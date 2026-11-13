@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Task | P05-06 |
-| Version | 1.1 — T-16 review fixes and requirement alignment applied (2026-11-12); draft for G3 review |
+| Version | 2.1 — 2026-11-13: styling contract updated for revision 2.1 (A-17): bright crimson fills, deep crimson text and indicators, white background, no gradients ([§0.1](#01-identity-v21-styling-contract-crimson-white-soft-grey-charcoal)); behaviour, keyboard and ARIA unchanged. For review (G3-R2) |
 | Date | 2026-11-12 |
 | Covers | Every **interactive** component in [DESIGN_SYSTEM](DESIGN_SYSTEM.md) (IDs `C..` refer to that catalogue) |
 | Patterns | WAI-ARIA Authoring Practices Guide (APG) — pattern named per component |
@@ -19,13 +19,51 @@ Visual states and tokens live in the catalogue; this document covers anatomy, va
 |---|---|
 | Native first | `<a href>` navigates, `<button>` acts, `<input>`/`<select>` collect. Never `div onClick` |
 | Accessible name | Visible label, or `aria-label` for icon-only controls (matched by a Tooltip) |
-| Focus | Global `:focus-visible` ring (2 px `accent-strong` outline, 2 px offset). Never removed |
+| Focus | Global `:focus-visible` ring (2 px deep crimson `#B3263E` outline, 2 px offset; ≥ 4.01:1 on every surface). Never removed |
 | Target | ≥ 44 × 44 px hit area for every control. A control whose visual size is below 44 px (the 40 px `sm` sizes) extends its hit area to 44 px and keeps ≥ 8 px between hit areas. Targets that are themselves ≥ 44 × 44 need no extra spacing. **Exception:** links inside running text need ≥ 24 × 24 px (WCAG 2.5.8 inline exception, NFR-26) |
 | State in ARIA | Toggle → `aria-pressed`; disclosure → `aria-expanded` + `aria-controls`; current page → `aria-current="page"`; invalid → `aria-invalid` + `aria-describedby`; busy → `aria-busy` |
 | Overlays | Escape closes; focus moves in on open and returns to the trigger on close; outside click closes non-modal overlays |
 | Announcements | One polite live region per page for async results (`role="status"`); `role="alert"` only for errors that need immediate attention |
 | No hover-only | Every hover-revealed control is also revealed on focus and available on touch |
 | Disabled | Prefer real `disabled`. Use `aria-disabled="true"` when the control must stay focusable to explain why (tooltip) |
+
+
+## 0.1 Identity v2.1 styling contract (Crimson, White, Soft Grey, Charcoal)
+
+One styling contract for the component families named in the user constitution §3.5. Values are semantic tokens (DESIGN_TOKENS §2); contrast is from T-15 v2. **Every state is also expressed by an icon, text, weight or ARIA change**, never by colour alone (§3.6).
+
+**Shared state language**
+
+| State | Treatment |
+|---|---|
+| Hover | Soft-grey controls: deeper warm shadow crossfade + 1 px lift. Flat items (menu rows, ghost buttons, chips): `--color-accent-subtle-hover` `#FBE2E6`. Primary: `#B3263E` |
+| Active / pressed | Soft-grey controls: inset pressed shadow, no movement. Primary: `#941D33`. Menu rows: `--color-accent-subtle`; flattened controls inside glass: `--color-bg-2` |
+| Selected / current | Primary-light `#FCEEF1` well or fill + 1.5 px deep crimson ring + deep crimson 600 label (5.71); on glass and in nav: deep crimson bar, underline or check + charcoal 600 label |
+| Focus | 2 px deep crimson outline, 2 px offset |
+| Disabled | Shadows removed, label `--color-text-disabled` `#969096`, `cursor: not-allowed`; primary becomes `--color-bg-3` fill |
+| Loading | Width kept; deep crimson spinner arc (white on primary) + `aria-busy`; lists show skeletons (`--color-skeleton`) |
+| Success | Sage-dark `#556359` icon + text, tint `#ECF0ED` for inline alerts, toast with check icon |
+| Error | Sienna `#9A3412` icon + text + field ring, tint `#F8EEEA` for inline alerts (**not crimson**, D-26) |
+
+**Per family**
+
+| Family | Default | Notes and limits |
+|---|---|---|
+| Primary button (C40) | Solid bright crimson `#DF2F4D`, white 600 label (4.51); hover `#B3263E` (6.43), pressed `#941D33` (8.46) | Flat (no neumorphism, no gradient); one primary action per view region |
+| Secondary button (C40) | Soft-grey `#F2F0F0` neumorphic control, charcoal label | On glass: `.ui-btn--on-glass` (white surface + hairline); ghost for low emphasis |
+| Search field (C09) | Inset soft-grey pill, secondary-text icon and placeholder (4.64), crimson submit on hero | Focus adds the crimson ring; no crimson fill on the field |
+| Navigation (C03–C07) | Subtle-glass header on white; charcoal links | Current page: crimson underline (header) or bar (drawer) + 600 label; menus are panel glass with crimson check for the chosen option |
+| Gallery thumbnails (C16–C18) | Artwork only: no border, shadow, tint, filter, gradient overlay or crimson frame | Hover bar is subtle glass with charcoal text; liked heart crimson inside an opaque white button |
+| Cards and containers (C52) | White card, hairline + elevation-1 on white; muted card on soft grey | Never wraps showcase media; no crimson borders |
+| Category filters (C10–C15) | Soft-grey pills and chips; filter panel on soft grey (classic neumorphism) | Selected category/filter = primary-light well + crimson ring + crimson label; Filters toggle shows a primary-light count badge with a crimson number |
+| Dropdowns (C11, C49) | Soft-grey trigger; panel-glass list | Chosen option: deep crimson check + charcoal 600 label; hover row `#FBE2E6` |
+| Modals (C48) | Modal glass (white α .94) on a charcoal scrim | Secondary text and crimson links allowed (4.67 / 5.70); errors in sienna |
+| Forms and inputs (C30, C31) | Inset soft-grey wells, charcoal text, persistent labels | Invalid: sienna ring + icon + message; disabled: muted label, no shadow |
+| Notifications (C38, dot) | Toasts on panel glass with sage or sienna icon; bright crimson count dot on the bell (R3) | Dot always paired with an accessible name; toasts announce via live regions |
+| User profiles (C26–C28, C45) | Minimal: charcoal name, secondary headline, lavender-tint initials avatar with a soft raised ring | Badges use tints (crimson PRO, gold Featured, lavender Team, sage New) with charcoal text |
+| Interactive icons (C41, C20, C21) | Soft-grey 44 px circles with charcoal icons | Liked = bright crimson heart with deep stroke in a primary-light well; on glass the controls are flat |
+
+**No gradients** anywhere (A-17). **Supporting accents** (lavender, sage, gold) never mark interactivity or selection; they appear as tints with charcoal text, avatar fills, badges and illustration.
 
 ---
 

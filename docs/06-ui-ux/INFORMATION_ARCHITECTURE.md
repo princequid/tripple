@@ -453,10 +453,10 @@ Found while building the IA. None is resolved here: each needs the lead (or the 
 
 | ID | Type | Finding | Documents | Proposal in P06 |
 |---|---|---|---|---|
-| G-01 | Contradiction | Desktop nav breakpoint: FR-01 says ≥ 1280 px (burger below); DESIGN_TOKENS `--breakpoint-lg` and D-24(e) say desktop nav from 1024 px | FR-01 vs DESIGN_TOKENS §10, D-24 (pending) | P06 uses **1024 px** (D-24 proposal); FR-01 to be aligned when D-24 is approved |
-| G-02 | Contradiction | Gallery columns at 1280 px: NFR-28 says 3 columns (1024–1439); tokens/D-24 give 4 columns at 1280. NFR-28 also says up to 6 columns ≥ 1920; tokens give 5 from ≈ 1600 within a 1680 px container | NFR-28 vs DESIGN_TOKENS §10, D-24 | P06 uses the token arithmetic (1/2/3/4) — see [RESPONSIVE_DESIGN §3](RESPONSIVE_DESIGN.md) |
+| G-01 | Contradiction | Desktop nav breakpoint: FR-01 says ≥ 1280 px (burger below); DESIGN_TOKENS `--breakpoint-lg` and D-24(e) say desktop nav from 1024 px | FR-01 vs DESIGN_TOKENS §10, D-24 (pending) | P06 uses **1024 px** (D-24 proposal); FR-01 to be aligned when D-24 is approved. **Resolved:** D-24(e) approved 1024 px; FR-01 updated (Revision 1) |
+| G-02 | Contradiction | Gallery columns at 1280 px: NFR-28 says 3 columns (1024–1439); tokens/D-24 give 4 columns at 1280. NFR-28 also says up to 6 columns ≥ 1920; tokens give 5 from ≈ 1600 within a 1680 px container | NFR-28 vs DESIGN_TOKENS §10, D-24 | P06 uses the token arithmetic (1/2/3/4) — see [RESPONSIVE_DESIGN §3](RESPONSIVE_DESIGN.md). **Resolved:** D-24(e) approved the token arithmetic; NFR-28 updated |
 | G-03 | Gap | OQ-02 (profile URL) open; Option B (`/@name`) has an App Router folder-naming implication | OQ-02, P02-03 | Route-agnostic `{profile}` token; both options shown |
-| G-04 | Reference wording | "New & noteworthy" (FR-01, FR-22, C05, C11) is the reference product's distinctive label | FR-01, FR-22, DESIGN_SYSTEM C05/C11 | Use **Recent** |
+| G-04 | Reference wording | "New & noteworthy" (FR-01, FR-22, C05, C11) is the reference product's distinctive label | FR-01, FR-22, DESIGN_SYSTEM C05/C11 | Use **Recent**. **Resolved:** "Recent" approved (D-25, A-15); FR-22 updated |
 | G-05 | Contradiction | "Discover" pill (C10, V-8) vs BR-89 "There is no Discover tab" | DESIGN_SYSTEM C10, §10.1 V-8 vs BR-89 | Use **All** |
 | G-06 | Reference wording | Timeframe labels in FR-25 mirror the reference ("This past week…"); C14 uses "Past week…" | FR-25, C14 | **Trending now · Past 7 days · Past 30 days · Past 12 months · All time** (states BR-34 windows exactly) |
 | G-07 | Naming | "Get in touch" (FR-53) is the reference button label | FR-53, BR-15 intent `message-user` | UI label **Message**; keep FR name until renamed |

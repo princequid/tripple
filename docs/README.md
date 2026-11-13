@@ -23,23 +23,24 @@ Folders are created when their phase produces content, so there are no empty pla
 | [reverse-engineering/](reverse-engineering/) | Pre-P00: analysis of the reference product | Completed |
 | [00-project-assessment/](00-project-assessment/PROJECT_ASSESSMENT.md) | P00: assessment and technology evaluation | Completed (G1 approved) |
 | [01-requirements/](01-requirements/REQUIREMENTS_SPECIFICATION.md) | P01 | Awaiting review |
-| [02-architecture/](02-architecture/ARCHITECTURE_DECISIONS.md) | P02 | Spike ADRs written; architecture docs not started |
-| `03-database/` | P03 | Not started |
-| `04-api/` | P04 | Not started |
-| [05-design-system/](05-design-system/DESIGN_SYSTEM.md) | P05 | Awaiting review (G3); T-16 fixes in progress |
+| [02-architecture/](02-architecture/SYSTEM_ARCHITECTURE.md) | P02 | SYSTEM, TECHNOLOGY_STACK, FRONTEND, BACKEND, SECURITY, DATA_FLOW written (Awaiting Review); ADR-001…010; spikes partly blocked on accounts |
+| [03-database/](03-database/DATABASE_DESIGN.md) | P03 | DATABASE_DESIGN (with ERD) and DATABASE_SCHEMA written from the implemented R1 schema (Awaiting Review) |
+| [04-api/](04-api/API_SPECIFICATION.md) | P04 | API_RESPONSE_CONVENTIONS, API_SPECIFICATION (E-01…E-19), API_TESTING_PLAN with execution record (Awaiting Review) |
+| [05-design-system/](05-design-system/DESIGN_SYSTEM.md) | P05 | v1 approved (G3); **identity v2 (Crimson + Warm White) awaiting review (G3-R2)**. Includes [RE_TO_DESIGN_MAPPING](05-design-system/RE_TO_DESIGN_MAPPING.md) |
 | `06-ui-ux/` | P06 | In progress (IA, sitemap, wireframes) |
-| `07-development/` | P08 | Not started |
-| [08-testing/](08-testing/design/T-15_CONTRAST_REPORT.md) | P07 design QA and P11 system QA | Design reports T-15, T-16, T-33 |
+| [07-development/](07-development/BACKEND_PROGRESS_REPORT.md) | P08–P10 | BACKEND_IMPLEMENTATION_PLAN (vertical slices), REVERSE_ENGINEERING_TO_BACKEND_MAPPING, BACKEND_PROGRESS_REPORT |
+| [08-testing/](08-testing/design/T-15_CONTRAST_REPORT.md) | P07 design QA and P11 system QA | Design reports T-15, T-16, T-33; [DESIGN_QA_CHECKLIST](08-testing/design/DESIGN_QA_CHECKLIST.md) (foundation run) |
 | `09-deployment/` | P12 | Not started |
 
-## Source layout (planned, created in P08)
+## Source layout (as built, 2026-11-13; see BACKEND_ARCHITECTURE §0)
 
 ```text
-drizzle/migrations/        Drizzle Kit migrations
-src/app/                   Next.js App Router: (public) (auth) (dashboard) api/
-src/components/            ui/ shared/ features/
-src/modules/               feature modules (auth, users, shots, media, …)
-src/server/                services/ repositories/ validation/ integrations/ db/
-src/lib/ src/hooks/ src/types/ src/styles/
+src/server/db/{schema,migrations}/   Drizzle schema + Drizzle Kit migrations (FTS5 in a hand-written migration)
+src/app/(site) (auth) api/           Next.js App Router pages and Route Handlers
+src/components/                      design-system-class components and client islands
+src/modules/<name>/                  service.ts · repository.ts · schemas.ts · types.ts per feature
+src/server/                          env, db, auth, email, rate-limit, log, errors, http, route
+src/lib/                             isomorphic helpers
+scripts/                             migrate · reset-db · seed · moderate
 tests/unit/ tests/integration/ tests/e2e/
 ```

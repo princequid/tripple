@@ -25,7 +25,7 @@
 .ui-shot-card__stats svg { width: var(--icon-sm); height: var(--icon-sm); }
 
 /* ---- C45 Avatar ------------------------------------------------------------------------ */
-.ui-avatar { flex: none; display: inline-grid; place-items: center; overflow: hidden; border-radius: var(--radius-pill); width: var(--avatar-sm); height: var(--avatar-sm); background: var(--color-accent-subtle); color: var(--color-accent-strong); font-size: var(--text-metadata); font-weight: var(--font-weight-semibold); }
+.ui-avatar { flex: none; display: inline-grid; place-items: center; overflow: hidden; border-radius: var(--radius-pill); width: var(--avatar-sm); height: var(--avatar-sm); background: var(--color-support-subtle); color: var(--color-text-primary); font-size: var(--text-metadata); /* initials use the supporting lavender tint so crimson stays for actions */ font-weight: var(--font-weight-semibold); }
 .ui-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .ui-avatar--xs { width: var(--avatar-xs); height: var(--avatar-xs); }
 .ui-avatar--md { width: var(--avatar-md); height: var(--avatar-md); }
@@ -36,9 +36,14 @@
 
 /* ---- C46 Badge ----------------------------------------------------------------------------- */
 .ui-badge { display: inline-flex; align-items: center; height: 20px; padding-inline: var(--space-2); border-radius: var(--radius-pill); font-size: var(--text-metadata); line-height: 1; font-weight: var(--font-weight-semibold); letter-spacing: var(--text-metadata--letter-spacing); }
-.ui-badge--accent { background: var(--color-accent-subtle); color: var(--color-accent-strong); }
+.ui-badge--accent { background: var(--color-accent-subtle); color: var(--color-accent-deep); }
 .ui-badge--highlight { background: var(--color-highlight-subtle); color: var(--color-text-primary); }
 .ui-badge--neutral { background: var(--color-bg-2); color: var(--color-text-primary); }
+.ui-badge--accent { box-shadow: inset 0 0 0 1px var(--color-primary-border); }
+/* Supporting accents: tinted fill + primary text (the word carries meaning; gold is never text or a lone icon). */
+.ui-badge--support { background: var(--color-support-subtle); color: var(--color-text-primary); }
+.ui-badge--sage { background: var(--color-support-sage-subtle); color: var(--color-text-primary); }
+.ui-badge--gold { background: var(--color-support-gold-subtle); color: var(--color-text-primary); }
 
 /* ---- C26 ProfileHeader (minimal profile component) ------------------------------------ */
 .ui-profile { display: grid; gap: var(--space-4); justify-items: center; text-align: center; padding-block: var(--space-10) var(--space-8); }
@@ -58,19 +63,54 @@
 /* ---- C36 Skeleton ------------------------------------------------------------------------ */
 .ui-skeleton {
   border-radius: var(--radius-card);
-  background: linear-gradient(90deg, var(--color-skeleton) 25%, var(--color-skeleton-shine) 50%, var(--color-skeleton) 75%);
-  background-size: 200% 100%;
-  animation: ui-shimmer var(--duration-shimmer) linear infinite;
+  background: var(--color-skeleton); /* solid, no gradient (A-17): a gentle pulse between two flat colours */
+  animation: ui-pulse var(--duration-shimmer) ease-in-out infinite;
 }
 .ui-skeleton--media { aspect-ratio: 4 / 3; }
 .ui-skeleton--line { height: 12px; border-radius: var(--radius-pill); }
-@keyframes ui-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@keyframes ui-pulse { 0%, 100% { background-color: var(--color-skeleton); } 50% { background-color: var(--color-skeleton-shine); } }
 
 /* ---- C39 InlineAlert ------------------------------------------------------------------- */
 .ui-alert { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3) var(--space-4); border-radius: var(--radius-control); font-size: var(--text-body-sm); box-shadow: var(--shadow-elevation-1); }
 .ui-alert svg { flex: none; width: var(--icon-md); height: var(--icon-md); margin-top: 2px; }
 .ui-alert--error { background: var(--color-danger-subtle); color: var(--color-danger); }
 .ui-alert--success { background: var(--color-success-subtle); color: var(--color-success); }
+
+/* ---- C18 feed loading: load more, error row, end of feed ---------------------------- */
+.ui-feed-status { display: grid; justify-items: center; gap: var(--space-3); padding-block: var(--space-8); text-align: center; }
+.ui-feed-status__caption { font-size: var(--text-caption); color: var(--color-text-secondary); }
+.ui-feed-status--error { grid-auto-flow: column; align-items: center; justify-content: center; font-size: var(--text-body-sm); }
+
+/* ---- C19 ShotDetailHeader ---------------------------------------------------------------- */
+.ui-detail-header { display: grid; gap: var(--space-4); padding-block: var(--space-8) var(--space-6); }
+@media (min-width: 48rem) { .ui-detail-header { grid-template-columns: minmax(0, 1fr) auto; align-items: end; } }
+.ui-detail-header__title { font-size: var(--text-h3); line-height: var(--text-h3--line-height); letter-spacing: var(--text-h3--letter-spacing); font-weight: var(--font-weight-semibold); }
+.ui-detail-header__author { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-3); font-size: var(--text-label); }
+.ui-detail-header__author a { display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--color-text-primary); font-weight: var(--font-weight-medium); text-decoration: none; }
+.ui-detail-header__author a:hover { text-decoration: underline; }
+/* C24 ContentBlock media: flat, no effects (showcase priority) */
+.ui-content-block { margin: 0; max-width: var(--container-detail); border-radius: var(--radius-card); overflow: hidden; background: var(--shot-placeholder, var(--color-skeleton)); box-shadow: var(--shadow-elevation-0); }
+
+/* ---- C08 SiteFooter (bg-2 band) ------------------------------------------------------------- */
+.ui-footer { margin-top: var(--space-16); padding: var(--space-12) var(--gutter) var(--space-8); background: var(--color-bg-2); }
+.ui-footer__inner { max-width: var(--container-max); margin-inline: auto; display: grid; gap: var(--space-8); }
+@media (min-width: 48rem) { .ui-footer__inner { grid-template-columns: 1.5fr repeat(3, 1fr); } }
+.ui-footer__title { font-size: var(--text-label); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-2); }
+.ui-footer ul { list-style: none; margin: 0; padding: 0; }
+.ui-footer__link { display: flex; align-items: center; min-height: var(--touch-min); font-size: var(--text-body-sm); color: var(--color-text-secondary); text-decoration: none; }
+.ui-footer__link:hover { color: var(--color-text-primary); text-decoration: underline; }
+.ui-footer__legal { max-width: var(--container-max); margin: var(--space-8) auto 0; padding-top: var(--space-6); border-top: 1px solid var(--color-border-subtle); font-size: var(--text-caption); color: var(--color-text-secondary); }
+
+/* ---- C52 Card (content container, minimal) ------------------------------------------- */
+/* White surface on the warm page, hairline + elevation-1. Never wraps showcase media (C16 stays frameless). */
+.ui-card { display: grid; gap: var(--space-3); padding: var(--space-6); border-radius: var(--radius-card-lg); background: var(--color-surface-card); box-shadow: inset 0 0 0 1px var(--color-border-subtle), var(--shadow-elevation-1); }
+.ui-card--muted { background: var(--color-bg-2); box-shadow: none; }
+.ui-card__title { font-size: var(--text-h4); line-height: var(--text-h4--line-height); font-weight: var(--font-weight-semibold); }
+.ui-card__meta { font-size: var(--text-body-sm); color: var(--color-text-secondary); }
+
+/* ---- Notification indicator (C41 add-on; R3 notifications) ----------------------------- */
+/* Crimson dot with a surface ring; always paired with an accessible label ("3 unread"). */
+.ui-dot { position: absolute; top: 6px; right: 6px; min-width: 18px; height: 18px; padding-inline: 5px; border-radius: var(--radius-pill); background: var(--color-highlight); color: var(--color-text-on-accent); box-shadow: 0 0 0 2px var(--color-surface-elevated); font-size: 11px; line-height: 18px; font-weight: var(--font-weight-semibold); text-align: center; }
 
 /* ---- C51 Divider ------------------------------------------------------------------------ */
 .ui-divider { display: flex; align-items: center; gap: var(--space-3); color: var(--color-text-secondary); font-size: var(--text-caption); }

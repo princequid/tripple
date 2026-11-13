@@ -35,7 +35,7 @@ button { cursor: pointer; }
 .t-caption { font-size: var(--text-caption); line-height: var(--text-caption--line-height); letter-spacing: var(--text-caption--letter-spacing); }
 .t-metadata { font-size: var(--text-metadata); line-height: var(--text-metadata--line-height); letter-spacing: var(--text-metadata--letter-spacing); font-weight: var(--font-weight-medium); }
 .text-secondary { color: var(--color-text-secondary); }
-.text-accent-display { color: var(--color-accent); } /* display-size emphasis only (≥ 24 px) */
+.text-accent-display { color: var(--color-accent); } /* crimson emphasis in headings (6.30:1 on bg, so any size passes; use sparingly) */
 .measure { max-width: var(--measure-reading); }
 
 /* ---- Layout (minimal) -------------------------------------------------------- */

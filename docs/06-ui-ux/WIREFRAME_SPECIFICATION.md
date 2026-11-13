@@ -1047,11 +1047,11 @@ Self-review per [§1.3](#13-review-checklist-p06-step-3). Severity: **H** blocks
 | WF-10 | L | SH-01 | SearchBar form posts `?q=`; route is `/search/:term` | 308 redirect (IA G-09) | Lead / P02-03 |
 | WF-11 | L | SCR-09 | Code step has no URL; reload returns to the email step | Documented (IA §6.1) | Lead / P02-03 |
 | WF-12 | L | SCR-01 | Homepage feed has no sort control | "See all popular" link | Designer |
-| WF-13 | M | SH-01 | Desktop nav from 1024 (tokens, D-24) vs ≥ 1280 (FR-01) | 1024 (D-24 pending) | Lead / user (D-24) |
-| WF-14 | M | Grids | 4 columns at 1280 (tokens, D-24) vs 3 (NFR-28) | Tokens | Lead / user (D-24, NFR-28) |
+| WF-13 | M | SH-01 | Desktop nav from 1024 (tokens, D-24) vs ≥ 1280 (FR-01) | 1024 (D-24 pending) | Lead / user (D-24) — Resolved: 1024 (D-24e approved) |
+| WF-14 | M | Grids | 4 columns at 1280 (tokens, D-24) vs 3 (NFR-28) | Tokens | Lead / user (D-24, NFR-28) — Resolved: tokens (D-24e approved; NFR-28 updated) |
 | WF-15 | L | SCR-02 | V-11 says no R1 journey needs a FAB; C18/C42 specify back-to-top FAB on mobile | FAB shown (mobile only) | Lead |
 | WF-16 | L | SCR-11 | 404 with minimal chrome (no nav/footer): good focus, but footer legal links missing | Minimal chrome | Designer → P07-04 |
-| WF-17 | M | SH-02, SCR-02 | "New & noteworthy" is reference wording (FR-01, FR-22, C05, C11) | "Recent" | Lead / user |
+| WF-17 | M | SH-02, SCR-02 | "New & noteworthy" is reference wording (FR-01, FR-22, C05, C11) | "Recent" | Lead / user — Resolved: "Recent" (D-25, A-15) |
 | WF-18 | M | SCR-10 | Pending members have no sign-out path on onboarding | "Not you? Sign out" link | Lead (FR-17) |
 | WF-19 | L | SCR-13 | Legal text pending OQ-03 | Template only | User (OQ-03) |
 

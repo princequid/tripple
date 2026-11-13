@@ -3,349 +3,126 @@
 | Field | Value |
 |---|---|
 | Task | P05-02 |
-| Version | 1.0 — draft for G3 review |
-| Date | 2026-11-12 |
-| Inputs | Official palette (A-07); D-05 refinements (approved 2026-11-12); F-10 boundary finding |
-| Validation | T-15 — computed by the contrast script; full run in [T-15_CONTRAST_REPORT](../08-testing/design/T-15_CONTRAST_REPORT.md) |
-| Result | **130 required pairs checked, 0 failures (run 2026-11-12T18:39:49.309Z  node v24.13.0)** |
+| Version | **2.1** (2026-11-13) — identity v2 (A-16) + revision 2.1 (A-17): primary brightened to `#DF2F4D`, white background, tints re-derived from the new red, **no gradients**. v2.0 and v1.0 are in git history ([§11](#11-superseded-palettes)) |
+| Inputs | User constitution §3 revisions 2 and 2.1 ([FRONTEND_DESIGN_CONSTITUTION](../FRONTEND_DESIGN_CONSTITUTION.md#3-official-color-system)); F-10 boundary finding |
+| Validation | T-15 v2.1 — [T-15_CONTRAST_REPORT](../08-testing/design/T-15_CONTRAST_REPORT.md), script [t15-contrast.mjs](../08-testing/design/scripts/t15-contrast.mjs) |
+| Result | **131 required pairs checked, 0 failures** |
+| Pending | Derived and proposed values in §3 (**D-26**) |
 
-Every colour reaches components through a token ([DESIGN_TOKENS](DESIGN_TOKENS.md)). This document defines the colours, their roles, where they may and may not be used, and proves the contrast of every pair that is actually used.
+Every colour reaches components through a token ([DESIGN_TOKENS](DESIGN_TOKENS.md)). Semantic names are unchanged except one addition, `--color-accent-deep`.
 
 ---
 
-## 1. Official palette (A-07, unchanged)
+## 1. Approved palette (A-16, A-17)
 
-| Name | Hex | Role | Permitted | Forbidden |
-|---|---|---|---|---|
-| bg | `#E9EDF3` | Page background; neumorphic parent | Page, neumorphic controls' fill | — |
-| bg2 | `#F1F3F7` | Secondary background | Sections, footer, filter panel, input/OTP fill | — |
-| card | `#F8FAFC` | Card surface | Minimal cards, about panel | Raised neumorphism on it |
-| elevated | `#FFFFFF` | Topmost opaque surface | Opaque buttons on media, glass fallback, glass tint | — |
-| border | `#DDE1E9` | Hairline | Optional dividers, glass hairline | As the only boundary of a control (1.12:1) |
-| text | `#252B36` | Primary text and icons | All text and icons on every surface including glass; text on pink | — |
-| text2 | `#647184` | Secondary text (official) | On `card` and `elevated` only (≥ 4.74:1) | On `bg` (4.22) and `bg2` (4.46); on glass |
-| muted | `#929BA9` | Disabled | Disabled labels and icons (WCAG 1.4.3 exempt) | Any enabled text, placeholder or icon |
-| neu highlight | `#FFFFFF` | Neumorphic light shadow | Shadow tokens | — |
-| neu shadow | `#C5CFDC` | Neumorphic dark shadow | Shadow tokens | As a boundary cue (1.34:1) |
-| neu deep | `#B5C2D1` | Pressed shadow | `pressed` shadow token | As a boundary cue |
-| accent lavender | `#9273C7` | Primary interaction (non-text) | Icons, active-nav indicator, spinner, progress, focus-adjacent accents; text ≥ 24 px | Body/label text; white text on it (3.82) |
-| pink | `#EA78A5` | Likes, highlights, special emphasis | Liked-button fill with `text` label (5.23); highlight badge background tint | White text on it (2.72); as an icon on light surfaces (2.31); general decoration |
-| muted blue | `#A5B5CA` | Supporting | Decorative illustration strokes, skeleton accents | Text, icons, boundaries (1.78) |
-
-## 2. D-05 additions (approved)
-
-| Name | Hex | Why | Measured |
+| Role | Hex | Token (raw → semantic) | Contrast notes (T-15 v2.1) |
 |---|---|---|---|
-| text-secondary | `#5E6A7C` | Secondary text that passes on `bg`/`bg2` | 4.67 on bg · 4.94 on bg2 · 5.24 on card |
-| accent-strong | `#7556B3` | Links, filled primary buttons (white labels), focus and selected rings | White on it 5.62 · 4.78 on bg |
-| pink-strong | `#C2507F` | Liked heart icon | 3.76 on bg (icons ≥ 3:1) |
-| danger | `#B3364F` | Errors | 5.02 on bg |
-| success | `#2B7355` | Success | 4.85 on bg |
+| Primary (bright) | `#DF2F4D` | `--palette-crimson-500` → `--color-accent`, `--color-accent-strong`, `--color-highlight` | **Fills and large marks.** White text on it **4.51** (passes AA); vs white page 4.51, vs soft grey 3.98 |
+| Primary deep / hover | `#B3263E` | `--palette-crimson-600` → `--color-accent-strong-hover`, `--color-accent-deep`, `--color-text-link`, `--color-focus-ring`, `--color-selected-ring`, `--color-highlight-strong` | **Crimson text and thin indicators.** White text 6.43; as text 6.43 on white, 5.67 on soft grey, 5.24 on tertiary |
+| Primary pressed | `#941D33` | `--palette-crimson-700` → `--color-accent-strong-pressed` | White text 8.46 |
+| Primary light | `#FCEEF1` | `--palette-crimson-50` → `--color-accent-subtle`, `--color-highlight-subtle` | 8% of primary. Deep crimson text 5.71; primary text 13.84; secondary text 4.68 |
+| Primary border | `#F5C1CA` | `--palette-crimson-200` → `--color-primary-border` | 30% of primary. Decorative only (1.57) |
+| Background / surface | `#FFFFFF` | `--palette-warm-0` → `--color-bg`, `--color-surface-card`, `--color-surface-elevated`, glass tint | — |
+| Secondary surface | `#F2F0F0` | `--palette-warm-50` → `--color-bg-2` (soft grey) | Secondary text 4.64 |
+| Tertiary surface | `#EAE7E8` | `--palette-warm-100` → `--color-bg-3`, `--color-skeleton` | Secondary text **4.29 — not allowed**; primary text 12.69 |
+| Primary text | `#252326` | `--palette-warm-900` → `--color-text-primary` | 15.59 on white; ≥ 9.71 on every glass level |
+| Secondary text | `#706A70` | `--palette-warm-600` → `--color-text-secondary`, `--color-control-boundary` | 5.27 on white |
+| Muted text | `#969096` | `--palette-warm-400` → `--color-text-disabled` | 3.12 — **disabled only** |
+| Border | `#E7E1E3` | `--palette-warm-150` → `--color-border-subtle` | Decorative only |
 
-## 3. Derived scales
+**Why two crimsons.** The user asked for a 30% brighter red. At +30% (`#E93151`) white text drops to 4.18:1 and fails WCAG AA, so the user chose +24.5% (`#DF2F4D`, 4.51:1), the brightest red that still passes. No light tint can carry the bright red as *text* at 4.5:1, and on the glass header it reaches only 2.81:1. So the bright red fills buttons, radios, switches, the liked heart and the notification dot, and marks heading emphasis on white, while text and thin indicators use the deeper `#B3263E`.
 
-Scales are generated by the T-15 script: tints 50–400 mix the 500 anchor with white (92/84/68/50/26% white); 600 is the D-05 strong colour; shades 700–900 mix the 600 anchor with black (16/32/50%). Only the steps listed in §4 are tokenised for R1; the others are reserved and need no approval until used.
+## 2. Supporting accents (approved; secondary to crimson)
 
-#### lavender
-| Step | Hex | vs #FFFFFF | vs bg | vs text |
-|---|---|---|---|---|
-| 50 | `#F6F4FB` | 1.09 | 1.08 | 13.03 |
-| 100 | `#EEE9F6` | 1.19 | 1.01 | 11.93 |
-| 200 | `#DCD2ED` | 1.45 | 1.23 | 9.80 |
-| 300 | `#C9B9E3` | 1.82 | 1.55 | 7.81 |
-| 400 | `#AE97D6` | 2.56 | 2.18 | 5.55 |
-| 500 | `#9273C7` | 3.82 | 3.25 | 3.72 |
-| 600 | `#7556B3` | 5.62 | 4.78 | 2.53 |
-| 700 | `#624896` | 7.27 | 6.19 | 1.95 |
-| 800 | `#503A7A` | 9.43 | 8.02 | 1.51 |
-| 900 | `#3B2B5A` | 12.51 | 10.64 | 1.14 |
+| Accent | Hex | Use | Never |
+|---|---|---|---|
+| Muted lavender | `#8D7AB8` | Avatar initials fill (tint `#EEEBF4`), "Team" badge; optional icon (3.74) | Text; white text on it |
+| Muted sage | `#829889` | Success family (tint `#ECF0ED`, text `#556359`), "New" badge; optional icon (3.09) | Text in raw form |
+| Antique gold | `#C69A55` | "Featured" badge via tint `#F6F0E6` with primary text | Text or a lone icon |
 
-#### pink
-| Step | Hex | vs #FFFFFF | vs bg | vs text |
-|---|---|---|---|---|
-| 50 | `#FDF4F8` | 1.08 | 1.09 | 13.18 |
-| 100 | `#FCE9F1` | 1.16 | 1.01 | 12.23 |
-| 200 | `#F8D4E2` | 1.35 | 1.15 | 10.50 |
-| 300 | `#F5BCD2` | 1.61 | 1.37 | 8.80 |
-| 400 | `#EF9BBC` | 2.08 | 1.77 | 6.83 |
-| 500 | `#EA78A5` | 2.72 | 2.31 | 5.23 |
-| 600 | `#C2507F` | 4.42 | 3.76 | 3.21 |
-| 700 | `#A3436B` | 5.88 | 5.00 | 2.42 |
-| 800 | `#843656` | 7.95 | 6.76 | 1.79 |
-| 900 | `#612840` | 11.14 | 9.48 | 1.28 |
+## 3. Derived and proposed values (D-26, pending approval)
 
-#### neutral
-| Step | Hex | vs #FFFFFF | vs bg | vs text |
-|---|---|---|---|---|
-| 0 | `#FFFFFF` | 1.00 | 1.17 | 14.21 |
-| 25 | `#F8FAFC` | 1.05 | 1.12 | 13.58 |
-| 50 | `#F1F3F7` | 1.11 | 1.06 | 12.79 |
-| 100 | `#E9EDF3` | 1.17 | 1.00 | 12.10 |
-| 150 | `#DDE1E9` | 1.31 | 1.12 | 10.84 |
-| 200 | `#C5CFDC` | 1.58 | 1.34 | 9.02 |
-| 250 | `#B5C2D1` | 1.81 | 1.54 | 7.85 |
-| 300 | `#A5B5CA` | 2.09 | 1.78 | 6.81 |
-| 400 | `#929BA9` | 2.81 | 2.39 | 5.07 |
-| 500 | `#647184` | 4.96 | 4.22 | 2.87 |
-| 600 | `#5E6A7C` | 5.49 | 4.67 | 2.59 |
-| 700 | `#424B59` | 8.81 | 7.50 | 1.61 |
-| 800 | `#303844` | 11.83 | 10.07 | 1.20 |
-| 900 | `#252B36` | 14.21 | 12.10 | 1.00 |
+| Token | Hex | Derivation | Contrast |
+|---|---|---|---|
+| `--palette-crimson-100` (hover tint) | `#FBE2E6` | 14% of primary on white | Primary text 12.71, deep crimson 5.25 |
+| `--palette-sienna-700` / `-50` (danger) | `#9A3412` / `#F8EEEA` | **Proposed new hue**: errors must not look like brand or selection | 7.15 on white; 6.41 on its tint; 6.47 on modal glass |
+| `--palette-sage-700` / `-50` (success) | `#556359` / `#ECF0ED` | Sage + 35% black / tint | 6.20 on white; 5.67 on its tint |
+| `--palette-lavender-50`, `--palette-gold-50` | `#EEEBF4`, `#F6F0E6` | 85% white tints | Primary text ≥ 13.2 |
+| `--color-neu-dark` / `--color-neu-deep` | `rgb(84 70 76 / .16)` / `.24` | Warm taupe shadow | Decorative (F-10) |
 
-Neutral 700 and 800 are interpolations between `text-secondary` and `text`; they are reserved (not tokenised in R1).
+Primary light, primary border, pressed and hover tint are now derived directly from the user-approved bright red (A-17), and approved with it.
 
-## 4. Derived state colours — **proposed, need user approval**
+## 4. Usage limits found by T-15
 
-These are steps of the scales above, needed for component states. They are not new hues, but they are new hex values, so they are submitted as an extension of D-05.
-
-| Token | Hex | Scale step | Use | Key measurement |
-|---|---|---|---|---|
-| accent-strong-hover | `#624896` | lavender-700 | Primary button hover | White label 7.27 |
-| accent-strong-pressed | `#503A7A` | lavender-800 | Primary button pressed | White label 9.43 |
-| accent-subtle | `#F6F4FB` | lavender-50 | Selected pill/segment fill, accent badge, avatar fallback | `accent-strong` on it 5.15; `text` 13.03 |
-| accent-subtle-hover | `#EEE9F6` | lavender-100 | Hover fill for menu items, ghost buttons, selected-hover | `accent-strong` 4.71; `text` 11.93 |
-| pink-subtle | `#FDF4F8` | pink-50 | Highlight badge, liked-state background on cards | `text` 13.18; `pink-strong` icon 4.10 |
-| danger-subtle | `#F9EFF1` | 8% danger + white | Inline error alert | `danger` 5.24; `text` 12.62 |
-| success-subtle | `#EEF4F1` | 8% success + white | Inline success alert | `success` 5.11; `text` 12.76 |
-
-Non-hue values that are also tokens (no new colour): scrim = `text` at 48% alpha; glass tints = white at 80/88/94% alpha; glass hairline = `text` at 8%.
-
-**Warning and info colours: not added.** No R1 component needs them. Neutral information uses `text`/`text-secondary` with an info icon; time-limited notices (e.g. "code expires in 10 minutes") are neutral text. A warning colour will be proposed with a contrast check if R2+ introduces a state that needs it.
+| Finding | Rule |
+|---|---|
+| Bright crimson as text: 4.51 on white, below 4.5 on every tint and on soft grey | Crimson **text** always uses deep `#B3263E`; bright is for fills and large marks |
+| Bright crimson on subtle glass is 2.81 | Rings and indicators use deep crimson (4.01 worst case) |
+| Secondary text fails on tertiary surface (4.29) and on subtle/panel glass and the drawer | Primary text there; secondary text only in modals (4.67) |
+| Muted text is 3.12; borders are decorative | Disabled only; never the only boundary (§6) |
+| Gold is 2.52 | Tinted fills with primary text only |
 
 ## 5. Semantic roles
 
-| Semantic token | Value | Role |
+| Need | Token | Value |
 |---|---|---|
-| `color-bg` / `color-bg-2` | bg / bg2 | Page and secondary page |
-| `color-surface-card` / `color-surface-elevated` | card / elevated | Minimal containers / topmost opaque |
-| `color-text-primary` | text | Text, icons, labels |
-| `color-text-secondary` | text-secondary | Secondary text on any opaque surface |
-| `color-text-secondary-on-card` | text2 | Optional secondary text on card/elevated |
-| `color-text-disabled` | muted | Disabled |
-| `color-text-link` | accent-strong | Links |
-| `color-text-on-accent` | `#FFFFFF` | Labels on `accent-strong*` fills |
-| `color-text-on-highlight` | text | Labels on pink fill |
-| `color-accent` / `color-accent-strong` (+ hover, pressed, subtle, subtle-hover) | lavender scale | Interaction |
-| `color-highlight` / `-strong` / `-subtle` | pink scale | Likes and emphasis |
-| `color-support` | muted blue | Decoration |
-| `color-danger(-subtle)` / `color-success(-subtle)` | feedback | Feedback |
-| `color-focus-ring`, `color-selected-ring` | accent-strong | Focus and selected indicators |
-| `color-control-boundary` | text-secondary | Checkbox, radio, switch-off boundaries |
-| `color-border-subtle` | border | Decorative hairline |
+| Page, content, gallery, cards | `--color-bg`, `--color-surface-card`, `--color-surface-elevated` | `#FFFFFF` |
+| Neumorphic control fills, inset fields, panels, footer | `--color-bg-2` (via `--neu-fill`) | `#F2F0F0` |
+| Skeletons, pressed fills on glass | `--color-bg-3` | `#EAE7E8` |
+| Primary action fill / hover / pressed | `--color-accent-strong`, `-hover`, `-pressed` | `#DF2F4D` / `#B3263E` / `#941D33` |
+| Crimson text and thin indicators | `--color-accent-deep`, `--color-text-link` | `#B3263E` |
+| Selected fill / hover fill | `--color-accent-subtle` / `--color-accent-subtle-hover` | `#FCEEF1` / `#FBE2E6` |
+| Focus and selected rings | `--color-focus-ring`, `--color-selected-ring` | `#B3263E` |
+| Liked heart fill (stroke), notification dot | `--color-highlight` (`-strong`) | `#DF2F4D` (`#B3263E`) |
+| Avatar initials fill | `--color-support-subtle` | `#EEEBF4` |
+| Errors / success | `--color-danger(-subtle)` / `--color-success(-subtle)` | `#9A3412` (`#F8EEEA`) / `#556359` (`#ECF0ED`) |
+| Scrim | `--color-scrim` | `rgb(37 35 38 / .48)` |
 
 ## 6. Control-boundary strategy (F-10)
 
-`border` (1.12:1) and neumorphic shadows (1.34:1 / 1.54:1) can't identify a control. Per WCAG 1.4.11, a control needs no visible boundary **if something else identifies it**, and that something must reach 3:1. Every control therefore uses at least one of:
-
 | Control | Identifying cue (≥ 3:1) |
 |---|---|
-| Buttons (secondary, neumorphic) | Label in `text` (12.10 on bg) and/or icon in `text` |
-| Primary button | `accent-strong` fill vs page (4.78) + white label |
-| Icon button / FAB | Icon in `text` or `text-secondary` (≥ 4.67) |
-| Text input, search, OTP | Persistent visible label (or `text-secondary` leading icon for search) + inset; focus adds the `accent-strong` ring; error adds a 2 px `danger` outline + icon + message |
-| Checkbox, radio, switch (off) | 1.5 px `text-secondary` boundary (4.67) |
-| Switch (on), checkbox (checked) | `accent-strong` fill (4.78) + white thumb/tick (5.62) |
-| Pills, tabs, segments | Label in `text`; selected adds `accent-strong` 1.5 px ring + `accent-strong` 600 label (ring 4.78 vs bg, 5.15 vs fill) |
-| Like (toggle) | Heart icon: outline `text` when off; filled `pink-strong` (≥ 3.76) when on; `aria-pressed` |
-| Focus (all) | 2 px `accent-strong` outline, 2 px offset (≥ 3.50 on every surface incl. worst-case glass) |
+| Secondary (neumorphic) buttons, pills, sort, icon buttons | Label or icon in primary text (13.73 on soft grey) |
+| Primary button | Bright crimson fill vs page (4.51) + white label (4.51) |
+| Text input, search, OTP | Persistent label or secondary-text leading icon (4.64) + inset; focus adds the deep crimson ring; error adds the danger ring + icon + message |
+| Radio, switch (off) | 1.5 px secondary-text boundary (≥ 4.29) |
+| Radio (checked), switch (on) | Bright crimson fill (≥ 3.98 vs surface) + white dot/thumb (4.51) |
+| Pills, tabs, segments, chips (selected) | Primary-light fill + 1.5 px deep crimson ring + deep crimson 600 label (5.71) |
+| Like (toggle) | Outline heart in primary text when off; bright crimson heart with deep stroke when on, plus the selected well; `aria-pressed` |
+| Focus (all) | 2 px deep crimson outline, 2 px offset (≥ 4.01 everywhere incl. worst-case glass) |
 
 ## 7. Glass surfaces
 
-Glass text is checked against the **effective colour**: the white tint at its alpha composited (sRGB, the browser default) over the backdrop. Because glass can float over shot images, each level is checked over three backdrops: the page `bg`, pure white media, and **pure black media (worst case)**. Backdrop blur only averages the backdrop, so a uniform black backdrop is the true worst case. Modals are checked over the scrim (`text` at 48%) composited over the same backdrops.
+White tint over the backdrop; modals and the drawer over the charcoal scrim; checked at the worst-case black backdrop.
 
-| Level | Alpha | Blur | Worst-case effective colour | Permitted content |
-|---|---|---|---|---|
-| glass-subtle | 0.80 | 8–16 px | `#CCCCCC` | `text` only (8.85); `accent-strong` as indicator/ring only (3.50) |
-| glass-panel | 0.88 | 16 px | `#E0E0E0` | `text` (10.77); icons in `text-secondary` (4.16), `pink-strong` (3.35), `danger` (4.47), `success` (4.32); `accent-strong` indicator (4.26) |
-| glass-modal | 0.94 on scrim | 24 px | `#F1F1F1` | `text` (12.58), `text-secondary` (4.86), `accent-strong` links (4.97), `danger` errors (5.23) |
-| Fallback (reduced transparency / no `backdrop-filter`) | opaque | none | `#FFFFFF` (elevated) | Everything permitted on `elevated` |
-
-| Surface / backdrop | Effective colour |
-|---|---|
-| glass-subtle/bg | `#FBFBFD` |
-| glass-panel/bg | `#FCFDFE` |
-| scrim/bg | `#8B9098` |
-| glass-modal/bg | `#F8F8F9` |
-| glass-subtle/white media | `#FFFFFF` |
-| glass-panel/white media | `#FFFFFF` |
-| scrim/white media | `#96999F` |
-| glass-modal/white media | `#F9F9F9` |
-| glass-subtle/black media (worst) | `#CCCCCC` |
-| glass-panel/black media (worst) | `#E0E0E0` |
-| scrim/black media (worst) | `#12151A` |
-| glass-modal/black media (worst) | `#F1F1F1` |
-
-Controls placed on glass carry their own opaque fill (`bg2` for inputs, `elevated` for buttons on the card action bar), so their labels are checked against that fill, not the glass.
+| Level | Alpha / blur | Worst case | Permitted content |
+|---|---|---|---|
+| glass-subtle (header, card bar, rail) | 0.80 / 8–16 px | `#CCCCCC` | Primary text and icons (9.71); deep crimson as indicator only (4.01); **no bright crimson** (2.81) |
+| glass-panel (menus, toasts, tooltips) | 0.88 / 16 px | `#E0E0E0` | Primary text (11.81); deep crimson text (4.87); secondary icons (3.99); danger (5.54) and success (4.80) icons |
+| drawer | 0.88 on scrim | `#E3E2E3` | Primary text (12.07); deep crimson text or bar (4.98); secondary icons (4.08) |
+| glass-modal | 0.94 on scrim | `#F1F1F1` | Primary (13.80), secondary (4.67), deep crimson links (5.70), danger (6.47); bright crimson buttons are opaque fills |
+| Fallback | opaque | `#FFFFFF` | Everything permitted on surface |
 
 ## 8. Contrast matrix (pairs used by components)
 
-Computed with the WCAG 2.x relative-luminance formula by the T-15 script. Thresholds: `text` 4.5:1, `large` (≥ 24 px) 3:1, `ui` (icons, rings, indicators, control identifiers) 3:1.
+All 131 required pairs and the reference pairs are in [T-15 §4](../08-testing/design/T-15_CONTRAST_REPORT.md#4-full-output). Highlights: white on crimson 4.51 / 6.43 / 8.46 (default / hover / pressed); deep crimson text ≥ 5.24 on every page surface and tint; primary text ≥ 12.69 on every page surface and tint, ≥ 9.71 on glass.
 
-| Foreground | Background | Kind | Min | Ratio | Result | Use |
-|---|---|---|---|---|---|---|
-| text `#252B36` | bg `#E9EDF3` | text | 4.5 | 12.10 | PASS | Primary text, headings, control labels |
-| text `#252B36` | bg2 `#F1F3F7` | text | 4.5 | 12.79 | PASS | Primary text, headings, control labels |
-| text `#252B36` | card `#F8FAFC` | text | 4.5 | 13.58 | PASS | Primary text, headings, control labels |
-| text `#252B36` | elevated `#FFFFFF` | text | 4.5 | 14.21 | PASS | Primary text, headings, control labels |
-| text-secondary `#5E6A7C` | bg `#E9EDF3` | text | 4.5 | 4.67 | PASS | Secondary text, metadata, placeholders, helper text |
-| text-secondary `#5E6A7C` | bg2 `#F1F3F7` | text | 4.5 | 4.94 | PASS | Secondary text, metadata, placeholders, helper text |
-| text-secondary `#5E6A7C` | card `#F8FAFC` | text | 4.5 | 5.24 | PASS | Secondary text, metadata, placeholders, helper text |
-| text-secondary `#5E6A7C` | elevated `#FFFFFF` | text | 4.5 | 5.49 | PASS | Secondary text, metadata, placeholders, helper text |
-| text2 `#647184` | card `#F8FAFC` | text | 4.5 | 4.74 | PASS | Official text2: secondary text on card/elevated only |
-| text2 `#647184` | elevated `#FFFFFF` | text | 4.5 | 4.96 | PASS | Official text2: secondary text on card/elevated only |
-| accent-strong `#7556B3` | bg `#E9EDF3` | text | 4.5 | 4.78 | PASS | Text links, ghost-button labels, selected labels |
-| accent-strong `#7556B3` | bg2 `#F1F3F7` | text | 4.5 | 5.06 | PASS | Text links, ghost-button labels, selected labels |
-| accent-strong `#7556B3` | card `#F8FAFC` | text | 4.5 | 5.37 | PASS | Text links, ghost-button labels, selected labels |
-| accent-strong `#7556B3` | elevated `#FFFFFF` | text | 4.5 | 5.62 | PASS | Text links, ghost-button labels, selected labels |
-| white `#FFFFFF` | accent-strong `#7556B3` | text | 4.5 | 5.62 | PASS | Primary button label (default/hover/pressed), skip link |
-| white `#FFFFFF` | accent-strong-hover `#624896` | text | 4.5 | 7.27 | PASS | Primary button label (default/hover/pressed), skip link |
-| white `#FFFFFF` | accent-strong-pressed `#503A7A` | text | 4.5 | 9.43 | PASS | Primary button label (default/hover/pressed), skip link |
-| text `#252B36` | pink `#EA78A5` | text | 4.5 | 5.23 | PASS | Liked button label/icon on pink fill |
-| text `#252B36` | accent-subtle `#F6F4FB` | text | 4.5 | 13.03 | PASS | Text on tinted fills (hover rows, badges, inline alerts) |
-| text `#252B36` | accent-subtle-hover `#EEE9F6` | text | 4.5 | 11.93 | PASS | Text on tinted fills (hover rows, badges, inline alerts) |
-| text `#252B36` | pink-subtle `#FDF4F8` | text | 4.5 | 13.18 | PASS | Text on tinted fills (hover rows, badges, inline alerts) |
-| text `#252B36` | danger-subtle `#F9EFF1` | text | 4.5 | 12.62 | PASS | Text on tinted fills (hover rows, badges, inline alerts) |
-| text `#252B36` | success-subtle `#EEF4F1` | text | 4.5 | 12.76 | PASS | Text on tinted fills (hover rows, badges, inline alerts) |
-| accent-strong `#7556B3` | accent-subtle `#F6F4FB` | text | 4.5 | 5.15 | PASS | Selected pill/segment label, accent badge, avatar initials |
-| accent-strong `#7556B3` | accent-subtle-hover `#EEE9F6` | text | 4.5 | 4.71 | PASS | Selected pill/segment label, accent badge, avatar initials |
-| danger `#B3364F` | bg `#E9EDF3` | text | 4.5 | 5.02 | PASS | Error messages, field errors |
-| danger `#B3364F` | bg2 `#F1F3F7` | text | 4.5 | 5.31 | PASS | Error messages, field errors |
-| danger `#B3364F` | card `#F8FAFC` | text | 4.5 | 5.64 | PASS | Error messages, field errors |
-| danger `#B3364F` | elevated `#FFFFFF` | text | 4.5 | 5.90 | PASS | Error messages, field errors |
-| danger `#B3364F` | danger-subtle `#F9EFF1` | text | 4.5 | 5.24 | PASS | Error messages, field errors |
-| success `#2B7355` | bg `#E9EDF3` | text | 4.5 | 4.85 | PASS | Success messages |
-| success `#2B7355` | bg2 `#F1F3F7` | text | 4.5 | 5.13 | PASS | Success messages |
-| success `#2B7355` | card `#F8FAFC` | text | 4.5 | 5.44 | PASS | Success messages |
-| success `#2B7355` | elevated `#FFFFFF` | text | 4.5 | 5.70 | PASS | Success messages |
-| success `#2B7355` | success-subtle `#EEF4F1` | text | 4.5 | 5.11 | PASS | Success messages |
-| lavender `#9273C7` | bg `#E9EDF3` | large | 3 | 3.25 | PASS | Official lavender as text: display/h1/h2 emphasis only (>= 24px) |
-| lavender `#9273C7` | bg2 `#F1F3F7` | large | 3 | 3.44 | PASS | Official lavender as text: display/h1/h2 emphasis only (>= 24px) |
-| lavender `#9273C7` | card `#F8FAFC` | large | 3 | 3.65 | PASS | Official lavender as text: display/h1/h2 emphasis only (>= 24px) |
-| lavender `#9273C7` | elevated `#FFFFFF` | large | 3 | 3.82 | PASS | Official lavender as text: display/h1/h2 emphasis only (>= 24px) |
-| text `#252B36` | glass-subtle/bg `#FBFBFD` | text | 4.5 | 13.75 | PASS | Text on glass (all levels, worst-case backdrops) |
-| text `#252B36` | glass-subtle/white media `#FFFFFF` | text | 4.5 | 14.21 | PASS | Text on glass (all levels, worst-case backdrops) |
-| text `#252B36` | glass-subtle/black media (worst) `#CCCCCC` | text | 4.5 | 8.85 | PASS | Text on glass (all levels, worst-case backdrops) |
-| text `#252B36` | glass-panel/bg `#FCFDFE` | text | 4.5 | 13.96 | PASS | Text on glass (all levels, worst-case backdrops) |
-| text `#252B36` | glass-panel/white media `#FFFFFF` | text | 4.5 | 14.21 | PASS | Text on glass (all levels, worst-case backdrops) |
-| text `#252B36` | glass-panel/black media (worst) `#E0E0E0` | text | 4.5 | 10.77 | PASS | Text on glass (all levels, worst-case backdrops) |
-| text `#252B36` | glass-modal/bg `#F8F8F9` | text | 4.5 | 13.39 | PASS | Text on glass (all levels, worst-case backdrops) |
-| text `#252B36` | glass-modal/white media `#F9F9F9` | text | 4.5 | 13.50 | PASS | Text on glass (all levels, worst-case backdrops) |
-| text `#252B36` | glass-modal/black media (worst) `#F1F1F1` | text | 4.5 | 12.58 | PASS | Text on glass (all levels, worst-case backdrops) |
-| text-secondary `#5E6A7C` | glass-modal/bg `#F8F8F9` | text | 4.5 | 5.17 | PASS | Secondary text in modals only |
-| text-secondary `#5E6A7C` | glass-modal/white media `#F9F9F9` | text | 4.5 | 5.21 | PASS | Secondary text in modals only |
-| text-secondary `#5E6A7C` | glass-modal/black media (worst) `#F1F1F1` | text | 4.5 | 4.86 | PASS | Secondary text in modals only |
-| accent-strong `#7556B3` | glass-modal/bg `#F8F8F9` | text | 4.5 | 5.29 | PASS | Links in modals only |
-| accent-strong `#7556B3` | glass-modal/white media `#F9F9F9` | text | 4.5 | 5.34 | PASS | Links in modals only |
-| accent-strong `#7556B3` | glass-modal/black media (worst) `#F1F1F1` | text | 4.5 | 4.97 | PASS | Links in modals only |
-| danger `#B3364F` | glass-modal/bg `#F8F8F9` | text | 4.5 | 5.56 | PASS | Field errors in modals (auth gate) |
-| danger `#B3364F` | glass-modal/white media `#F9F9F9` | text | 4.5 | 5.61 | PASS | Field errors in modals (auth gate) |
-| danger `#B3364F` | glass-modal/black media (worst) `#F1F1F1` | text | 4.5 | 5.23 | PASS | Field errors in modals (auth gate) |
-| accent-strong `#7556B3` | bg `#E9EDF3` | ui | 3 | 4.78 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | bg2 `#F1F3F7` | ui | 3 | 5.06 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | card `#F8FAFC` | ui | 3 | 5.37 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | elevated `#FFFFFF` | ui | 3 | 5.62 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | glass-subtle/bg `#FBFBFD` | ui | 3 | 5.44 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | glass-subtle/white media `#FFFFFF` | ui | 3 | 5.62 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | glass-subtle/black media (worst) `#CCCCCC` | ui | 3 | 3.50 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | glass-panel/bg `#FCFDFE` | ui | 3 | 5.52 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | glass-panel/white media `#FFFFFF` | ui | 3 | 5.62 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | glass-panel/black media (worst) `#E0E0E0` | ui | 3 | 4.26 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | glass-modal/bg `#F8F8F9` | ui | 3 | 5.29 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | glass-modal/white media `#F9F9F9` | ui | 3 | 5.34 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | glass-modal/black media (worst) `#F1F1F1` | ui | 3 | 4.97 | PASS | Focus ring (2px outline) and selected-state ring |
-| accent-strong `#7556B3` | accent-subtle `#F6F4FB` | ui | 3 | 5.15 | PASS | Focus ring (2px outline) and selected-state ring |
-| text-secondary `#5E6A7C` | bg `#E9EDF3` | ui | 3 | 4.67 | PASS | Icons; checkbox/radio/switch-off boundary; input leading icon |
-| text-secondary `#5E6A7C` | bg2 `#F1F3F7` | ui | 3 | 4.94 | PASS | Icons; checkbox/radio/switch-off boundary; input leading icon |
-| text-secondary `#5E6A7C` | card `#F8FAFC` | ui | 3 | 5.24 | PASS | Icons; checkbox/radio/switch-off boundary; input leading icon |
-| text-secondary `#5E6A7C` | elevated `#FFFFFF` | ui | 3 | 5.49 | PASS | Icons; checkbox/radio/switch-off boundary; input leading icon |
-| text `#252B36` | glass-subtle/bg `#FBFBFD` | ui | 3 | 13.75 | PASS | Icons on glass |
-| text `#252B36` | glass-subtle/white media `#FFFFFF` | ui | 3 | 14.21 | PASS | Icons on glass |
-| text `#252B36` | glass-subtle/black media (worst) `#CCCCCC` | ui | 3 | 8.85 | PASS | Icons on glass |
-| text `#252B36` | glass-panel/bg `#FCFDFE` | ui | 3 | 13.96 | PASS | Icons on glass |
-| text `#252B36` | glass-panel/white media `#FFFFFF` | ui | 3 | 14.21 | PASS | Icons on glass |
-| text `#252B36` | glass-panel/black media (worst) `#E0E0E0` | ui | 3 | 10.77 | PASS | Icons on glass |
-| text `#252B36` | glass-modal/bg `#F8F8F9` | ui | 3 | 13.39 | PASS | Icons on glass |
-| text `#252B36` | glass-modal/white media `#F9F9F9` | ui | 3 | 13.50 | PASS | Icons on glass |
-| text `#252B36` | glass-modal/black media (worst) `#F1F1F1` | ui | 3 | 12.58 | PASS | Icons on glass |
-| text-secondary `#5E6A7C` | glass-panel/bg `#FCFDFE` | ui | 3 | 5.39 | PASS | Secondary icons on panel/modal glass (not on subtle glass) |
-| text-secondary `#5E6A7C` | glass-panel/white media `#FFFFFF` | ui | 3 | 5.49 | PASS | Secondary icons on panel/modal glass (not on subtle glass) |
-| text-secondary `#5E6A7C` | glass-panel/black media (worst) `#E0E0E0` | ui | 3 | 4.16 | PASS | Secondary icons on panel/modal glass (not on subtle glass) |
-| text-secondary `#5E6A7C` | glass-modal/bg `#F8F8F9` | ui | 3 | 5.17 | PASS | Secondary icons on panel/modal glass (not on subtle glass) |
-| text-secondary `#5E6A7C` | glass-modal/white media `#F9F9F9` | ui | 3 | 5.21 | PASS | Secondary icons on panel/modal glass (not on subtle glass) |
-| text-secondary `#5E6A7C` | glass-modal/black media (worst) `#F1F1F1` | ui | 3 | 4.86 | PASS | Secondary icons on panel/modal glass (not on subtle glass) |
-| pink-strong `#C2507F` | bg `#E9EDF3` | ui | 3 | 3.76 | PASS | Liked heart icon |
-| pink-strong `#C2507F` | bg2 `#F1F3F7` | ui | 3 | 3.98 | PASS | Liked heart icon |
-| pink-strong `#C2507F` | card `#F8FAFC` | ui | 3 | 4.23 | PASS | Liked heart icon |
-| pink-strong `#C2507F` | elevated `#FFFFFF` | ui | 3 | 4.42 | PASS | Liked heart icon |
-| pink-strong `#C2507F` | pink-subtle `#FDF4F8` | ui | 3 | 4.10 | PASS | Liked heart icon |
-| pink-strong `#C2507F` | glass-panel/bg `#FCFDFE` | ui | 3 | 4.34 | PASS | Liked heart icon in toasts/menus/modals |
-| pink-strong `#C2507F` | glass-panel/white media `#FFFFFF` | ui | 3 | 4.42 | PASS | Liked heart icon in toasts/menus/modals |
-| pink-strong `#C2507F` | glass-panel/black media (worst) `#E0E0E0` | ui | 3 | 3.35 | PASS | Liked heart icon in toasts/menus/modals |
-| pink-strong `#C2507F` | glass-modal/bg `#F8F8F9` | ui | 3 | 4.17 | PASS | Liked heart icon in toasts/menus/modals |
-| pink-strong `#C2507F` | glass-modal/white media `#F9F9F9` | ui | 3 | 4.20 | PASS | Liked heart icon in toasts/menus/modals |
-| pink-strong `#C2507F` | glass-modal/black media (worst) `#F1F1F1` | ui | 3 | 3.92 | PASS | Liked heart icon in toasts/menus/modals |
-| lavender `#9273C7` | bg `#E9EDF3` | ui | 3 | 3.25 | PASS | Lavender icons, active-nav indicator, spinner arc, progress |
-| lavender `#9273C7` | bg2 `#F1F3F7` | ui | 3 | 3.44 | PASS | Lavender icons, active-nav indicator, spinner arc, progress |
-| lavender `#9273C7` | card `#F8FAFC` | ui | 3 | 3.65 | PASS | Lavender icons, active-nav indicator, spinner arc, progress |
-| lavender `#9273C7` | elevated `#FFFFFF` | ui | 3 | 3.82 | PASS | Lavender icons, active-nav indicator, spinner arc, progress |
-| accent-strong `#7556B3` | bg `#E9EDF3` | ui | 3 | 4.78 | PASS | Primary button fill / switch-on track vs page |
-| accent-strong `#7556B3` | bg2 `#F1F3F7` | ui | 3 | 5.06 | PASS | Primary button fill / switch-on track vs page |
-| accent-strong `#7556B3` | card `#F8FAFC` | ui | 3 | 5.37 | PASS | Primary button fill / switch-on track vs page |
-| accent-strong `#7556B3` | elevated `#FFFFFF` | ui | 3 | 5.62 | PASS | Primary button fill / switch-on track vs page |
-| white `#FFFFFF` | accent-strong `#7556B3` | ui | 3 | 5.62 | PASS | Switch thumb / checkbox tick on accent-strong |
-| danger `#B3364F` | bg `#E9EDF3` | ui | 3 | 5.02 | PASS | Error icon, invalid-field outline |
-| danger `#B3364F` | bg2 `#F1F3F7` | ui | 3 | 5.31 | PASS | Error icon, invalid-field outline |
-| danger `#B3364F` | card `#F8FAFC` | ui | 3 | 5.64 | PASS | Error icon, invalid-field outline |
-| danger `#B3364F` | elevated `#FFFFFF` | ui | 3 | 5.90 | PASS | Error icon, invalid-field outline |
-| danger `#B3364F` | glass-panel/bg `#FCFDFE` | ui | 3 | 5.80 | PASS | Error icon, invalid-field outline |
-| danger `#B3364F` | glass-panel/white media `#FFFFFF` | ui | 3 | 5.90 | PASS | Error icon, invalid-field outline |
-| danger `#B3364F` | glass-panel/black media (worst) `#E0E0E0` | ui | 3 | 4.47 | PASS | Error icon, invalid-field outline |
-| danger `#B3364F` | glass-modal/bg `#F8F8F9` | ui | 3 | 5.56 | PASS | Error icon, invalid-field outline |
-| danger `#B3364F` | glass-modal/white media `#F9F9F9` | ui | 3 | 5.61 | PASS | Error icon, invalid-field outline |
-| danger `#B3364F` | glass-modal/black media (worst) `#F1F1F1` | ui | 3 | 5.23 | PASS | Error icon, invalid-field outline |
-| success `#2B7355` | bg `#E9EDF3` | ui | 3 | 4.85 | PASS | Success icon (toasts, copy confirmation) |
-| success `#2B7355` | bg2 `#F1F3F7` | ui | 3 | 5.13 | PASS | Success icon (toasts, copy confirmation) |
-| success `#2B7355` | card `#F8FAFC` | ui | 3 | 5.44 | PASS | Success icon (toasts, copy confirmation) |
-| success `#2B7355` | elevated `#FFFFFF` | ui | 3 | 5.70 | PASS | Success icon (toasts, copy confirmation) |
-| success `#2B7355` | glass-panel/bg `#FCFDFE` | ui | 3 | 5.59 | PASS | Success icon (toasts, copy confirmation) |
-| success `#2B7355` | glass-panel/white media `#FFFFFF` | ui | 3 | 5.70 | PASS | Success icon (toasts, copy confirmation) |
-| success `#2B7355` | glass-panel/black media (worst) `#E0E0E0` | ui | 3 | 4.32 | PASS | Success icon (toasts, copy confirmation) |
-| success `#2B7355` | glass-modal/bg `#F8F8F9` | ui | 3 | 5.37 | PASS | Success icon (toasts, copy confirmation) |
-| success `#2B7355` | glass-modal/white media `#F9F9F9` | ui | 3 | 5.41 | PASS | Success icon (toasts, copy confirmation) |
-| success `#2B7355` | glass-modal/black media (worst) `#F1F1F1` | ui | 3 | 5.04 | PASS | Success icon (toasts, copy confirmation) |
+## 9. Originality
 
-**130 pairs checked · 0 failures.**
-
-## 9. Reference pairs (not used for text or control identification)
-
-These are listed so that nobody "fixes" a component by reaching for them. Each is decorative, exempt (disabled) or explicitly forbidden.
-
-| Foreground | Background | Ratio | Status |
-|---|---|---|---|
-| border `#DDE1E9` | bg `#E9EDF3` | 1.12 | Decorative divider/hairline (not relied on) |
-| neu-shadow `#C5CFDC` | bg `#E9EDF3` | 1.34 | Neumorphic shadow edge (not relied on) |
-| neu-deep `#B5C2D1` | bg `#E9EDF3` | 1.54 | Pressed shadow edge (not relied on) |
-| muted `#929BA9` | bg `#E9EDF3` | 2.39 | Disabled text only (WCAG 1.4.3 exempt) |
-| muted `#929BA9` | card `#F8FAFC` | 2.68 | Disabled text only (exempt) |
-| muted-blue `#A5B5CA` | bg `#E9EDF3` | 1.78 | Decorative only |
-| pink `#EA78A5` | bg `#E9EDF3` | 2.31 | Pink fill vs page (supplementary; state carried by icon + aria-pressed) |
-| text2 `#647184` | bg `#E9EDF3` | 4.22 | FORBIDDEN for text on bg |
-| text2 `#647184` | bg2 `#F1F3F7` | 4.46 | FORBIDDEN for text on bg2 |
-| white `#FFFFFF` | lavender `#9273C7` | 3.82 | FORBIDDEN (white on official lavender) |
-| white `#FFFFFF` | pink `#EA78A5` | 2.72 | FORBIDDEN (white on pink) |
-| text-secondary `#5E6A7C` | glass-subtle/black media (worst) `#CCCCCC` | 3.42 | FORBIDDEN (secondary text on subtle glass) |
-| text-secondary `#5E6A7C` | glass-panel/black media (worst) `#E0E0E0` | 4.16 | FORBIDDEN as text (allowed as icon, >= 3:1) |
-| accent-strong `#7556B3` | glass-panel/black media (worst) `#E0E0E0` | 4.26 | FORBIDDEN as text on panel glass (allowed as indicator) |
-| pink-strong `#C2507F` | glass-subtle/black media (worst) `#CCCCCC` | 2.75 | FORBIDDEN (heart must sit in an opaque button) |
+`#DF2F4D` (hue ≈ 350°) is a true crimson-red, still distinct from the reference product's hot pink `#EA4C89` (hue ≈ 337°, much bluer), and it is paired with Inter, soft neumorphism and glass layers that the reference does not use (A-07, A-10).
 
 ## 10. Usage rules
 
-1. **Text:** `text` everywhere; `text-secondary` for secondary text on opaque surfaces and in modals; `text2` only on `card`/`elevated`; `muted` only when disabled.
-2. **Links:** `accent-strong`, underlined in running text (underline offset 3 px); in nav and button contexts the underline may be replaced by the control's shape. Not on `glass-subtle` or `glass-panel` (use `text` + underline).
-3. **Primary actions:** one `accent-strong` filled button per view region; white label; hover `accent-strong-hover`, pressed `accent-strong-pressed`.
-4. **Lavender `#9273C7`:** non-text accents (icons, indicators, spinner, progress) and display/H1/H2 emphasis words only.
-5. **Pink:** reserved for likes, highlights and special emphasis. Liked fill uses `text` labels; the heart icon uses `pink-strong`. Never white on pink. Never more than one pink element per card.
-6. **Muted blue:** decoration only (illustration strokes, skeleton accent). Never text, icon or boundary.
-7. **Feedback:** `danger`/`success` for text and icons, with `-subtle` fills for inline alerts; always paired with an icon and text.
-8. **Media placeholder:** while a shot loads, its container shows the shot's stored dominant colour. This is content data, not a style value, and is the only colour that may come from data instead of tokens.
-9. **Contrast regression:** any new pair added by a component must be added to the T-15 script and pass before merge.
+1. **Neutrals dominate.** White and soft grey cover most of every screen; crimson marks what is actionable, selected or important.
+2. **One interaction colour, two weights.** Bright crimson fills; deep crimson writes and outlines. Supporting accents never mark interactivity.
+3. **No gradients** (A-17). Every surface, control, skeleton, backdrop and placeholder is a flat colour.
+4. **Artwork is independent.** No crimson borders, backgrounds, overlays or filters on thumbnails or media.
+5. **Soft grey for controls.** Neumorphic controls and inset fields use `--neu-fill` (`#F2F0F0`); large regions stay flat.
+6. **Text on crimson is white only.** Charcoal on crimson fails.
+7. **Errors are not crimson.** Danger token with an icon and wording (D-26).
+8. **Colour is never alone** (WCAG 1.4.1). **Tokens only**: hex values exist only in `design-tokens.css`.
+
+## 11. Superseded palettes
+
+- v2.0 (A-16, 2026-11-13): primary `#B3263E`, hover `#941D33`, pressed `#761729`, light `#FBECEF`, border `#E9C5CC`, hover tint `#F5DEE3`, background `#FFFCFA`; gradient skeleton shimmer.
+- v1 (A-07, approved at G3 via A-15): background `#E9EDF3`, lavender `#9273C7`, pink `#EA78A5`, muted blue `#A5B5CA`. See the user constitution's [Appendix A](../FRONTEND_DESIGN_CONSTITUTION.md#appendix-a--superseded-colour-system-revision-1-2026-11-12).

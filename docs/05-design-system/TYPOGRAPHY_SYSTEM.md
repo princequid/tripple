@@ -42,6 +42,8 @@ export const inter = Inter({
 
 ### 1.2 Fallback stack
 
+Single source: [DESIGN_TOKENS §3](DESIGN_TOKENS.md#3-typography) and `design-system/styles/design-tokens.css` (T16-21); quoted here for reference.
+
 ```css
 --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
              Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
@@ -113,7 +115,7 @@ Fluid sizes interpolate linearly between 360 px and 1440 px viewports and are fi
 5. **Headings** use `text-wrap: balance`; paragraphs use `text-wrap: pretty` (progressive enhancement).
 6. **Truncation:** card titles one line with ellipsis and the full title in the link's accessible name; author names one line; descriptions never truncated without a "Show more" control.
 7. **Case:** sentence case everywhere. No all-caps labels (the reference product's letter-spaced uppercase toggle is not reused). Badges use one or two short sentence-case words.
-8. **Colour:** headings and body in `text-primary`; secondary lines in `text-secondary`; `#9273C7` lavender only for emphasis words at display/h1/h2 sizes (≥ 26 px, passes 3:1).
+8. **Colour:** headings and body in `text-primary`; secondary lines in `text-secondary`; bright crimson `--color-accent` (`#DF2F4D`, 4.51:1 on white) for occasional emphasis words in headings (A-16, A-17); never for body paragraphs.
 9. **Numbers:** counts abbreviated (`1.2k`, `3.4m`) with the exact number in `title`/accessible text; tabular nums.
 10. **Language:** `<html lang>` set; user-generated text gets `dir="auto"`.
 
