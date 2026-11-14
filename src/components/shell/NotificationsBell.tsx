@@ -42,6 +42,7 @@ export function NotificationsBell() {
           type="button"
           className="ui-icon-btn ui-btn--ghost bell"
           aria-label={count ? `Notifications, ${count} unread` : 'Notifications'}
+          data-tip={count ? `Notifications · ${count} unread` : 'Notifications'}
           onClick={() => {
             p.onClick();
             if (!open) void load();

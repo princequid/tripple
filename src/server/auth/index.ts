@@ -36,7 +36,9 @@ export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, { provider: 'sqlite', schema }),
-  emailAndPassword: { enabled: false }, // BR-12: no passwords in R1–R3
+  // BR-12: no passwords in R1–R3. A-28: the demo prototype may switch on email + password (PROTOTYPE_PASSWORD_AUTH=1,
+  // refused in production by env.ts), so people can sign up and sign in without an email provider.
+  emailAndPassword: { enabled: env.PROTOTYPE_PASSWORD_AUTH === '1', minPasswordLength: 8, maxPasswordLength: 128, autoSignIn: true },
   session: {
     expiresIn: 60 * 60 * 24 * 30, // BR-13: 30 days (SR-3)
     updateAge: 60 * 60 * 24, // renewed when used more than 24 h after the last renewal
@@ -75,12 +77,14 @@ export const auth = betterAuth({
       [SEND_PATH]: { window: 3600, max: 20 }, // BR-06 per IP 20/hour
       [VERIFY_PATH]: { window: 600, max: 30 }, // BR-07 per IP 30/10 min
       '/sign-in/social': { window: 600, max: 30 }, // RL-AUTH-OAUTH
+      '/sign-in/email': { window: 600, max: 30 }, // A-28 prototype password sign-in, same budget as code checks
+      '/sign-up/email': { window: 3600, max: 20 },
       '/callback/*': { window: 600, max: 30 },
     },
   },
   hooks: {
     before: createAuthMiddleware(async (ctx) => {
-      if (ctx.path !== SEND_PATH && ctx.path !== VERIFY_PATH) return;
+      if (ctx.path !== SEND_PATH && ctx.path !== VERIFY_PATH && ctx.path !== '/sign-in/email' && ctx.path !== '/sign-up/email') return;
       const body = (ctx.body ?? {}) as Record<string, unknown>;
       const email = normaliseEmail(body.email);
       // BR-10: server-side validation of the normalised email.

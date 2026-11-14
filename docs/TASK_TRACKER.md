@@ -2,18 +2,18 @@
 
 Flat list of **all 144 tasks**. IDs, titles, dependencies, estimates and statuses match [MASTER_PROJECT_WORKFLOW.md](MASTER_PROJECT_WORKFLOW.md) exactly. Subtasks, acceptance criteria and tests are listed there. Blockers are in [BLOCKERS_AND_RISKS.md](BLOCKERS_AND_RISKS.md) and test status is in [TESTING_PROGRESS.md](TESTING_PROGRESS.md).
 
-**Last updated:** 2026-11-13 (R2 backend session) · **Status values:** Not Started · In Progress · Blocked · Awaiting Review · Approved · Completed
+**Last updated:** 2026-11-14 (frontend demo-readiness session; see [FRONTEND_PROGRESS_REPORT](07-development/FRONTEND_PROGRESS_REPORT.md)) · **Status values:** Not Started · In Progress · Blocked · Awaiting Review · Approved · Completed
 
 ## Status summary
 
 | Status | Count |
 |---|---|
 | Completed | 12 |
-| In Progress | 5 |
-| Awaiting Review | 59 |
+| In Progress | 6 |
+| Awaiting Review | 71 |
 | Approved | 0 |
-| Blocked | 5 |
-| Not Started | 68 |
+| Blocked | 6 |
+| Not Started | 53 |
 | **Total** | **149** |
 
 | Phase | Tasks | Estimate |
@@ -41,6 +41,7 @@ Flat list of **all 144 tasks**. IDs, titles, dependencies, estimates and statuse
 |---|---|---|---|
 | R2 backend | P09-10…P09-19, P09-30 (backend done, A-22) | Awaiting Review | User review of [BACKEND_PROGRESS_REPORT](07-development/BACKEND_PROGRESS_REPORT.md) and the proposed decisions A-23…A-30; frontend session switches features to live ([API_SPECIFICATION §6](04-api/API_SPECIFICATION.md)) |
 | R2 frontend | P10-12…P10-19, P10-27 | Frontend session | Built against mocks, then live endpoints |
+| Demo prototype (2026-11-14) | P10-11, P10-25 | Frontend session | Demo content (`db:seed-demo`), image intake (`images:apply`), signature splash. **Waiting for the user's images** |
 | Backend R1 slices | P09-01…P09-09, P09-29 | Awaiting Review | Unchanged; re-verified 2026-11-13 (Vitest, Playwright 25/25, build) |
 | P02-07…P02-11 | Spike remote/account halves | Blocked | Turso and ImageKit now exist (B-15, B-11 effectively resolved): remote checks await user approval; Google OAuth (B-16), Vercel (B-10) |
 
@@ -156,33 +157,33 @@ Flat list of **all 144 tasks**. IDs, titles, dependencies, estimates and statuse
 | P09-28 | [R3] Analytics events ingestion | P09 Backend Implementation | P11-09 | `src/modules/analytics/ (server)` | Developer | 2 d | Not Started | — |
 | P09-29 | [R1] Moderation (minimal): admin-script suspend/hide with audit log | P09 Backend Implementation | P09-04, P09-05 | `src/modules/moderation/ (server)`, `scripts/moderation/` | Developer | 2 d | Awaiting Review | `npm run moderate` CLI + audited service; tests pass |
 | P09-30 | [R2] Moderation: content reports and review queue | P09 Backend Implementation | P09-29, P09-15, P11-08 | `src/modules/moderation/ (server)` | Developer | 3 d | Awaiting Review | Done 2026-11-13 (backend): reports, grouped queue, decisions, direct staff actions, audit; reports.test 4/4 |
-| P10-01 | [R1] Design tokens in Tailwind theme and global styles | P10 Frontend Implementation | P08-10, P05-07 | `src/app/ routes + src/modules/*/ui` | Developer | 2 d | In Progress | Design-system CSS imported in the root layout; Tailwind theme deferred (A-21); Inter via next/font pending |
-| P10-02 | [R1] Base primitives | P10 Frontend Implementation | P10-01 | `src/app/ routes + src/modules/*/ui` | Developer | 5 d | In Progress | Avatar, Icon, ShotCard, LikeButton, SearchForm, FilterBar built on design-system classes |
-| P10-03 | [R1] App shell: header, mobile drawer, menus, footer, layouts | P10 Frontend Implementation | P10-02, P07-06 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | In Progress | Header, account menu, footer, layouts done; mobile drawer (C04) missing |
-| P10-04 | [R1] Auth UI: sign in/up, OTP entry, Google button, auth-gate modal | P10 Frontend Implementation | P10-03, P09-03 | `src/app/ routes + src/modules/*/ui` | Developer | 4 d | In Progress | Login/signup/OTP/onboarding done and E2E-tested; auth-gate is a page, not a modal; Google button hidden (B-16) |
+| P10-01 | [R1] Design tokens in Tailwind theme and global styles | P10 Frontend Implementation | P08-10, P05-07 | `src/app/ routes + src/modules/*/ui` | Developer | 2 d | In Progress | Design-system CSS + `src/app/features.css` (tokens only, A-21); Tailwind and `next/font` Inter still deferred |
+| P10-02 | [R1] Base primitives | P10 Frontend Implementation | P10-01 | `src/app/ routes + src/modules/*/ui` | Developer | 5 d | Awaiting Review | Primitives in `src/components/ui/` (Modal, Menu, Toast, Field set, Tabs/Stepper, States) + hooks; FRONTEND_COMPONENT_INVENTORY |
+| P10-03 | [R1] App shell: header, mobile drawer, menus, footer, layouts | P10 Frontend Implementation | P10-02, P07-06 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Awaiting Review | Header v2 (Explore/Jobs/Hire menus, search types), mobile drawer, account menu, footer, toasts; FE-01, FE-11, FE-20 |
+| P10-04 | [R1] Auth UI: sign in/up, OTP entry, Google button, auth-gate modal | P10 Frontend Implementation | P10-03, P09-03 | `src/app/ routes + src/modules/*/ui` | Developer | 4 d | Awaiting Review | Auth-gate modal embeds the email-code flow (OV-03); FE-02, J5, J6. Google button hidden (B-16) |
 | P10-05 | [R1] Discovery/feed UI: ShotGrid, ShotCard, infinite scroll, filter bar | P10 Frontend Implementation | P10-03, P09-06 | `src/app/ routes + src/modules/*/ui` | Developer | 6 d | Awaiting Review | ShotGrid with infinite scroll + no-JS Load more, filter bar; J1, J3, J3b pass |
-| P10-06 | [R1] Shot detail UI: content blocks, action rail, share/details modals, related | P10 Frontend Implementation | P10-05, P09-05 | `src/app/ routes + src/modules/*/ui` | Developer | 5 d | In Progress | Detail page, share, more-by, related done; Share/Details modals not built (inline details) |
+| P10-06 | [R1] Shot detail UI: content blocks, action rail, share/details modals, related | P10 Frontend Implementation | P10-05, P09-05 | `src/app/ routes + src/modules/*/ui` | Developer | 5 d | Awaiting Review | Share/Details modals, Save, comments, report, palette, prev/next, follow/message; FE-03 |
 | P10-07 | [R1] Profile UI: header, Work tab, About tab | P10 Frontend Implementation | P10-05, P09-04 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Awaiting Review | Profile header, Work and About tabs; J1 passes |
 | P10-08 | [R1] Search and tags UI | P10 Frontend Implementation | P10-05, P09-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Awaiting Review | Search page, tag index and tag pages; J1, J3 pass |
 | P10-09 | [R1] Likes UI (optimistic, gated) | P10 Frontend Implementation | P10-04, P10-05, P09-08 | `src/app/ routes + src/modules/*/ui` | Developer | 1.5 d | Awaiting Review | Optimistic like with rollback, intent completion; J5, J6 pass |
 | P10-10 | [R1] View tracking client (batched) | P10 Frontend Implementation | P10-06, P09-09 | `src/app/ routes + src/modules/*/ui` | Developer | 1 d | Awaiting Review | ViewBeacon; J4 passes |
 | P10-11 | [R1] Homepage | P10 Frontend Implementation | P10-05, P10-08 | `src/app/ routes + src/modules/*/ui` | Developer | 2.5 d | Awaiting Review | Homepage hero + popular feed; J1 passes |
-| P10-12 | [R2] Upload and shot composer UI | P10 Frontend Implementation | P09-10, P09-11, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 7 d | Not Started | — |
-| P10-13 | [R2] Onboarding, profile edit, settings UI | P10 Frontend Implementation | P09-12, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 4 d | Not Started | — |
-| P10-14 | [R2] Collections UI and Liked Shots tab | P10 Frontend Implementation | P09-13, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 4 d | Not Started | — |
-| P10-15 | [R2] Follows UI | P10 Frontend Implementation | P09-14, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 2 d | Not Started | — |
-| P10-16 | [R2] Comments UI | P10 Frontend Implementation | P09-15, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Not Started | — |
-| P10-17 | [R2] Teams UI | P10 Frontend Implementation | P09-16, P10-13 | `src/app/ routes + src/modules/*/ui` | Developer | 2.5 d | Not Started | — |
-| P10-18 | [R2] Ranking timeframe UI, header search types + autocomplete, prev/next | P10 Frontend Implementation | P09-17, P09-18, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Not Started | — |
-| P10-19 | [R2] Jobs UI: board, filters, detail, post wizard | P10 Frontend Implementation | P09-19, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 5 d | Not Started | — |
-| P10-20 | [R3] Notifications UI | P10 Frontend Implementation | P09-20, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Not Started | — |
-| P10-21 | [R3] Block UI | P10 Frontend Implementation | P09-21 | `src/app/ routes + src/modules/*/ui` | Developer | 1 d | Not Started | — |
-| P10-22 | [R3] Messaging UI | P10 Frontend Implementation | P09-22, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 5 d | Not Started | — |
-| P10-23 | [R3] Video teasers and colour search UI | P10 Frontend Implementation | P09-23, P09-24, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Not Started | — |
-| P10-24 | [R3] Hire directory and services UI | P10 Frontend Implementation | P09-25, P09-26, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 6 d | Not Started | — |
-| P10-25 | [R3] SEO metadata/OG/JSON-LD, analytics client, cookie consent, custom 404 | P10 Frontend Implementation | P09-27, P09-28, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 4 d | Not Started | — |
+| P10-12 | [R2] Upload and shot composer UI | P10 Frontend Implementation | P09-10, P09-11, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 7 d | Awaiting Review | Composer live (uploads with progress, draft/publish/edit/delete); FE-28. Publish-with-image path not automated |
+| P10-13 | [R2] Onboarding, profile edit, settings UI | P10 Frontend Implementation | P09-12, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 4 d | Awaiting Review | Settings profile/account/sessions + /onboarding/details live; FE-27. Avatar upload UI not built |
+| P10-14 | [R2] Collections UI and Liked Shots tab | P10 Frontend Implementation | P09-13, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 4 d | Awaiting Review | Collections tab/detail, save picker, Liked tab live; FE-22 |
+| P10-15 | [R2] Follows UI | P10 Frontend Implementation | P09-14, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 2 d | Awaiting Review | Follow button, follower/following lists live; FE-21 (follow-state loader bug fixed) |
+| P10-16 | [R2] Comments UI | P10 Frontend Implementation | P09-15, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Awaiting Review | Comments panel live (reply, edit 15 min, delete, like, disable, paging); FE-23 |
+| P10-17 | [R2] Teams UI | P10 Frontend Implementation | P09-16, P10-13 | `src/app/ routes + src/modules/*/ui` | Developer | 2.5 d | Awaiting Review | Teams settings, team admin, create team live; FE-27 |
+| P10-18 | [R2] Ranking timeframe UI, header search types + autocomplete, prev/next | P10 Frontend Implementation | P09-17, P09-18, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Awaiting Review | Header search types + live suggest, designer results, prev/next; FE-30 |
+| P10-19 | [R2] Jobs UI: board, filters, detail, post wizard | P10 Frontend Implementation | P09-19, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 5 d | Awaiting Review | Board, filters, detail, 3-step wizard with rich text live; FE-04, FE-05, FE-24 |
+| P10-20 | [R3] Notifications UI | P10 Frontend Implementation | P09-20, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | In Progress | UI complete on the R3 mock (bell, page, mark read); FE-20, FE-26. Live wiring blocked on backend R3 |
+| P10-21 | [R3] Block UI | P10 Frontend Implementation | P09-21 | `src/app/ routes + src/modules/*/ui` | Developer | 1 d | In Progress | Block/unblock UI + Settings → Blocked on the R3 mock. Live wiring blocked on backend R3 |
+| P10-22 | [R3] Messaging UI | P10 Frontend Implementation | P09-22, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 5 d | In Progress | Inbox, conversation (polling 15 s), composer modal on the R3 mock; FE-25. Live wiring blocked on backend R3 |
+| P10-23 | [R3] Video teasers and colour search UI | P10 Frontend Implementation | P09-23, P09-24, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Blocked | Needs backend colour search (P09-24) and video pipeline (D-18); palette shown display-only |
+| P10-24 | [R3] Hire directory and services UI | P10 Frontend Implementation | P09-25, P09-26, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 6 d | In Progress | Hire directory, services list/detail/create/edit, profile Services tab on the R3 mock; FE-06, FE-07 |
+| P10-25 | [R3] SEO metadata/OG/JSON-LD, analytics client, cookie consent, custom 404 | P10 Frontend Implementation | P09-27, P09-28, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 4 d | In Progress | Colour-mosaic 404 and cookie consent done (FE-09); signature splash loader done (2026-11-14); SEO JSON-LD and analytics client not started |
 | P10-26 | [R1] Moderation visibility UI | P10 Frontend Implementation | P09-29, P10-06 | `src/app/ routes + src/modules/*/ui` | Developer | 1 d | Awaiting Review | Hidden/suspended staff alerts on detail and profile |
-| P10-27 | [R2] Report button and staff review queue page | P10 Frontend Implementation | P09-30, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Not Started | Approved via OQ-04 (A-14) |
+| P10-27 | [R2] Report button and staff review queue page | P10 Frontend Implementation | P09-30, P07-07 | `src/app/ routes + src/modules/*/ui` | Developer | 3 d | Awaiting Review | Report dialog (all targets) + staff queue live; FE-29 |
 | P11-01 | System test execution (R1) | P11 System Integration & QA | All G6-*-R1 gates passed | `docs/08-testing/SYSTEM_TEST_REPORT.md` | TPM / QA Lead | 2 d | Not Started | — |
 | P11-02 | End-to-end journey tests (R1) | P11 System Integration & QA | All G6-*-R1 gates passed | `docs/08-testing/END_TO_END_TEST_REPORT.md` | TPM / QA Lead | 2 d | Not Started | — |
 | P11-03 | Regression and visual regression baseline (R1) | P11 System Integration & QA | P11-01, P11-02 | `docs/08-testing/REGRESSION_TEST_REPORT.md` | TPM / QA Lead | 1.5 d | Not Started | — |

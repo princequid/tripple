@@ -138,6 +138,8 @@ const PATHS = {
     </>
   ),
   filter: <path d="M4 6h16M7 12h10M10 18h4" strokeLinecap="round" />,
+  eyeOff: <path d="M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5 0 9 6 9 6a17 17 0 0 1-3.2 3.8M6.6 6.6C4.3 8.1 3 12 3 12s4 6 9 6a9 9 0 0 0 4.4-1.1M9.9 9.9a3 3 0 0 0 4.2 4.2" strokeLinecap="round" strokeLinejoin="round" />,
+  arrow: <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />,
   palette: (
     <>
       <path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.9 1.4-2-.4-1.2.3-2 1.5-2H17a4 4 0 0 0 4-4c0-5.5-4-10-9-10Z" strokeLinejoin="round" />

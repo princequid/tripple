@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TrippleMark } from '@/components/brand/TrippleMark';
 import { SearchForm } from '@/components/SearchForm';
 import { NotFoundMosaic, NotFoundLinks } from '@/components/NotFoundMosaic';
 
@@ -7,6 +8,7 @@ export default function NotFound() {
   return (
     <main id="main" className="container section notfound">
       <Link className="ui-brand" href="/" aria-label="Trippple home">
+        <TrippleMark className="ui-brand__mark" />
         Trippple
       </Link>
       <NotFoundMosaic />

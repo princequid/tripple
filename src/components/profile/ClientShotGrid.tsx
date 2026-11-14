@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { ApiResult } from '@/lib/api-client';
 import type { Paged, ShotCard as ShotCardDto } from '@/services/contracts';
-import { ShotCard } from '../ShotCard';
+import { ShotMasonry } from '../ShotMasonry';
 
 /** Shot grid for client-loaded lists (liked shots, collection pages) with a "Load more" control (BR-35). */
 export function ClientShotGrid({ initial, nextCursor, load, label }: { initial: ShotCardDto[]; nextCursor: string | null; load?: (cursor: string) => Promise<ApiResult<Paged<ShotCardDto>>>; label: string }) {
@@ -21,11 +21,7 @@ export function ClientShotGrid({ initial, nextCursor, load, label }: { initial: 
   };
   return (
     <div className="shot-feed-wrap">
-      <ol className="gallery-grid shot-feed" aria-label={label}>
-        {items.map((s, i) => (
-          <ShotCard key={s.id} shot={s} priority={i < 4} />
-        ))}
-      </ol>
+      <ShotMasonry shots={items} label={label} />
       {cursor && load && (
         <div className="ui-feed-status">
           {state === 'error' && <p className="t-body-sm">Couldn’t load more.</p>}

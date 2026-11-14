@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type BrowserContext, type Page } from '@playwright/test';
 import { latestCode } from './helpers';
 
 /**
@@ -14,7 +14,15 @@ const STATE = path.join(process.cwd(), '.data', 'pw-demo-storage.json');
 
 /** Signs in once (BR-05 allows one code per email per 60 s) and stores the session cookie for all member tests. */
 async function ensureDemoState(page: Page) {
-  if (fs.existsSync(STATE) && Date.now() - fs.statSync(STATE).mtimeMs < 10 * 60_000) return;
+  // Reuse a recent saved session only if it is still valid: each run resets the test database, so a session saved by
+  // an earlier run (within 10 minutes) no longer exists on the server.
+  if (fs.existsSync(STATE) && Date.now() - fs.statSync(STATE).mtimeMs < 10 * 60_000) {
+    const saved = JSON.parse(fs.readFileSync(STATE, 'utf8')) as { cookies: Parameters<BrowserContext['addCookies']>[0] };
+    await page.context().addCookies(saved.cookies);
+    const me = await page.request.get('/api/me');
+    if (me.ok() && ((await me.json()) as { data?: { kind?: string } }).data?.kind === 'member') return;
+    await page.context().clearCookies();
+  }
   const email = 'demo@seed.trippple.test';
   const t0 = Date.now();
   const send = await page.request.post('/api/auth/email-otp/send-verification-otp', { data: { email, type: 'sign-in' }, headers: { Origin: BASE } });
@@ -89,7 +97,7 @@ test.describe('visitor', () => {
     await expect(page.getByText(/Write at least 50 characters/)).toBeVisible();
     await page.getByLabel('Job title').fill('Product Designer');
     await page.getByRole('textbox', { name: 'Description' }).fill('We are a small team building calm tools for independent shops. Join us to own the design of our app.');
-    await page.getByLabel('Specialty').selectOption('product');
+    await page.getByLabel('Specialty').selectOption('product-design');
     await page.getByLabel('How to apply').fill('https://example.com/apply');
     await page.getByRole('button', { name: 'Continue' }).click();
     await expect(page.getByRole('dialog', { name: /Sign in to post a job/ })).toBeVisible();
@@ -145,7 +153,7 @@ test.describe('visitor', () => {
     await page.getByRole('button', { name: 'Open menu' }).click();
     const drawer = page.getByRole('dialog', { name: 'Menu' });
     await expect(drawer).toBeVisible();
-    await drawer.getByRole('button', { name: 'Hire' }).click();
+    await drawer.getByRole('button', { name: 'Community' }).click();
     await drawer.getByRole('link', { name: 'Find designers' }).click();
     await expect(page).toHaveURL(/\/hire$/);
     await expect(drawer).toBeHidden();
@@ -217,7 +225,7 @@ test.describe('member (demo seed account)', () => {
     await page.goto('/jobs/new');
     await page.getByLabel('Job title').fill('E2E Visual Designer');
     await page.getByRole('textbox', { name: 'Description' }).fill('A short but complete description of a visual design role at a small, friendly studio in town.');
-    await page.getByLabel('Specialty').selectOption('ui-visual');
+    await page.getByLabel('Specialty').selectOption('ui-visual-design');
     await page.getByLabel('How to apply').fill('mailto:jobs@example.com');
     await page.getByRole('button', { name: 'Continue' }).click();
     await page.getByLabel('Company name').fill('E2E Studio');
@@ -228,10 +236,11 @@ test.describe('member (demo seed account)', () => {
     await expect(page).toHaveURL(/\/jobs\/\d+-e2e-visual-designer$/);
     await expect(page.getByRole('link', { name: 'Edit job' })).toBeVisible();
     const jobUrl = page.url();
-    const visitor = await page.context().browser()!.newContext({ baseURL: BASE });
+    // test.use({ storageState }) also applies to browser.newContext(), so clear it explicitly for a real visitor.
+    const visitor = await page.context().browser()!.newContext({ baseURL: BASE, storageState: { cookies: [], origins: [] } });
     const vp = await visitor.newPage();
-    await vp.goto(jobUrl);
-    await expect(vp.getByRole('link', { name: /Apply for this position/ })).toHaveAttribute('href', 'mailto:jobs@example.com');
+    await vp.goto(jobUrl, { waitUntil: 'networkidle' });
+    await expect(vp.getByRole('link', { name: /Apply for this position/ })).toHaveAttribute('href', 'mailto:jobs@example.com', { timeout: 15_000 });
     await visitor.close();
     await page.goto('/jobs?q=E2E+Visual');
     await expect(page.locator('.job-row', { hasText: 'E2E Visual Designer' })).toBeVisible();

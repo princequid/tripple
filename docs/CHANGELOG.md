@@ -2,6 +2,100 @@
 
 Records important changes to the project: documentation, decisions, configuration and code. Newest first. Dates are absolute (YYYY-MM-DD).
 
+## 2026-11-14 — Splash on refresh, tooltips, micro-interactions, square footer, compact profile
+
+- Splash now plays on every full page load (refresh included); never on client navigations; still skipped under automation.
+- `TooltipLayer` (C47): navy tooltips for icon-only controls (from `aria-label`) and any `data-tip` element; 400 ms hover delay, instant on keyboard focus, hidden on Escape/scroll/press; aria-hidden. Explicit tips on the bell, account menu, footer reel and profile stats.
+- Micro-interactions: press-scale on buttons/chips/pills, primary-button lift, icon nudge on hover, heart/bookmark pop when liked/saved, footer-link slide, focus-ring ease. All disabled under reduced motion.
+- Footer: full-bleed band, square corners, content aligned to the page container.
+- Profile header compacted (desktop panel 214 px, was ~320): shorter band, 80 px avatar, smaller type and buttons, inline stats.
+- E2E helper: a cached demo session is reused only if `/api/me` still says member (each run resets the test DB). Unit 87/87, build, Playwright 33/33.
+
+## 2026-11-14 — Prototype sign-up / sign-in with passwords; auth screens redesigned (A-28)
+
+- `PROTOTYPE_PASSWORD_AUTH=1` (`.env.local`; refused in production by `src/server/env.ts`) enables Better Auth email + password (`/api/auth/sign-up/email`, `/api/auth/sign-in/email`), with email normalisation and rate limits on both paths.
+- `src/components/PasswordAuth.tsx`: new sign-up / sign-in UI (demo-account button, email + password with show/hide, Remember me, inline validation, sign-up → onboarding, intent completion). Used on /login, /signup and in the auth-gate modal. With the flag off, the original email-code flow renders unchanged.
+- Auth layout redesigned from the user's reference: neumorphic card, red leaf corners, glass bubble, raised pill fields.
+- `scripts/seed-passwords.ts` (`npm run db:seed-passwords`, part of `db:reset`): demo password `Trippple2026` for every seed account.
+- Playwright pins `PROTOTYPE_PASSWORD_AUTH=0` so the suite keeps covering the production flow.
+
+### Tests executed
+- Browser journey on the dev server: sign-up validation, short password rejected, show/hide password, sign-up → onboarding → profile, upload + publish a supplied image, shot on the new profile, wrong password rejected, password sign-in, demo-account button, auth-gate modal. Test accounts and the test shot were removed afterwards.
+- Unit 87/87; build pass; Playwright frontend + journeys 33/33.
+
+## 2026-11-14 — Footer fits one screen; 3D block wordmark
+
+- Footer compacted (one-line CTA headline, smaller reel, tighter spacing; phone layout: side-by-side CTA buttons, brand + Back to top row, no description). Measured heights: 714 px at 1440x900, 729 px at 1024x768, 794 px at 390x844, 779 px at 360x780 (all fit one screen).
+- Footer wordmark is now a 3D block: pale-grey face, 10-step slate extrusion and drop shadow (`--wordmark-3d`, em-based so depth scales). Same logo face.
+
+## 2026-11-14 — Header slimmed, brand lockup, footer v3
+
+- Header bar 60 → 50 px; right-side controls 52 → 42 px (44 px kept on touch). Hero eyebrow removed.
+- Brand lockup: tri-fold mark + wordmark in header, drawer, footer, auth and 404 (wordmark face/colour unchanged).
+- Footer v3 (`SiteFooter`): deep-navy stage with CTA (Share your work / Find designers), a drifting reel of recently shared shots (pauses on hover/focus, static under reduced motion), link groups matching the header (Explore / Community / Resources / Company), Back to top, an oversized tone-on-tone wordmark, and the legal row with Cookie settings. New on-navy tokens (`--color-on-ink-*`); small text on navy uses slate (4.7:1).
+
+## 2026-11-14 — Supplied images applied
+
+- `scripts/organise-supplied-images.ts`: copies the user's 65 images (`image/mobile`, `image/web design`; source left untouched) into `public/images/projects/<category>/` with ASCII names, 8 per category filter, chosen by what each artwork shows, and writes titles to `public/images/manifest.json`.
+- `scripts/apply-images.ts` now also sets a matching description (manifest or per-category default) instead of the "flat shapes" seed text.
+- `npm run images:apply`: 64 covers + 1 second image applied; every category filter shows 8 supplied images. DB backup before applying: `.data/backup-pre-images/`.
+
+## 2026-11-14 — UI redesign: identity v3 (A-27)
+
+### Changed
+- Tokens (`design-system/styles/design-tokens.css`): navy/slate/pale-grey/red palette, Plus Jakarta Sans (`next/font`), rounder radii, neumorphic card/float/accent shadows. Previous file kept at `.data/backup-pre-demo/design-tokens.v2.css`.
+- Header: floating glass pill (red wordmark in its original face, Explore / Inspiration / Resources / Community) plus a neumorphic tools cluster. Mobile drawer uses the same groups.
+- Home: two-column hero with eyebrow, headline, hero search, popular chips and a featured-shot composition (glass frame, red disc, floating stats).
+- Filter bar: one neumorphic track (sort | All + 8 categories, navy active pill) and a Filters popover (`<details>`, works without JS) for timeframes.
+- Shot cards: neumorphic cards with glass Save/Like tiles; the media box takes the artwork's own aspect ratio (shape families tall/portrait/square/landscape/wide; small art shown at natural size; only extreme ratios clamped). Compact variant for related rows.
+- New `ShotMasonry`: shortest-column placement from known ratios, 1–5 columns by container width, CSS-columns fallback for SSR/no-JS.
+- New `scripts/shape-placeholders.ts` (`npm run db:shape-placeholders`, part of `db:reset`): re-crops generated placeholders into mixed aspect ratios so the masonry can be shown before supplied images arrive.
+- `src/app/redesign.css`: v3 styling for profile, detail, footer, auth, settings, inbox; one "selected" language (navy pill).
+
+### Tests executed
+- tsc pass; unit 87/87; build pass; Playwright frontend + journeys 33/33; route smoke 180 page loads at 6 widths, 0 overflow, 0 unexpected console errors.
+- Local only: cleared the development sign-in rate-limit counters (repeated smoke runs had exhausted the demo account's 10 codes/day).
+
+## 2026-11-14 — Frontend demo readiness
+
+### Added
+- `scripts/seed-demo.ts` (`npm run db:seed-demo`, also run by `db:reset`): adds interconnected R2 demo content to the local database (86 follows, 14 collections, 150 comments, 11 jobs, realistic bios) and recomputes the counters. Data only.
+- `scripts/apply-images.ts` (`npm run images:apply`) and `public/images/{projects,avatars,banners,categories,general}/`: the intake pipeline for user-supplied prototype images. It processes images like real uploads and writes the mock avatar map to `src/services/mock/assets.generated.ts`.
+- Signature splash: `src/components/brand/TrippleMark.tsx` and `src/app/brand.css` (tri-fold mark from the `/ani.html` study, Trippple palette, pure CSS, reduced-motion safe, once per tab).
+- `scripts/demo-code.ts` (`npm run demo:code`) and `docs/07-development/FRONTEND_PROGRESS_REPORT.md`.
+
+### Changed
+- `img.ui-avatar` crops supplied photos to the circle (`features.css`).
+
+### Reverted
+- A group-wide `(site)/loading.tsx` route loader: it broke the 308 canonical redirects and the 404 statuses (journeys J2, J7, J8).
+
+### Tests executed
+- tsc pass; unit tests 87/87; build pass; Playwright frontend.spec all pass; journeys.spec 10/10; route smoke 180 page loads at 6 widths with 0 overflow and 0 unexpected console errors.
+
+## 2026-11-14 — P10 frontend for R1–R3 screens (frontend session)
+
+### Context
+- User directive: build the complete frontend from the reverse-engineering findings on the existing foundation; backend developed in a separate session (A-22). Plan: [FRONTEND_IMPLEMENTATION_PLAN](07-development/FRONTEND_IMPLEMENTATION_PLAN.md).
+
+### Added
+- Service layer `src/services/` (contracts, per-feature live/mock switch, adapters to API_SPECIFICATION v2.0, in-browser mock store for R3 with forced `?__state=empty|error`).
+- Primitives (Modal, Menu, Toast, form fields, tabs/stepper, state views) and hooks; auth-gate modal; header v2, mobile drawer, notifications bell, account menu R2/R3, footer, cookie consent, colour-mosaic 404.
+- Screens: shot detail v2 overlays; profile tabs (collections, liked, members, followers/following, services); composer; settings (profile, account, sessions, teams, team admin, jobs, blocked); create team; jobs board/detail/wizard; designer search; report queue; notifications; messages; hire; services; onboarding details. See [REVERSE_ENGINEERING_TO_FRONTEND_MAPPING](07-development/REVERSE_ENGINEERING_TO_FRONTEND_MAPPING.md).
+- Tests: `tests/e2e/frontend.spec.ts` (22 journeys), `tests/unit/frontend.test.ts` (13); `scripts/fe-smoke.ts` (6-width screenshots, overflow and console check).
+- Docs: FRONTEND_IMPLEMENTATION_PLAN, FRONTEND_PROGRESS_REPORT, FRONTEND_COMPONENT_INVENTORY, FRONTEND_API_INTEGRATION_REQUIREMENTS, REVERSE_ENGINEERING_TO_FRONTEND_MAPPING, 08-testing/FRONTEND_TESTING_REPORT.
+
+### Changed
+- R2 features use the live API by default; R3 stays on the mock. Job specialties come from the shared `lib/catalog` (canonical slugs).
+- Fresh sign-ups without a destination continue to `/onboarding/details` (Skip available); J6 and J3 E2E updated (account menu items are `menuitem`; header search is hidden on the homepage per IA §3.2).
+- "Available for work" label removed everywhere (D-25d).
+
+### Fixed
+- Mobile drawer was stacked under its own scrim (clicks swallowed).
+- Profile page loader did not pass the follow lookup, so `isFollowing` was always false after reload.
+- Effects returning a value (`scrollIntoView` returns a Promise in current Chromium) crashed the conversation view; all effects use block bodies.
+- Header overflowed by 14 px at 390 px for members (Share work moved to the drawer below 768 px).
+
 ## 2026-11-13 — R2 backend implemented; foundation re-verified (backend session)
 
 ### Context

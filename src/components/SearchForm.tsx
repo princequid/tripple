@@ -25,6 +25,7 @@ export function SearchForm({ variant, id, defaultValue }: { variant: 'header' | 
       {hero && (
         <button className="ui-btn ui-btn--primary ui-search__submit" type="submit">
           Search
+          <Icon name="arrow" />
         </button>
       )}
     </form>

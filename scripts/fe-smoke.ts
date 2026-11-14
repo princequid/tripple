@@ -92,14 +92,14 @@ async function main() {
     for (const w of WIDTHS) {
       await page.setViewportSize({ width: w, height: w < 768 ? 844 : 900 });
       let url = r.path;
-      for (const [k, v] of Object.entries(ids)) url = url.replace(k, v);
-      if (url.includes('/services/') && !ids.SERVICE) {
+      for (const [k, v] of Object.entries(ids)) if (v) url = url.replace(k, v);
+      if (url.endsWith('SERVICE')) {
         await page.goto(`${BASE}/services`);
         const href = await page.locator('.service-card__title').first().getAttribute('href', { timeout: 15000 });
         ids.SERVICE = href!.split('/').pop()!;
         url = r.path.replace('SERVICE', ids.SERVICE);
       }
-      if (url.includes('/jobs/') && url.endsWith('JOB')) {
+      if (url.endsWith('JOB')) {
         await page.goto(`${BASE}/jobs`);
         const href = await page.locator('.job-row__title').first().getAttribute('href', { timeout: 15000 });
         ids.JOB = href!.split('/').pop()!;

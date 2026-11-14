@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api-client';
 import { Icon } from './Icon';
+import { PasswordAuth } from './PasswordAuth';
 
 /**
  * C34 SignInFlow (A-01, FR-10…FR-12, FR-20). One email-code flow for sign-in and sign-up (BR-09):
@@ -13,7 +14,7 @@ import { Icon } from './Icon';
  * A pending intent (BR-15, `like-shot`) is completed right after sign-in for members.
  * Google sign-in (A-02) is hidden until the OAuth client exists (B-16) — `googleEnabled`.
  */
-type Props = { mode: 'login' | 'signup'; returnTo: string; intent: string | null; target: string | null; googleEnabled: boolean };
+type Props = { mode: 'login' | 'signup'; returnTo: string; intent: string | null; target: string | null; googleEnabled: boolean; passwordAuth?: boolean; inModal?: boolean };
 
 const ERRORS: Record<string, string> = {
   INVALID_OTP: 'That code is not right. Check it and try again.',
@@ -25,7 +26,13 @@ const ERRORS: Record<string, string> = {
   NETWORK: 'Check your connection and try again.',
 };
 
-export function SignInFlow({ mode, returnTo, intent, target, googleEnabled }: Props) {
+/** Prototype (A-28): with PROTOTYPE_PASSWORD_AUTH=1 the email + password form replaces the code flow. */
+export function SignInFlow(props: Props) {
+  if (props.passwordAuth) return <PasswordAuth {...props} />;
+  return <EmailCodeFlow {...props} />;
+}
+
+function EmailCodeFlow({ mode, returnTo, intent, target, googleEnabled }: Props) {
   const [step, setStep] = useState<'email' | 'code'>('email');
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');

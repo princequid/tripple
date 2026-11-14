@@ -44,7 +44,7 @@ export function AccountMenu({ username, displayName, avatarKey, isStaff }: { use
     <Menu
       label="Account"
       trigger={(p) => (
-        <button {...p} id="account-trigger" className="ui-account-trigger" type="button" aria-label={`Account menu for ${displayName}`}>
+        <button {...p} id="account-trigger" className="ui-account-trigger" type="button" aria-label={`Account menu for ${displayName}`} data-tip="Your account">
           <Avatar name={displayName} avatarKey={avatarKey} size="md" />
         </button>
       )}

@@ -15,6 +15,8 @@ const env = {
   EMAIL_TRANSPORT: 'outbox',
   NEXT_PUBLIC_MEDIA_PROVIDER: 'local',
   NEXT_PUBLIC_MEDIA_BASE_URL: '/seed-media',
+  // The suite covers the production email-code flow; the prototype password flow (A-28) is verified separately.
+  PROTOTYPE_PASSWORD_AUTH: '0',
 };
 const tsx = 'npx tsx --conditions=react-server';
 // PW_CHANNEL=chrome runs on the locally installed Google Chrome instead of Playwright's bundled Chromium.

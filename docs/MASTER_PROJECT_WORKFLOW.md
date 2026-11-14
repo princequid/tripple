@@ -4,6 +4,8 @@
 **Document owner:** Technical Project Manager + QA Lead · **Last updated:** 2026-11-13
 **Companion documents:** [TASK_TRACKER.md](TASK_TRACKER.md) (flat task list, same IDs and statuses), [BLOCKERS_AND_RISKS.md](BLOCKERS_AND_RISKS.md), [TESTING_PROGRESS.md](TESTING_PROGRESS.md), [DECISION_LOG.md](DECISION_LOG.md) and [CHANGELOG.md](CHANGELOG.md) (owned by the lead), [00-project-assessment/TECHNOLOGY_EVALUATION.md](00-project-assessment/TECHNOLOGY_EVALUATION.md).
 
+> **Frontend (2026-11-14):** P10 frontend built for R1–R3 screens: R1/R2 screens run on the live API, R3 screens (notifications, messaging, blocks, hire, services) on the documented mock service layer until their backend slices exist. See [07-development/FRONTEND_PROGRESS_REPORT.md](07-development/FRONTEND_PROGRESS_REPORT.md). All P10 screens await user review (G4/G6).
+
 > **Current state:** the reverse-engineering study is complete (P00-01 Completed). **G1 was approved on 2026-11-12** and P00 is Completed. P01 (requirements), P05 (design constitution) and the local-capable spikes (SPIKE-01..03) are In Progress. Every task from P01 onward is **Not Started**. No application code, scaffold or package installation exists or is permitted yet.
 
 ---
@@ -1284,7 +1286,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** No hard-coded colour values in src (lint rule).
 - **Tests / validation:** T-24 component; T-15 contrast re-check
-- **Estimate:** 2 d · **Parallelizable:** Y (with P09-01) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 2 d · **Parallelizable:** Y (with P09-01) · **Owner:** Developer · **Status:** In Progress
 
 #### P10-02 — [R1] Base primitives
 
@@ -1293,7 +1295,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Each primitive has RTL tests for states and keyboard behaviour; Zero axe violations in a primitives test page.
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 5 d · **Parallelizable:** Y (with P09-02..P09-04) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 5 d · **Parallelizable:** Y (with P09-02..P09-04) · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-03 — [R1] App shell: header, mobile drawer, menus, footer, layouts
 
@@ -1302,7 +1304,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Shell matches approved screenshots at 6 widths; Menus fully keyboard operable; Closes G6-FOUNDATION (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 3 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-04 — [R1] Auth UI: sign in/up, OTP entry, Google button, auth-gate modal
 
@@ -1311,7 +1313,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Journey 4 E2E passes at 1440 and 390; Gated action → modal → sign-in → returns to the same shot; Closes G6-AUTH-R1 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 4 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 4 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-05 — [R1] Discovery/feed UI: ShotGrid, ShotCard, infinite scroll, filter bar
 
@@ -1320,7 +1322,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Infinite scroll loads 5 pages without duplicates (E2E); CLS < 0.1 on the feed; Closes G6-FEED-R1 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 6 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 6 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-06 — [R1] Shot detail UI: content blocks, action rail, share/details modals, related
 
@@ -1329,7 +1331,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Journey 1 E2E passes; Modals trap focus and close on Escape; Closes G6-SHOTS-R1 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-07 — [R1] Profile UI: header, Work tab, About tab
 
@@ -1338,7 +1340,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Profile pages match approved screenshots at 6 widths; Closes G6-PROFILES-R1 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 3 d · **Parallelizable:** Y (with P10-06) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y (with P10-06) · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-08 — [R1] Search and tags UI
 
@@ -1347,7 +1349,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Search E2E: query → results → shot; Empty state shown for no results; Closes G6-SEARCH-R1 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 3 d · **Parallelizable:** Y (with P10-07) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y (with P10-07) · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-09 — [R1] Likes UI (optimistic, gated)
 
@@ -1356,7 +1358,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Like state survives reload; failure rolls back (tests); Closes G6-LIKES-R1 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 1.5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 1.5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-10 — [R1] View tracking client (batched)
 
@@ -1365,7 +1367,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** ≤ 1 request per 10 s per page during scroll (test); Closes G6-VIEWS-R1 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 1 d · **Parallelizable:** Y (with P10-09) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 1 d · **Parallelizable:** Y (with P10-09) · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-11 — [R1] Homepage
 
@@ -1374,7 +1376,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** LCP < 2.5 s on preview (Lighthouse mobile); Matches approved screenshots at 6 widths; Closes G6-FEED-R1 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 2.5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 2.5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-12 — [R2] Upload and shot composer UI
 
@@ -1383,7 +1385,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Upload → publish → visible in feed (E2E); Composer fully keyboard operable; Closes G6-MEDIA-R2, G6-SHOTS-R2 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 7 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 7 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-13 — [R2] Onboarding, profile edit, settings UI
 
@@ -1392,7 +1394,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Onboarding E2E from first sign-in; Closes G6-PROFILES-R2 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 4 d · **Parallelizable:** Y (with P10-12) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 4 d · **Parallelizable:** Y (with P10-12) · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-14 — [R2] Collections UI and Liked Shots tab
 
@@ -1401,7 +1403,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Save → appears in collection (E2E); Closes G6-COLLECTIONS-R2 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 4 d · **Parallelizable:** Y (with P10-15) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 4 d · **Parallelizable:** Y (with P10-15) · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-15 — [R2] Follows UI
 
@@ -1410,7 +1412,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Journey 2 E2E passes; Closes G6-FOLLOWS-R2 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 2 d · **Parallelizable:** Y (with P10-14) · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 2 d · **Parallelizable:** Y (with P10-14) · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-16 — [R2] Comments UI
 
@@ -1419,7 +1421,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Comment E2E (create, reply, delete); Closes G6-COMMENTS-R2 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-17 — [R2] Teams UI
 
@@ -1428,7 +1430,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Team owner can add/remove members (E2E); Closes G6-TEAMS-R2 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 2.5 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 2.5 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-18 — [R2] Ranking timeframe UI, header search types + autocomplete, prev/next
 
@@ -1437,7 +1439,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Autocomplete keyboard operable (combobox pattern); Closes G6-FEED-R2, G6-SEARCH-R2 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-19 — [R2] Jobs UI: board, filters, detail, post wizard
 
@@ -1446,7 +1448,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Journeys 7 and 8 (free) E2E pass; Closes G6-JOBS-R2 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 5 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 5 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review
 
 #### P10-20 — [R3] Notifications UI
 
@@ -1455,7 +1457,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Notification appears after a like by another user (E2E); Closes G6-NOTIFICATIONS-R3 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 3 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** N · **Owner:** Developer · **Status:** In Progress
 
 #### P10-21 — [R3] Block UI
 
@@ -1464,7 +1466,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Blocked state rendered (test); Closes G6-FOLLOWS-R3 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 1 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 1 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** In Progress
 
 #### P10-22 — [R3] Messaging UI
 
@@ -1473,7 +1475,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Message round-trip between two users (E2E); Closes G6-MESSAGING-R3 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 5 d · **Parallelizable:** N · **Owner:** Developer · **Status:** In Progress
 
 #### P10-23 — [R3] Video teasers and colour search UI
 
@@ -1482,7 +1484,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** No autoplay when prefers-reduced-motion is set (test); Closes G6-MEDIA-R3, G6-SEARCH-R3 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Blocked
 
 #### P10-24 — [R3] Hire directory and services UI
 
@@ -1491,7 +1493,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Client finds a designer and opens Get in touch (E2E); Closes G6-HIRE-R3 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 6 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 6 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** In Progress
 
 #### P10-25 — [R3] SEO metadata/OG/JSON-LD, analytics client, cookie consent, custom 404
 
@@ -1500,7 +1502,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Lighthouse SEO ≥ 95 on shot, search, tag pages; No analytics request before consent (E2E); Closes G6-PLATFORM-R3 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E (journey); T-26 visual regression; T-27 accessibility
-- **Estimate:** 4 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 4 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** In Progress
 
 
 #### P10-26 — [R1] Moderation visibility UI
@@ -1510,7 +1512,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Alert visible only to the owner and staff; copy reviewed; Closes G6-MODERATION-R1 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-27 accessibility
-- **Estimate:** 1 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 1 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review
 - **Notes:** Approved via OQ-04 (A-14)
 
 #### P10-27 — [R2] Report button and staff review queue page
@@ -1520,7 +1522,7 @@ Each module task closes its **G6** gate together with its backend task. P10-03 a
 - **Deliverables:** `src/app/ routes + src/modules/*/ui`, `tests`
 - **Acceptance criteria:** Report flow keyboard-accessible; queue hidden from non-staff (E2E); Closes G6-MODERATION-R2 (with its backend task).
 - **Tests / validation:** T-24 component/interaction; T-25 E2E; T-27 accessibility
-- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Not Started
+- **Estimate:** 3 d · **Parallelizable:** Y · **Owner:** Developer · **Status:** Awaiting Review
 - **Notes:** Approved via OQ-04 (A-14)
 ### P11 System Integration & QA
 

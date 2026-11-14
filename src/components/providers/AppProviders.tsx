@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { ToastProvider } from '../ui/Toast';
 import { Modal } from '../ui/Modal';
 import { SignInFlow } from '../SignInFlow';
+import { TooltipLayer } from '../ui/TooltipLayer';
 import { setMockViewer } from '@/services/mock/runtime';
 import type { Intent } from '@/lib/return-to';
 
@@ -24,7 +25,7 @@ type Ctx = {
 
 const SessionCtx = createContext<Ctx>({ viewer: { kind: 'visitor' }, isStaff: false, requireMember: () => false });
 
-export function AppProviders({ viewer, googleEnabled, children }: { viewer: ClientViewer; googleEnabled: boolean; children: ReactNode }) {
+export function AppProviders({ viewer, googleEnabled, passwordAuth = false, children }: { viewer: ClientViewer; googleEnabled: boolean; passwordAuth?: boolean; children: ReactNode }) {
   setMockViewer(viewer.kind === 'member' ? { username: viewer.username, displayName: viewer.displayName, avatarKey: viewer.avatarKey, role: viewer.role } : null);
   const [gate, setGate] = useState<{ intent: Intent | null; label: string; target?: string | number } | null>(null);
   const path = usePathname();
@@ -48,8 +49,9 @@ export function AppProviders({ viewer, googleEnabled, children }: { viewer: Clie
     <SessionCtx.Provider value={value}>
       <ToastProvider>
         {children}
-        <Modal open={gate !== null} onClose={() => setGate(null)} title={gate ? `Sign in to ${gate.label}` : ''} description="Use your email and we’ll send you a 6-digit code. New here? The same steps create your account." size="sm">
-          {gate && <SignInFlow mode="login" returnTo={returnTo} intent={gate.intent} target={gate.target === undefined ? null : String(gate.target)} googleEnabled={googleEnabled} />}
+        <TooltipLayer />
+        <Modal open={gate !== null} onClose={() => setGate(null)} title={gate ? `Sign in to ${gate.label}` : ''} description={passwordAuth ? 'Sign in with your email and password, or create an account in seconds.' : 'Use your email and we’ll send you a 6-digit code. New here? The same steps create your account.'} size="sm">
+          {gate && <SignInFlow mode="login" returnTo={returnTo} intent={gate.intent} target={gate.target === undefined ? null : String(gate.target)} googleEnabled={googleEnabled} passwordAuth={passwordAuth} inModal />}
         </Modal>
       </ToastProvider>
     </SessionCtx.Provider>

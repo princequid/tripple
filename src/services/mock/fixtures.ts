@@ -4,6 +4,7 @@
  * directly: only the mock store reads it.
  */
 import type { PersonRef } from '../contracts';
+import { AVATAR_KEYS } from './assets.generated';
 
 export type FixturePerson = PersonRef & { headline: string; location: string; skills: string[]; available: boolean };
 
@@ -11,7 +12,7 @@ const p = (id: number, username: string, displayName: string, headline: string, 
   id,
   username,
   displayName,
-  avatarKey: null,
+  avatarKey: AVATAR_KEYS[username] ?? null,
   isTeam: false,
   isFeaturedStudio: false,
   headline,
@@ -69,21 +70,21 @@ export const JOB_SEEDS = [
     site: 'https://example.com/lumen-ledger',
     location: 'Berlin, Germany',
     workplace: 'hybrid',
-    specialty: 'product',
+    specialty: 'product-design',
     employment: 'full-time',
     days: 1,
     owner: 'ines-moreau',
   },
-  { title: 'Brand Designer (contract)', company: 'Tidewater Tea Co.', site: 'https://example.com/tidewater', location: '', workplace: 'remote', specialty: 'brand-graphic', employment: 'freelance-contract', days: 2, owner: 'kofi-asante' },
+  { title: 'Brand Designer (contract)', company: 'Tidewater Tea Co.', site: 'https://example.com/tidewater', location: '', workplace: 'remote', specialty: 'brand-graphic-design', employment: 'freelance-contract', days: 2, owner: 'kofi-asante' },
   { title: 'Illustrator for a picture book series', company: 'Small Hours Press', site: 'https://example.com/small-hours', location: 'Osaka, Japan', workplace: 'remote', specialty: 'illustration', employment: 'freelance-contract', days: 3, owner: 'mei-tanaka' },
   { title: 'Motion Designer', company: 'Orbit Audio', site: 'https://example.com/orbit-audio', location: 'Hamburg, Germany', workplace: 'on-site', specialty: 'animation', employment: 'full-time', days: 4, owner: 'lucas-brandt' },
-  { title: 'Lead Mobile Designer', company: 'Fernway Transit', site: 'https://example.com/fernway', location: 'Bengaluru, India', workplace: 'hybrid', specialty: 'mobile', employment: 'full-time', days: 6, owner: 'priya-nair' },
-  { title: 'Web Designer for a coffee roaster', company: 'Ember & Bean', site: 'https://example.com/ember-bean', location: 'Porto, Portugal', workplace: 'remote', specialty: 'web', employment: 'freelance-contract', days: 8, owner: 'tomas-silva' },
-  { title: 'Design Systems Designer', company: 'Quarry Cloud', site: 'https://example.com/quarry', location: 'Toronto, Canada', workplace: 'remote', specialty: 'ui-visual', employment: 'full-time', days: 10, owner: 'jonah-fields' },
-  { title: 'UX Researcher and Designer', company: 'Carewell Health', site: 'https://example.com/carewell', location: 'Bogotá, Colombia', workplace: 'hybrid', specialty: 'ux', employment: 'full-time', days: 13, owner: 'rafael-ortiz' },
+  { title: 'Lead Mobile Designer', company: 'Fernway Transit', site: 'https://example.com/fernway', location: 'Bengaluru, India', workplace: 'hybrid', specialty: 'mobile-design', employment: 'full-time', days: 6, owner: 'priya-nair' },
+  { title: 'Web Designer for a coffee roaster', company: 'Ember & Bean', site: 'https://example.com/ember-bean', location: 'Porto, Portugal', workplace: 'remote', specialty: 'web-design', employment: 'freelance-contract', days: 8, owner: 'tomas-silva' },
+  { title: 'Design Systems Designer', company: 'Quarry Cloud', site: 'https://example.com/quarry', location: 'Toronto, Canada', workplace: 'remote', specialty: 'ui-visual-design', employment: 'full-time', days: 10, owner: 'jonah-fields' },
+  { title: 'UX Researcher and Designer', company: 'Carewell Health', site: 'https://example.com/carewell', location: 'Bogotá, Colombia', workplace: 'hybrid', specialty: 'ux-design-research', employment: 'full-time', days: 13, owner: 'rafael-ortiz' },
   { title: 'Head of Design', company: 'Northwind Labs', site: 'https://example.com/northwind', location: 'London, United Kingdom', workplace: 'on-site', specialty: 'leadership', employment: 'full-time', days: 16, owner: 'sofia-lind' },
-  { title: 'Packaging Designer', company: 'Field & Fold', site: 'https://example.com/field-fold', location: 'Malmö, Sweden', workplace: 'on-site', specialty: 'brand-graphic', employment: 'freelance-contract', days: 21, owner: 'amara-okafor' },
-  { title: 'Product Designer, Payments', company: 'Pocketmint', site: 'https://example.com/pocketmint', location: 'Lisbon, Portugal', workplace: 'remote', specialty: 'product', employment: 'full-time', days: 34, owner: 'hana-kim' },
+  { title: 'Packaging Designer', company: 'Field & Fold', site: 'https://example.com/field-fold', location: 'Malmö, Sweden', workplace: 'on-site', specialty: 'brand-graphic-design', employment: 'freelance-contract', days: 21, owner: 'amara-okafor' },
+  { title: 'Product Designer, Payments', company: 'Pocketmint', site: 'https://example.com/pocketmint', location: 'Lisbon, Portugal', workplace: 'remote', specialty: 'product-design', employment: 'full-time', days: 34, owner: 'hana-kim' },
 ] as const;
 
 export const jobDescription = (title: string, company: string) =>

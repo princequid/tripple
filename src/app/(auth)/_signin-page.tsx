@@ -18,6 +18,7 @@ export async function SignInPage({ mode, searchParams }: { mode: 'login' | 'sign
   const intent = parseIntent(first(sp.intent));
   const other = mode === 'login' ? { href: '/signup', text: 'New here? Create an account' } : { href: '/login', text: 'Already have an account? Sign in' };
   const qs = new URLSearchParams({ returnTo });
+  const passwordAuth = process.env.PROTOTYPE_PASSWORD_AUTH === '1'; // A-28 (prototype only)
   return (
     <>
       <SignInFlow
@@ -26,12 +27,15 @@ export async function SignInPage({ mode, searchParams }: { mode: 'login' | 'sign
         intent={intent}
         target={first(sp.target)}
         googleEnabled={Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)}
+        passwordAuth={passwordAuth}
       />
-      <p style={{ marginTop: 'var(--space-6)' }}>
-        <Link className="text-link" href={`${other.href}?${qs}`}>
-          {other.text}
-        </Link>
-      </p>
+      {!passwordAuth && (
+        <p style={{ marginTop: 'var(--space-6)' }}>
+          <Link className="text-link" href={`${other.href}?${qs}`}>
+            {other.text}
+          </Link>
+        </p>
+      )}
     </>
   );
 }

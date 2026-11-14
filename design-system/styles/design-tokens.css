@@ -1,6 +1,6 @@
 /* =============================================================================
    Design tokens: Hybrid Soft UI (40% neumorphism · 30% glass · 30% minimalism)
-   Identity v2.1 (A-16, A-17, 2026-11-13): Premium Crimson + White + Soft Grey + Charcoal.
+   Identity v3 (A-27, 2026-11-14): Deep Navy + Slate Blue + Pale Grey + Vibrant Red + Deep Crimson.
    Single source of every colour, type, spacing, radius, shadow, blur, motion,
    layout, z-index and control-size value. Spec: docs/05-design-system/DESIGN_TOKENS.md
    Raw hex / px shadow values may appear ONLY in this file.
@@ -9,87 +9,105 @@
 
 :root {
   /* ---- 2.1 Raw palette (components never use these directly) ------------ */
-  /* Approved identity (A-16, 2026-11-13): Premium Crimson + Warm White + Soft Grey + Charcoal. */
-  /* v2.1 (A-17): primary brightened ~25% (the brightest step that keeps white text ≥ 4.5:1); tints re-derived from it. */
-  --palette-crimson-50: #FCEEF1;   /* primary light: 8% of crimson-500 on white */
-  --palette-crimson-100: #FBE2E6;  /* hover tint: 14% */
-  --palette-crimson-200: #F5C1CA;  /* primary border: 30% (decorative, 1.6:1) */
-  --palette-crimson-500: #DF2F4D;  /* primary (bright): fills, brand, heart, dot. White text 4.51:1 */
-  --palette-crimson-600: #B3263E;  /* primary deep: hover fill, text, rings, thin indicators. 6.43:1 */
-  --palette-crimson-700: #941D33;  /* primary pressed. White text 8.46:1 */
-  --palette-warm-0: #FFFFFF;       /* approved: surface */
-  --palette-warm-50: #F2F0F0;      /* approved: secondary surface (soft grey) */
-  --palette-warm-100: #EAE7E8;     /* approved: tertiary surface */
-  --palette-warm-150: #E7E1E3;     /* approved: border (decorative, 1.3:1) */
-  --palette-warm-400: #969096;     /* approved: muted text (disabled only, ~3:1) */
-  --palette-warm-600: #706A70;     /* approved: secondary text */
-  --palette-warm-900: #252326;     /* approved: primary text (charcoal) */
-  --palette-lavender-50: #EEEBF4;  /* [D-26] derived tint */
-  --palette-lavender-500: #8D7AB8; /* approved supporting accent */
-  --palette-sage-50: #ECF0ED;      /* [D-26] derived tint */
-  --palette-sage-500: #829889;     /* approved supporting accent */
-  --palette-sage-700: #556359;     /* [D-26] derived: success text (sage + 35% black) */
-  --palette-gold-50: #F6F0E6;      /* [D-26] derived tint */
-  --palette-gold-500: #C69A55;     /* approved supporting accent (decorative only, 2.5:1) */
-  --palette-sienna-50: #F8EEEA;    /* [D-26] derived tint */
-  --palette-sienna-700: #9A3412;   /* [D-26] proposed: danger, distinct from crimson */
+  /* Identity v3 (A-27, 2026-11-14, user directive): Deep Navy, Slate Blue, Pale Grey, Vibrant Red, Deep Crimson.
+     The five approved colours are marked "approved". Every other step is a tint or shade of one of them, derived
+     only where contrast requires it (slate #8D99AE is 2.5:1 on pale grey, so body copy uses slate-700). */
+  --palette-black: #0B0B0F;       /* user directive 2026-11-14: hero headline text in black */
+  --palette-navy-900: #2B2D42;     /* approved: primary text, nav, dark emphasis. 12.0:1 on pale grey */
+  --palette-navy-800: #3A3D57;     /* derived: hover on navy fills */
+  --palette-slate-700: #565F75;    /* derived (slate + navy): secondary text 5.7:1 on pale grey, 6.4:1 on white */
+  --palette-slate-500: #8D99AE;    /* approved: icons, muted marks, decorative strokes (non-text) */
+  --palette-slate-300: #C3CBD7;    /* derived tint: strong hairlines */
+  --palette-slate-200: #DCE2E9;    /* derived tint: borders, initials fill */
+  --palette-slate-100: #E3E9EE;    /* derived tint: tertiary surface, skeleton */
+  --palette-grey-50: #EDF2F4;      /* approved: page background, neumorphic base */
+  --palette-grey-25: #F6F9FA;      /* derived tint: raised controls, panels */
+  --palette-white: #FFFFFF;        /* cards, glass, neumorphic highlight */
+  --palette-red-50: #FDECEE;       /* derived tint: selected fills */
+  --palette-red-100: #FBD9DE;      /* derived tint */
+  --palette-red-200: #F6B3BC;      /* derived tint: decorative edge */
+  --palette-red-500: #EF233C;      /* approved: primary fills, active states. White text 4.83:1 */
+  --palette-red-600: #D90429;      /* approved: brand, strong emphasis, red TEXT (4.65:1 on pale grey) */
+  --palette-red-700: #B00321;      /* derived shade: pressed, danger text */
 
   /* ---- 2.2 Semantic colour ---------------------------------------------- */
-  --color-bg: var(--palette-warm-0);                    /* page, content and gallery areas (white, A-17) */
-  --color-bg-2: var(--palette-warm-50);                 /* soft grey: control fills, panels, footer */
-  --color-bg-3: var(--palette-warm-100);                /* tertiary: skeletons, pressed fills (primary text only) */
-  --color-surface-card: var(--palette-warm-0);
-  --color-surface-elevated: var(--palette-warm-0);
-  --color-border-subtle: var(--palette-warm-150);
-  --color-primary-border: var(--palette-crimson-200);  /* decorative edge of primary-light elements */
-  --color-text-primary: var(--palette-warm-900);
-  --color-text-secondary: var(--palette-warm-600);     /* not on bg-3 (4.29:1) */
-  --color-text-secondary-on-card: var(--palette-warm-600);
-  --color-text-disabled: var(--palette-warm-400);
-  --color-text-link: var(--palette-crimson-600);       /* deep crimson: text never uses the bright step */
-  --color-text-on-accent: var(--palette-warm-0);
-  --color-text-on-highlight: var(--palette-warm-0);
-  --color-accent: var(--palette-crimson-500);           /* bright crimson: large marks (heading emphasis, state icons) */
-  --color-accent-strong: var(--palette-crimson-500);    /* bright crimson FILLS: primary button, radio, switch */
-  --color-accent-strong-hover: var(--palette-crimson-600);
-  --color-accent-strong-pressed: var(--palette-crimson-700);
-  --color-accent-deep: var(--palette-crimson-600);      /* crimson TEXT and thin indicators (labels, check, underline, bar, spinner) */
-  --color-accent-subtle: var(--palette-crimson-50);     /* selected fills */
-  --color-accent-subtle-hover: var(--palette-crimson-100); /* hover rows and ghost hover */
-  --color-highlight: var(--palette-crimson-500);        /* liked heart fill, notification dot */
-  --color-highlight-strong: var(--palette-crimson-600);
-  --color-highlight-subtle: var(--palette-crimson-50);
-  --color-support: var(--palette-lavender-500);         /* supporting accents: decorative, secondary to crimson */
-  --color-support-subtle: var(--palette-lavender-50);
-  --color-support-sage: var(--palette-sage-500);
-  --color-support-sage-subtle: var(--palette-sage-50);
-  --color-support-gold: var(--palette-gold-500);
-  --color-support-gold-subtle: var(--palette-gold-50);
-  --color-danger: var(--palette-sienna-700);
-  --color-danger-subtle: var(--palette-sienna-50);
-  --color-success: var(--palette-sage-700);
-  --color-success-subtle: var(--palette-sage-50);
-  --color-control-boundary: var(--palette-warm-600);   /* ≥ 3:1 on bg, bg-2, bg-3 */
-  --color-focus-ring: var(--palette-crimson-600);      /* deep: ≥ 4.01:1 everywhere incl. subtle glass (bright is 2.81 there) */
-  --color-selected-ring: var(--palette-crimson-600);
-  --color-neu-light: var(--palette-warm-0);
-  --color-neu-dark: rgb(84 70 76 / 0.16);               /* warm taupe shadow (distinct from charcoal glass shadows) */
-  --color-neu-deep: rgb(84 70 76 / 0.24);
-  --color-skeleton: var(--palette-warm-100);
-  --color-skeleton-shine: var(--palette-warm-50);
-  --scrim: rgb(37 35 38 / 0.48);
+  --color-bg: var(--palette-grey-50);
+  --color-bg-2: var(--palette-grey-25);
+  --color-bg-3: var(--palette-slate-100);
+  --color-surface-card: var(--palette-white);
+  --color-surface-elevated: var(--palette-white);
+  --color-border-subtle: var(--palette-slate-200);
+  --color-primary-border: var(--palette-red-200);
+  --color-text-primary: var(--palette-navy-900);
+  --color-text-secondary: var(--palette-slate-700);
+  --color-text-secondary-on-card: var(--palette-slate-700);
+  --color-text-muted: var(--palette-slate-500);        /* icons and decorative marks only */
+  --color-text-disabled: var(--palette-slate-500);
+  --color-text-link: var(--palette-red-600);
+  --color-text-on-accent: var(--palette-white);
+  --color-text-on-highlight: var(--palette-white);
+  --color-accent: var(--palette-red-500);               /* large marks: heading emphasis, state icons */
+  --color-accent-strong: var(--palette-red-500);        /* primary button, radio, switch fills */
+  --color-accent-strong-hover: var(--palette-red-600);
+  --color-accent-strong-pressed: var(--palette-red-700);
+  --color-accent-deep: var(--palette-red-600);          /* red text and thin indicators */
+  --color-accent-subtle: var(--palette-red-50);
+  --color-accent-subtle-hover: var(--palette-slate-100); /* neutral hover so red stays for actions */
+  --color-highlight: var(--palette-red-500);
+  --color-highlight-strong: var(--palette-red-600);
+  --color-highlight-subtle: var(--palette-red-50);
+  --color-highlight-mark: var(--palette-red-100);      /* marker stroke behind emphasised headline words */
+  --color-text-headline: var(--palette-black);
+  --color-ink: var(--palette-navy-900);                 /* dark emphasis surfaces: active nav and filter pills */
+  --color-ink-hover: var(--palette-navy-800);
+  --color-text-on-ink: var(--palette-white);
+  --color-on-ink-muted: var(--palette-slate-500);       /* 4.7:1 on navy: small text allowed */
+  --color-on-ink-line: rgb(255 255 255 / 0.10);         /* hairlines on navy */
+  --color-on-ink-fill: rgb(255 255 255 / 0.07);         /* ghost controls on navy */
+  --color-on-ink-fill-hover: rgb(255 255 255 / 0.14);
+  --color-on-ink-ring: rgb(255 255 255 / 0.22);
+  /* Footer 3D block wordmark: pale-grey face, stepped slate extrusion (down-right), soft drop. em-based so depth scales. */
+  --wordmark-face: var(--palette-grey-50);
+  --wordmark-3d:
+    0.006em 0.008em 0 #C3CBD7, 0.012em 0.016em 0 #B6BFCD, 0.018em 0.024em 0 #A9B3C3, 0.024em 0.032em 0 #9CA7B9,
+    0.030em 0.040em 0 #8D99AE, 0.036em 0.048em 0 #7F8BA1, 0.042em 0.056em 0 #717C93, 0.048em 0.064em 0 #636E85,
+    0.054em 0.072em 0 #565F75, 0.060em 0.080em 0 #4A5268,
+    0.09em 0.13em 0.12em rgb(0 0 0 / 0.45);
+  --color-support: var(--palette-slate-500);
+  --color-support-subtle: var(--palette-slate-200);
+  --color-support-sage: var(--palette-slate-500);
+  --color-support-sage-subtle: var(--palette-slate-100);
+  --color-support-gold: var(--palette-red-600);
+  --color-support-gold-subtle: var(--palette-red-50);
+  --color-danger: var(--palette-red-700);
+  --color-danger-subtle: var(--palette-red-50);
+  --color-success: var(--palette-navy-900);
+  --color-success-subtle: var(--palette-slate-100);
+  --color-control-boundary: var(--palette-slate-700);
+  --color-focus-ring: var(--palette-red-600);
+  --color-selected-ring: var(--palette-red-600);
+  --color-neu-light: var(--palette-white);
+  --color-neu-dark: rgb(43 45 66 / 0.13);               /* navy-tinted shadow */
+  --color-neu-deep: rgb(43 45 66 / 0.22);
+  --color-skeleton: var(--palette-slate-100);
+  --color-skeleton-shine: var(--palette-grey-25);
+  --scrim: rgb(43 45 66 / 0.50);
   --color-scrim: var(--scrim);
 
   /* ---- 3. Typography ------------------------------------------------------ */
   --font-inter: "Inter";
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  /* v3 UI face: Plus Jakarta Sans via next/font (--font-jakarta on <html>). */
+  --font-sans: var(--font-jakarta, var(--font-inter)), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  /* The wordmark keeps its original face (logo design unchanged; only its colour moved to red). */
+  --font-logo: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  --text-display: clamp(2.5rem, 2rem + 2.2222vw, 4rem);
-  --text-display--line-height: 1.1;  --text-display--letter-spacing: -0.025em;
+  --text-display: clamp(2.375rem, 1.6rem + 3.1vw, 4.5rem);
+  --text-display--line-height: 1.04;  --text-display--letter-spacing: -0.035em;
   --text-h1: clamp(2rem, 1.6667rem + 1.4815vw, 3rem);
   --text-h1--line-height: 1.15;      --text-h1--letter-spacing: -0.02em;
   --text-h2: clamp(1.625rem, 1.4167rem + 0.9259vw, 2.25rem);
@@ -114,13 +132,13 @@
   --space-20: 80px; --space-24: 96px;
 
   /* ---- 5. Radii ----------------------------------------------------------- */
-  --radius-control-sm: 10px;
-  --radius-control: 12px;
-  --radius-control-lg: 14px;
-  --radius-card: 16px;
-  --radius-card-lg: 20px;
-  --radius-panel: 24px;
-  --radius-panel-lg: 28px;
+  --radius-control-sm: 12px;
+  --radius-control: 14px;
+  --radius-control-lg: 16px;
+  --radius-card: 20px;
+  --radius-card-lg: 24px;
+  --radius-panel: 28px;
+  --radius-panel-lg: 32px;
   --radius-pill: 9999px;
   --radius-checkbox: 6px;
 
@@ -157,16 +175,22 @@
   --blur-glass-lg: 24px;
   --glass-saturate: 140%;
   --glass-border: 1px solid rgb(255 255 255 / 0.70);
-  --glass-hairline: 0 0 0 1px rgb(37 35 38 / 0.08);
+  --glass-hairline: 0 0 0 1px rgb(43 45 66 / 0.08);
   --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.90);
-  --shadow-glass-sm: 0 4px 16px rgb(37 35 38 / 0.08);
-  --shadow-glass-md: 0 12px 32px rgb(37 35 38 / 0.12);
-  --shadow-glass-lg: 0 24px 56px rgb(37 35 38 / 0.18);
+  --shadow-glass-sm: 0 4px 16px rgb(43 45 66 / 0.08);
+  --shadow-glass-md: 0 12px 32px rgb(43 45 66 / 0.12);
+  --shadow-glass-lg: 0 24px 56px rgb(43 45 66 / 0.18);
 
   /* ---- 8. Elevation (minimal cards) --------------------------------------- */
   --shadow-elevation-0: none;
-  --shadow-elevation-1: 0 1px 2px rgb(37 35 38 / 0.05), 0 2px 8px rgb(37 35 38 / 0.04);
-  --shadow-elevation-2: 0 2px 4px rgb(37 35 38 / 0.06), 0 8px 24px rgb(37 35 38 / 0.08);
+  --shadow-elevation-1: 0 1px 2px rgb(43 45 66 / 0.05), 0 2px 8px rgb(43 45 66 / 0.04);
+  --shadow-elevation-2: 0 2px 4px rgb(43 45 66 / 0.06), 0 8px 24px rgb(43 45 66 / 0.08);
+  /* v3 neumorphic card: white face, top-left light edge, soft navy drop. Hover deepens via an opacity crossfade. */
+  --shadow-card: -6px -6px 16px rgb(255 255 255 / 0.85), 8px 10px 24px rgb(43 45 66 / 0.09), inset 0 1px 0 rgb(255 255 255 / 0.9);
+  --shadow-card-hover: -8px -8px 20px rgb(255 255 255 / 0.95), 14px 18px 36px rgb(43 45 66 / 0.15);
+  --shadow-float: 0 18px 40px rgb(43 45 66 / 0.16), 0 2px 6px rgb(43 45 66 / 0.06);
+  --shadow-accent: 0 10px 22px -8px rgb(239 35 60 / 0.55);   /* primary (red) buttons */
+  --shadow-ink: 0 8px 18px -8px rgb(43 45 66 / 0.55);        /* active navy pills */
 
   /* ---- 9. Motion ----------------------------------------------------------- */
   --duration-fast: 120ms;

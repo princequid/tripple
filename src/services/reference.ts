@@ -4,18 +4,8 @@
  */
 import type { JobInput, ServiceInput } from './contracts';
 
-/** 9 fixed job specialties (BR-71). */
-export const SPECIALTIES = [
-  { slug: 'animation', name: 'Animation' },
-  { slug: 'brand-graphic', name: 'Brand / Graphic design' },
-  { slug: 'illustration', name: 'Illustration' },
-  { slug: 'leadership', name: 'Leadership' },
-  { slug: 'mobile', name: 'Mobile design' },
-  { slug: 'ui-visual', name: 'UI / Visual design' },
-  { slug: 'product', name: 'Product design' },
-  { slug: 'ux', name: 'UX design' },
-  { slug: 'web', name: 'Web design' },
-] as const;
+/** 9 fixed job specialties (BR-71): the shared catalog the server also seeds (single source of truth). */
+export { SPECIALTIES } from '@/lib/catalog';
 
 /** Service categories (R3, BR-84). */
 export const SERVICE_CATEGORIES = [

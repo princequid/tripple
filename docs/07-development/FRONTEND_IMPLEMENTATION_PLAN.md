@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Phase | P10 Frontend Implementation (all releases R1–R3) |
-| Version | 1.0 · 2026-11-13 |
+| Version | 1.1 · 2026-11-14 (statuses updated after build and test) |
 | Source of truth | [reverse-engineering/01-page-inventory](../reverse-engineering/01-page-inventory.md), [FEATURE_INVENTORY](../01-requirements/FEATURE_INVENTORY.md), [APPLICATION_SITEMAP](../06-ui-ux/APPLICATION_SITEMAP.md), [INFORMATION_ARCHITECTURE](../06-ui-ux/INFORMATION_ARCHITECTURE.md), [USER_JOURNEYS](../01-requirements/USER_JOURNEYS.md) |
 | Companions | [FRONTEND_PROGRESS_REPORT](FRONTEND_PROGRESS_REPORT.md) · [FRONTEND_COMPONENT_INVENTORY](FRONTEND_COMPONENT_INVENTORY.md) · [FRONTEND_API_INTEGRATION_REQUIREMENTS](FRONTEND_API_INTEGRATION_REQUIREMENTS.md) · [FRONTEND_TESTING_REPORT](../08-testing/FRONTEND_TESTING_REPORT.md) · [REVERSE_ENGINEERING_TO_FRONTEND_MAPPING](REVERSE_ENGINEERING_TO_FRONTEND_MAPPING.md) |
 
@@ -13,6 +13,7 @@
 - **R1 vertical slices already built with the real backend** (A-20): home, explore feeds, shot detail, profile Work/About, search, tags, login/signup/OTP, onboarding (username), legal pages, 404/error. There is a real API under `/api/*`.
 - **R1 gaps found:** mobile navigation drawer (SH-03), Explore menu (SH-02), toast region (SH-06), Share modal (OV-01), Details modal (OV-02), auth-gate modal (OV-03).
 - **Not built:** every R2 and R3 screen (SCR-20…SCR-61, OV-04…OV-10).
+- **During the session** the backend session delivered the whole R2 API (API_SPECIFICATION v2.0), so the R2 screens were switched from the mock to the live API (§3, FE-16). R3 screens stay on the mock until their endpoints exist.
 
 ## 2. Approach
 
@@ -45,7 +46,12 @@
 | FE-13 | Cookie consent, colour-mosaic 404 | FE-01 | OV-10, SCR-60 | Completed |
 | FE-14 | Full onboarding steps | FE-03 | SCR-29 | Completed |
 | FE-15 | Responsive verification at 6 widths, E2E, docs | all | — | Completed (see testing report) |
+| FE-16 | Switch R2 features to the live API (adapters per API_SPECIFICATION §6), remove the availability label (D-25d), canonical specialty slugs | backend R2 | follows, collections, comments, reports, composer, settings, teams, onboarding, jobs, search | Completed |
 | — | Colour filter on feeds, video teasers | backend colour search (P09-24), video pipeline (D-18) | SCR-59, SCR-61 | Blocked |
+| — | Avatar and company-logo upload UI | endpoints exist; UI not built | SCR-30, SCR-39 | Not Started |
+| — | R3 live wiring (notifications, messaging, blocks, hire, services) | backend R3 slices | SCR-50…58 | Blocked (on backend R3) |
+
+All Completed rows are **Awaiting Review** by the user (G4/G6 sign-off).
 
 ## 4. Folder conventions added
 

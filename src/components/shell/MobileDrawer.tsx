@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { TrippleMark } from '../brand/TrippleMark';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { usePathname } from 'next/navigation';
@@ -10,7 +11,7 @@ import { useSession } from '../providers/AppProviders';
 import { Avatar } from '../Avatar';
 import { Icon } from '../Icon';
 import { HeaderSearch } from './HeaderSearch';
-import { CATEGORY_LINKS, EXPLORE, HIRE, JOBS, LEGAL } from './nav';
+import { CATEGORY_LINKS, COMMUNITY, EXPLORE, INSPIRATION, LEGAL, RESOURCES } from './nav';
 
 /**
  * C06 MobileNavDrawer (SH-03, IA §3.3): panel glass over the scrim, below 1024 px. Search with type switch,
@@ -21,7 +22,7 @@ export function MobileDrawer({ open, onClose, focusSearch }: { open: boolean; on
   const ref = useRef<HTMLDivElement>(null);
   const path = usePathname();
   const { viewer, isStaff } = useSession();
-  const [sections, setSections] = useState({ explore: true, jobs: false, hire: false });
+  const [sections, setSections] = useState({ explore: true, inspiration: false, resources: false, community: false });
   useFocusTrap(open, ref);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export function MobileDrawer({ open, onClose, focusSearch }: { open: boolean; on
       <div ref={ref} id="mobile-drawer" className="ui-drawer glass-panel glass-enter-drawer" role="dialog" aria-modal="true" aria-label="Menu">
         <div className="ui-drawer__head">
           <Link className="ui-brand" href="/" aria-label="Trippple home">
+            <TrippleMark className="ui-brand__mark" />
             Trippple
           </Link>
           <button type="button" className="ui-icon-btn ui-btn--ghost" aria-label="Close menu" onClick={onClose}>
@@ -80,13 +82,9 @@ export function MobileDrawer({ open, onClose, focusSearch }: { open: boolean; on
         <nav aria-label="Mobile">
           <ul className="ui-drawer__list">
             <Section id="explore" title="Explore" links={[...EXPLORE, ...CATEGORY_LINKS]} />
-            <li>
-              <Link className="ui-drawer__link" href="/tags" aria-current={cur('/tags')}>
-                Tags
-              </Link>
-            </li>
-            <Section id="jobs" title="Jobs" links={JOBS} />
-            <Section id="hire" title="Hire" links={HIRE} />
+            <Section id="inspiration" title="Inspiration" links={INSPIRATION.filter((l) => l.href !== '---')} />
+            <Section id="resources" title="Resources" links={RESOURCES.filter((l) => l.href !== '---')} />
+            <Section id="community" title="Community" links={COMMUNITY} />
           </ul>
         </nav>
         <div className="ui-drawer__actions">

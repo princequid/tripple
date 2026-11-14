@@ -22,6 +22,8 @@ const schema = z
     GOOGLE_CLIENT_ID: z.string().optional(),
     GOOGLE_CLIENT_SECRET: z.string().optional(),
     EMAIL_TRANSPORT: z.enum(['outbox', 'resend']).default('outbox'),
+    // Prototype only (A-28): email + password sign-in/up for demos without an email provider. Never in production.
+    PROTOTYPE_PASSWORD_AUTH: z.enum(['0', '1']).default('0'),
     RESEND_API_KEY: z.string().optional(),
     EMAIL_FROM: z.string().default('Trippple <no-reply@example.com>'),
     NEXT_PUBLIC_MEDIA_PROVIDER: z.enum(['local', 'imagekit']).default('local'),
@@ -46,6 +48,9 @@ const schema = z
     // The outbox transport writes codes to disk: never in production (BR-02).
     if (env.EMAIL_TRANSPORT !== 'resend' || !env.RESEND_API_KEY) {
       ctx.addIssue({ code: 'custom', path: ['EMAIL_TRANSPORT'], message: 'production requires EMAIL_TRANSPORT=resend and RESEND_API_KEY' });
+    }
+    if (env.PROTOTYPE_PASSWORD_AUTH === '1') {
+      ctx.addIssue({ code: 'custom', path: ['PROTOTYPE_PASSWORD_AUTH'], message: 'prototype password sign-in must be off in production (BR-12)' });
     }
     if (!env.BETTER_AUTH_URL.startsWith('https://')) {
       ctx.addIssue({ code: 'custom', path: ['BETTER_AUTH_URL'], message: 'must be https in production (BR-13 Secure cookie)' });

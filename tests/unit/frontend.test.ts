@@ -11,7 +11,7 @@ const job: JobInput = {
   descriptionHtml: `<p>${'x'.repeat(60)}</p>`,
   location: '',
   workplaceType: 'remote',
-  specialtySlug: 'product',
+  specialtySlug: 'product-design',
   employmentType: 'full-time',
   applyUrl: 'https://example.com/apply',
   companyName: 'Acme',
@@ -80,9 +80,8 @@ describe('helpers', () => {
     } while (cursor);
     expect(seen).toEqual(items);
   });
-  it('follows and collections default to the live API; other R2/R3 features to the mock', () => {
-    expect(sourceOf('follows')).toBe('live');
-    expect(sourceOf('collections')).toBe('live');
-    expect(sourceOf('jobs')).toBe('mock');
+  it('R2 features default to the live API; R3 features stay on the mock until their endpoints exist', () => {
+    for (const f of ['follows', 'collections', 'comments', 'reports', 'composer', 'settings', 'teams', 'onboarding', 'jobs', 'search'] as const) expect(sourceOf(f)).toBe('live');
+    for (const f of ['notifications', 'messages', 'blocks', 'hire', 'services'] as const) expect(sourceOf(f)).toBe('mock');
   });
 });

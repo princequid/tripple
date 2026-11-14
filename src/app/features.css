@@ -427,3 +427,6 @@ fieldset.ui-fieldset legend { padding: 0; margin-bottom: var(--space-2); font-si
 .mosaic404__cell.is-on { background: var(--color-bg-3); }
 .mosaic404__cell img { width: 100%; height: 100%; object-fit: cover; }
 .mosaic404__slider input { width: min(320px, 70vw); accent-color: var(--color-accent-deep); }
+
+/* Supplied avatar photos: the <img> itself carries .ui-avatar, so crop it like the initials circle. */
+img.ui-avatar { object-fit: cover; object-position: center 30%; background: var(--color-bg-3); }

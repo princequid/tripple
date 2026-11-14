@@ -179,9 +179,9 @@ export default async function ShotPage({ params }: { params: Promise<Params> }) 
               View profile
             </Link>
           </div>
-          <ol className="gallery-grid shot-feed">
+          <ol className="gallery-grid shot-feed shot-feed--compact">
             {more.map((s) => (
-              <ShotCard key={s.id} shot={s} />
+              <ShotCard key={s.id} shot={s} variant="compact" />
             ))}
           </ol>
         </section>
@@ -191,9 +191,9 @@ export default async function ShotPage({ params }: { params: Promise<Params> }) 
           <h2 id="related-title" className="t-h4">
             You might also like
           </h2>
-          <ol className="gallery-grid shot-feed">
+          <ol className="gallery-grid shot-feed shot-feed--compact">
             {related.map((s) => (
-              <ShotCard key={s.id} shot={s} />
+              <ShotCard key={s.id} shot={s} variant="compact" />
             ))}
           </ol>
         </section>

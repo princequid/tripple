@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ShotCard as ShotCardDto } from '@/modules/shots/types';
 import { api } from '@/lib/api-client';
-import { ShotCard } from './ShotCard';
+import { ShotMasonry } from './ShotMasonry';
 import { Icon } from './Icon';
 
 /**
@@ -54,11 +54,7 @@ export function ShotGrid({ initial, nextCursor, apiPath, label }: Props) {
 
   return (
     <div className="shot-feed-wrap">
-      <ol className="gallery-grid shot-feed" aria-label={label}>
-        {items.map((s, i) => (
-          <ShotCard key={s.id} shot={s} priority={i < 4} />
-        ))}
-      </ol>
+      <ShotMasonry shots={items} label={label} />
       <div ref={sentinel} />
       <div className="ui-feed-status">
         {status === 'error' ? (

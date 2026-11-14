@@ -23,26 +23,34 @@ export default async function ProfileWork({ params, searchParams }: { params: Pr
   const page = await orNotFound(feed.byProfile(profile.id, { sort, cursor: first(sp.cursor) }, viewer));
   return (
     <>
-      <ProfileHeader profile={profile} tab="work" />
+      <ProfileHeader
+        profile={profile}
+        tab="work"
+        toolbar={
+          <nav aria-label="Sort" className="profile-sort">
+            <Link className="profile-sort__item" href={`/${profile.username}`} aria-current={sort === 'recent' ? 'page' : undefined}>
+              Recent
+            </Link>
+            <Link className="profile-sort__item" href={`/${profile.username}?sort=popular`} aria-current={sort === 'popular' ? 'page' : undefined}>
+              Popular
+            </Link>
+          </nav>
+        }
+      />
       {profile.isOwn && <DraftsStrip />}
-      <nav aria-label="Sort" style={{ marginTop: 'var(--space-6)' }}>
-        <div className="ui-pill-row">
-          <Link className="ui-pill neu-control" href={`/${profile.username}`} aria-current={sort === 'recent' ? 'page' : undefined}>
-            Recent
-          </Link>
-          <Link className="ui-pill neu-control" href={`/${profile.username}?sort=popular`} aria-current={sort === 'popular' ? 'page' : undefined}>
-            Popular
-          </Link>
-        </div>
-      </nav>
       {page.items.length === 0 ? (
-        <div className="ui-state section">
-          <Icon name="info" className="ui-state__icon" strokeWidth={1.5} />
-          <p className="ui-state__title">No shots yet</p>
-          <p className="ui-state__body">{profile.isOwn ? 'Share your first shot to start your portfolio.' : `${profile.displayName} has not published any shots yet.`}</p>
+        <div className="profile-empty">
+          <span className="profile-empty__icon" aria-hidden="true">
+            <Icon name="image" strokeWidth={1.5} />
+          </span>
+          <p className="profile-empty__title">{profile.isOwn ? 'Your portfolio is waiting' : 'No shots yet'}</p>
+          <p className="profile-empty__body">
+            {profile.isOwn ? 'Share your first shot: an interface, an identity, an illustration. It appears here and in the feeds.' : `${profile.displayName} has not published any shots yet.`}
+          </p>
           {profile.isOwn && (
             <Link className="ui-btn ui-btn--primary" href="/uploads/new">
-              Share work
+              <Icon name="upload" />
+              Share your first shot
             </Link>
           )}
         </div>

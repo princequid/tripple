@@ -16,12 +16,17 @@
     "db:migrate": "tsx --conditions=react-server scripts/migrate.ts",
     "db:verify": "tsx --conditions=react-server scripts/verify-db.ts",
     "db:seed": "tsx --conditions=react-server scripts/seed.ts",
-    "db:reset": "tsx --conditions=react-server scripts/reset-db.ts && tsx --conditions=react-server scripts/migrate.ts && tsx --conditions=react-server scripts/seed.ts",
+    "db:reset": "tsx --conditions=react-server scripts/reset-db.ts && tsx --conditions=react-server scripts/migrate.ts && tsx --conditions=react-server scripts/seed.ts && tsx --conditions=react-server scripts/seed-demo.ts && tsx --conditions=react-server scripts/shape-placeholders.ts && tsx --conditions=react-server scripts/seed-passwords.ts",
     "moderate": "tsx --conditions=react-server scripts/moderate.ts",
     "test": "vitest run",
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "db:seed-demo": "tsx --conditions=react-server scripts/seed-demo.ts",
+    "images:apply": "tsx --conditions=react-server scripts/apply-images.ts",
+    "demo:code": "tsx scripts/demo-code.ts",
+    "db:shape-placeholders": "tsx --conditions=react-server scripts/shape-placeholders.ts",
+    "db:seed-passwords": "tsx --conditions=react-server scripts/seed-passwords.ts"
   },
   "dependencies": {
     "@libsql/client": "0.18.0",
